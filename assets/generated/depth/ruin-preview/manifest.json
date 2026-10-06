@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "kind": "depth",
+  "name": "ruin-preview",
+  "size": [
+    1586,
+    992
+  ],
+  "encoding": "normalized-relative-inverse-depth-u8",
+  "near_is_white": true,
+  "source": "assets/ruin-movement.png",
+  "source_sha256": "a8b0d316435a686a7f7eaee7b83a19ee6ad4ad59f8579595b3b230b41393b0de",
+  "depth_sha256": "2be91d94311c467e6f5666f2682567513b35e5d308929a8b75ea4fae3a6ca93f",
+  "provenance": {
+    "provider": "depth-anything-v2-local",
+    "encoder": "vits",
+    "input_size": 518,
+    "device_requested": "cpu",
+    "checkpoint_sha256": "715fade13be8f229f8a70cc02066f656f2423a59effd0579197bbf57860e1378"
+  }
+}

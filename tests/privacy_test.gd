@@ -66,5 +66,31 @@ func _init() -> void:
 	game.explorers[0].region = "R4"
 	var inside := View.project(game, 0)
 	check(inside.water_depths.has("R4") and inside.doors.D5.sealed_safe, "Sheltered observer sees own dry sealed refuge")
+	game.explorers[0].position = Map.relic_position()
+	game.explorers[0].region = "R3"
+	game.explorers[1].position = Map.relic_position() + Vector2(20, 0)
+	game.explorers[1].region = "R3"
+	game.doors.D4.locked = false
+	game.use_relic(1, "take_relic", 0)
+	var held := bytes_to_var(var_to_bytes(View.project(game, 0))) as Dictionary
+	check(held.explorers[1].has_relic and held.relic.is_empty(), "Visible holder shows relic artwork without a second ground relic")
+	check(not held.explorers[1].has("score") and not held.explorers[1].has("breath") and not held.has("results"), "Even visible rivals retain private breath and score until final results")
+	game.explorers[0].position = Map.spawn(0)
+	game.explorers[0].region = "R0"
+	var remote := bytes_to_var(var_to_bytes(View.project(game, 0))) as Dictionary
+	check(remote.explorers[1] == {"name": "P2", "state": "hidden"} and remote.relic.is_empty() and remote.vault.is_empty(), "Unseen relic holder and remote vault controls reveal no data")
+	game.use_relic(1, "drop_relic", 1)
+	check(View.project(game, 0).relic.is_empty(), "Unseen dropped relic coordinates remain private")
+	game.explorers[0].position = Map.door_position("D4") + Vector2(0, 35)
+	game.explorers[0].region = "C1"
+	game.doors.D4.progress = 0.0
+	check(View.project(game, 0).relic.is_empty(), "Shut gate conceals nearby pedestal or dropped relic")
+	game.explorers[1].state = "escaped"
+	check(View.project(game, 0).explorers[1].state == "hidden", "Remote escape outcome stays private during the expedition")
+	game.tick = int(game.EXPEDITION_LENGTH / game.STEP) - 1
+	game.step()
+	var final := bytes_to_var(var_to_bytes(View.project(game, 0))) as Dictionary
+	check(final.phase == "finished" and final.results.size() == 4 and final.results[1].state == "escaped", "Final scores and outcomes become public at completion")
+	check(not final.results[1].has("position") and not final.results[1].has("inventory"), "Public results do not disclose full simulation or coordinates")
 	print("Privacy: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)

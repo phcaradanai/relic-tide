@@ -1,0 +1,10 @@
+[gd_resource type="SpriteFrames" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/generated/sprites/relic-preview/atlas.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="Frame_0"]
+atlas = ExtResource("1")
+region = Rect2(1, 1, 1254, 1254)
+
+[resource]
+animations = [{"frames": [{"duration": 1.0, "texture": SubResource("Frame_0")}], "loop": true, "name": &"idle", "speed": 10}]

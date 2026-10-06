@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/generated/sprites/explorer-p1-carry-e-v1/frames.tres" id="1"]
+
+[node name="explorer-p1-carry-e-v1" type="AnimatedSprite2D"]
+texture_filter = 2
+sprite_frames = ExtResource("1")
+animation = &"carry_e"

@@ -12,7 +12,7 @@ The four pillars are Explore, Cooperate, Betray and Escape. This is social tensi
 
 This document defines the approved target. REALTIME_SPEC.md defines the first level and precise prototype rules; DESIGN.md defines presentation; REALTIME_PLAN.md records delivery stages and acceptance.
 
-Stages 1 and 2 are complete. The current web build adds stage 3: physical doors, regional water flow, a route-changing valve, and exactly one refuge at R4. Independent online movement, shared authored collision, client prediction and recipient-filtered local vision continue through the existing room service. Co-op vault unlocking, relic carrying and extraction remain stage 4. The painted shrine is scenery and awards no treasure.
+Stages 1–4 are implemented and automatically checked. The current web build includes physical doors, regional water flow, a route-changing valve, and exactly one refuge at R4. Independent online movement, shared authored collision, client prediction and recipient-filtered local vision continue through the existing room service. Two distinct explorers hold the vault controls, compete for one carryable relic and return to the Landing boat to extract it. Breath, drowning and final outcomes are authoritative. The painted shrine remains scenery; only the separate physical relic awards treasure after extraction. Human balance and WAN playtests remain pending.
 
 ## First playable slice
 

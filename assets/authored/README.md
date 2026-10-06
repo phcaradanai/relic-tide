@@ -1,0 +1,18 @@
+# Stage 5 art study — Workshop / P1 carry
+
+This is a first toolchain and motion study, not acceptance of the final layered room or all directional poses.
+
+- `workshop-reference-v1.png`: Aseprite crop `(630,0,400,380)` of the approved `assets/ruin-movement.png`. No new scenery is drawn. Its actual local DA-V2 depth is in `assets/generated/depth/workshop-reference-v1/`.
+- `explorer-p1-carry-e-v2.aseprite`: editable six-frame east-facing study, with separate original explorer and held-idol layers. Tag `carry_e`, 125ms per frame, complete 288×288 canvases. Foot anchor `(144,264)`. Linear filtering. It uses the existing six distinct leg poses from `assets/explorers-unlit-walk.png` and `assets/relic.png`; no body parts were generated, drawn or recolored.
+- `explorer-p1-carry-reference-v1.aseprite` / `.png`: the 128×200 southeast reference uploaded once for PixelLab animation. This is a reference composition, not a generated result.
+- The earlier east `v1` study remains as a smaller-prop comparison. `v2` is the sample's selected study. It is not substituted for all four production explorers.
+
+Reproduction tools are in `tools/assets/examples/`: `export-painted-walk.gd` reuses the game's existing silhouette isolation, and `assemble-carry.lua` places each pose using its recorded original cell origin. `visible-bounds.lua` trims distant nearly transparent dust from the idol using alpha >127 and retains two antialiased edge pixels, before deliberate bilinear authoring at 40×60. Body pixels and leg poses are preserved. Imported manifests hash the editable source, retain frame timings and record the Aseprite provider.
+
+Open `scenes/samples/workshop_study.tscn` in Godot and run the scene. Space pauses/resumes; Right steps a paused pose; Esc closes. The scene uses the real imported SpriteFrames and DepthArt resources. The camera remains still; depth displacement stays off. A short room-local walking path returns without teleporting. This isolated scene has no network, scores or gameplay interactions.
+
+The initial PixelLab request `explorer-p1-carry-se-v1` failed with insufficient allowance and USD usage 0. After the user added allowance, `explorer-p1-carry-east-pixel-v2` completed and used 6 generations, leaving 1,994 of 2,000. It returned 9 transparent 216×216 frames for an 8-frame request. All 9 are preserved in the generated bundle and editable `explorer-p1-carry-east-pixel-v2.aseprite`; the importer records both counts. Run the study with `--pixel-candidate` to inspect it in Godot. The candidate visibly moves legs but needs corrections to the hand/prop relationship and directional consistency before adoption. API collection and import never resubmitted the completed job.
+
+DepthFlow is enabled again following the user's renewed decision on 2026-10-07. The account preset omits the old sample's `plan: free` override. A new 5s Workshop clip, `.asset-work/previews/workshop-account-dolly-v2.mp4`, is 400×380 H.264 at 24fps/120 frames; no watermark is visible in its first, middle or last sampled frame. Motion is subtle and its cost is unconfirmed. The earlier watermarked free-profile clip remains a comparison. No further render is scheduled and no billing/renewal settings were changed.
+
+Native Godot captures at 1280×800 and 960×600 show different intact leg poses, a visible held idol and the room crop. They are motion/art evidence, not proof that stage 5's final scene layering, foreground occlusion, wading, all directions, audio or WAN playtests are complete.

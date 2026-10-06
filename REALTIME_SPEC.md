@@ -1,6 +1,6 @@
 # Relic Tide — First-level real-time specification
 
-Status: Stages 1–3 implemented on 2026-10-06. Stage 3 (physical doors, regional water flow, valve and one sealed refuge) is in the web build with passing rule, privacy, authority, scene, renderer and separate-process network checks; see REALTIME_VERIFICATION.md. Human playtesting and balance acceptance remain pending. Relics, co-op vault unlocking, breath, extraction and outcomes remain stage 4. User refinement: no whole-map view; follow the explorer; torches/held lantern widen sight; walls and shut doors block it. Numeric tuning is provisional, not measured balance.
+Status: Stages 1–4 implemented on 2026-10-06. Stage 3 (physical doors, regional water flow, valve and one sealed refuge) is in the web build with passing rule, privacy, authority, scene, renderer and separate-process network checks; see REALTIME_VERIFICATION.md. Human playtesting and balance acceptance remain pending. Stage 4 implements one physical relic, distinct cooperative vault operators, carry slowdown, breath/drowning, held extraction and final outcomes. User refinement: no whole-map view; follow the explorer; torches/held lantern widen sight; walls and shut doors block it. Numeric tuning is provisional, not measured balance.
 
 ## Fixed requirements
 
@@ -72,7 +72,7 @@ Each server tick:
 5. Update breath, relic/extraction progress and terminal states.
 6. Send recipient-filtered snapshots/events.
 
-Events at the same tick use server sequence order. Clients cannot backdate a door command. Simultaneous relic pickups are resolved by the first valid server-sequenced event; later requests see that it is already owned. Record the ordering for reproducible rules tests without assuming cross-platform Godot physics is bit-identical.
+Held interactions send an ordered keep_interaction heartbeat every 200 ms and expire after 500 ms without renewal. Release, leaving reach, opening the guide or losing focus cancels the hold; the authority clock continues. Events at the same tick use server sequence order. Clients cannot backdate a door command. Simultaneous relic pickups are resolved by the first valid server-sequenced event; later requests see that it is already owned. Record the ordering for reproducible rules tests without assuming cross-platform Godot physics is bit-identical.
 
 ## Doors, threshold and guaranteed shelter
 
@@ -129,13 +129,13 @@ These numbers are prototype tuning, not a promise that the loop is balanced. Flo
 
 ## Cooperation, relic and extraction
 
-D4 initially requires two distinct people holding its two outside controls in C1 simultaneously for 1.5 seconds. A single peer cannot occupy both controls. Releasing early resets unlocking progress. Completion unlocks the latch and opens D4; it then remains physically operable from either side by one person. No auto-close trap or one-way permanent lock is introduced.
+D4 initially requires two distinct people holding its two outside controls in C1 simultaneously for 1.5 seconds. Shared map controls A/B are at source-art (1268,350)/(1326,350), each with a 24-logical-pixel use radius. A single peer cannot occupy both controls. Releasing early resets unlocking progress. Completion unlocks the latch and opens D4; it then remains physically operable from either side by one person. No auto-close trap or one-way permanent lock is introduced.
 
 This makes the initial vault entry genuinely cooperative while allowing later physical door blocking and a possible response by someone inside. Players may close the gate, compete for the relic, redirect water or leave a slow carrier.
 
 Relic states: on pedestal, on ground(region/position), carried(player), extracted(player), unrecoverable. Exactly one state/owner exists. E picks up within reach; Q drops at the holder's local position. No direct remote inventory theft command exists. Visible carriers show the held relic; exact rival inventories and private scores remain filtered.
 
-Initial relic value: 100 points. Extraction at R0 requires a 2-second held interaction in the extraction area and banks the carried relic atomically. Leaving/cancelling before completion banks nothing. Completion marks that explorer escaped; they cannot return in this slice. Empty-handed extraction is allowed.
+The idol starts at source-art (1300,245). The Landing extraction area is source-art Rect2(330,710,75,65), shown by a raster boat. All positions come from level_map.gd. Initial relic value: 100 points. Extraction at R0 requires a 2-second held interaction in the extraction area and banks the carried relic atomically. Leaving/cancelling before completion banks nothing. Completion marks that explorer escaped; they cannot return in this slice. Empty-handed extraction is allowed.
 
 A drowned carrier drops the relic where they drowned. It remains recoverable if the area can be reached. The expedition has no separate rescue bonus or private inventory-steal mechanic in this first slice.
 

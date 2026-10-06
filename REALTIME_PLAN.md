@@ -1,6 +1,6 @@
 # Relic Tide — แผนเปลี่ยนเป็น Real-time Multiplayer
 
-สถานะ: ขั้นที่ 1–3 ลงระบบแล้ว วันที่ 6 ตุลาคม 2026 ขั้นที่ 3 มีประตูจริง น้ำแยกภูมิภาค วาล์วเปลี่ยนทางน้ำ และห้องหลบภัย R4 หนึ่งห้อง ผ่านการตรวจกฎ ความเป็นส่วนตัว สิทธิ์ ฉาก ภาพจริง และเครือข่ายหลาย process แล้ว ยังต้องให้คนลองเล่นเพื่อจูนอัตราน้ำและจังหวะตัดสินใจ ขั้นถัดไปคือ relic กลไกช่วยกัน และ extraction ขั้นที่ 4 ดู REALTIME_VERIFICATION.md สำหรับหลักฐานปัจจุบัน
+สถานะ: ขั้นที่ 1–4 ลงระบบแล้ว วันที่ 6 ตุลาคม 2026 ขั้นที่ 4 เพิ่มกลไก D4 สองคน relic หนึ่งชิ้นที่หยิบ/ถือ/วางได้ เดินช้าลงขณะแบก ลมหายใจ การจมน้ำ และ extraction ที่ Landing พร้อมผลคะแนน ผ่านกฎ ความเป็นส่วนตัว สิทธิ์ ฉาก renderer และรอบเต็มออนไลน์ 2/3/4 คนแล้ว ขั้นถัดไปคือห้องตัวอย่างและภาพ/เสียงขั้นที่ 5 ยังต้องเล่นกับคนจริงเพื่อจูนสมดุลและตรวจ WAN ดู REALTIME_VERIFICATION.md สำหรับหลักฐานปัจจุบัน
 
 ## เป้าหมาย
 
@@ -100,7 +100,7 @@ Implemented 2026-10-06: doors D0–D5 use shared authored map positions; shut co
 - การหมุนวาล์วเปลี่ยนพื้นที่อันตรายจริงและสร้างทางเลือกที่สังเกตได้
 - ทุก client เห็นสถานะประตูและผลน้ำที่สอดคล้องกัน
 
-### 4. ทำรอบเก็บสมบัติ ช่วยกัน และหนีออก
+### 4. ทำรอบเก็บสมบัติ ช่วยกัน และหนีออก — implemented and automatically checked; human playtest pending
 
 งาน:
 
@@ -112,9 +112,13 @@ Implemented 2026-10-06: doors D0–D5 use shared authored map positions; shut co
 - ให้การปิดประตู การเปลี่ยนทางน้ำ และการแย่งของจากพื้นเป็นช่องทาง betrayal
 - คงนโยบาย active disconnect จบรอบแบบ aborted ในต้นแบบนี้ การ reconnect เป็นงานแยก
 
+Implemented 2026-10-06: distinct nearby peers hold controls A/B for 1.5s to unlock D4. One authoritative idol can be picked up, dropped and claimed by another explorer; its carrier moves at 75% speed in authority and prediction. Deep water drains 12s breath; drowning drops the idol locally. A 2s Landing hold banks exactly 100 points or permits empty-handed escape. Deadline survivors are stranded, never forcibly drowned or scored. Held actions expire on transport inactivity. Final results remain after peer departure. Separate-process 2/3/4-person runs walk the full route, cooperate, contest/drop/claim the idol and extract with matching outcomes; no server teleports are used.
+
 เกณฑ์ผ่าน: เล่นจบตั้งแต่ lobby ถึงผลคะแนนได้ และเกิดเหตุการณ์ช่วยผ่านประตู/เลือกทิ้งเพื่อน/แย่ง relic ได้จากการเล่นในฉาก โดยผลของวัตถุและคะแนนตรงกันทุกเครื่อง
 
 ### 5. ยกระดับภาพของด่านที่เล่นได้
+
+เริ่มแล้ว 2026-10-06: ชุดสร้าง asset ใช้ PixelLab/Aseprite/Godot และ DA-V2 ในเครื่อง มีตัวอย่าง Workshop พร้อม depth จริงและท่าเดินถือ relic ของ P1 หนึ่งทิศ 6 เฟรมแยก layer แก้ต่อได้ รวมผล PixelLab จริง 9 เฟรมจากคำขอ 8 เฟรม ใช้ 6 generations เหลือ 1,994 หลังผู้ใช้เพิ่มโควตา เก็บครบทุกเฟรมเพื่อแก้ต่อ ไม่แทนตัวละครหลักอัตโนมัติ เปิด `scenes/samples/workshop_study.tscn` ดูแบบ Aseprite หรือใช้ `--pixel-candidate` เปรียบเทียบได้ ตรวจภาพ native 1280×800/960×600 แล้ว ยังไม่ผ่านห้อง layered ฉบับเสร็จหรือชุดท่าครบทุกคน/ทุกทิศ อัปเดต 2026-10-07: ผู้ใช้กลับมาใช้ DepthFlow หลังเติมเครดิต เปิดเครื่องมืออีกครั้งและสร้างคลิป Workshop 5 วินาทีด้วยสิทธิ์บัญชี ตรวจต้น/กลาง/ท้ายไม่พบลายน้ำ แต่การเคลื่อนกล้องเบาและยังยืนยันเครดิตที่หักไม่ได้ ไม่เปลี่ยนกล้องในเกม ดู ASSET_PIPELINE.md, ASSET_QUALITY.md และ assets/authored/README.md
 
 งาน:
 

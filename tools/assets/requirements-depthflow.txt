@@ -1,0 +1,2 @@
+# Optional local renderer only; isolate from the user's DA-V2 torch environment.
+depthflow==1.0.1

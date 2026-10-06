@@ -69,7 +69,8 @@ func run() -> void:
 	scene.fixture.doors.D3.target_open = false
 	set_position(scene, Vector2(790, 280), true)
 	var gate_closed := await capture(scene, "door-closed")
-	var across_gate := Map.from_art(Vector2(790, 340))
+	var across_gate := Map.from_art(Vector2(790, 365))
+	# Sample floor past the gate, clear of the native world prompt text.
 	check(world_pixel(scene, gate_closed, across_gate).get_luminance() < 0.01, "Closed gate casts a real shadow across doorway")
 	scene.fixture.doors.D3.progress = 1.0
 	scene.fixture.doors.D3.target_open = true
@@ -95,6 +96,46 @@ func run() -> void:
 	var refuge := await capture(scene, "refuge-sealed")
 	check(scene.game.doors.D5.sealed_safe and scene.game.water_depths.R4 == 0.0, "Refuge presents its local sealed dry state")
 	check(world_pixel(scene, refuge, Map.from_art(Vector2(1260, 560))).get_luminance() < 0.01, "Refuge door conceals flooded corridor floor beyond gate art and label")
+	scene._restart()
+	scene._start(2)
+	set_position(scene, Vector2(1268, 350), true)
+	scene.fixture.explorers[1].position = Map.vault_control_position("B")
+	scene.fixture.explorers[1].region = "C1"
+	scene._use_nearest()
+	scene.fixture.begin_vault(1, "B", 0)
+	for i in range(15):
+		scene.fixture.keep_interaction(1, scene.fixture.event_sequences[1] + 1)
+		scene._step_movement(Vector2.ZERO)
+	scene.token_positions[1] = scene.game.explorers[1].position
+	await capture(scene, "vault-cooperation")
+	check(scene.game.vault.A.held and scene.game.vault.B.held and scene.prompt_label.text.contains("%"), "Two held raster mechanisms and actual progress render")
+	for i in range(17):
+		scene.fixture.keep_interaction(1, scene.fixture.event_sequences[1] + 1)
+		scene._step_movement(Vector2.ZERO)
+	set_position(scene, Vector2(1300, 245), true)
+	await capture(scene, "relic-ground")
+	scene._use_nearest()
+	var held_relic := await capture(scene, "relic-carried")
+	check(scene.game.explorers[0].has_relic and scene.game.relic.is_empty(), "Actual carried relic removes the ground sprite")
+	check(scene.relic_texture.atlas.get_image().get_pixel(0, 0).a == 0.0, "Generated idol has real transparent alpha")
+	scene._drop_carried()
+	var dropped_relic := await capture(scene, "relic-dropped")
+	check(held_relic.get_data() != dropped_relic.get_data(), "Carrying and dropping visibly change rendered art")
+	scene._use_nearest()
+	set_position(scene, Map.EXTRACTION_ART_RECT.get_center(), true)
+	scene._use_nearest()
+	for i in range(20): scene._step_movement(Vector2.ZERO)
+	await capture(scene, "extraction-hold")
+	check(scene.prompt_label.text.contains("Escape") and scene.prompt_label.text.contains("%"), "Landing boat shows held extraction progress")
+	for i in range(22): scene._step_movement(Vector2.ZERO)
+	scene.fixture.tick = int(scene.fixture.EXPEDITION_LENGTH / scene.fixture.STEP) - 1
+	scene._step_movement(Vector2.ZERO)
+	await capture(scene, "expedition-results")
+	check(scene.results_panel.visible and scene.results_label.text.contains("100 points"), "Public ending renders only banked score")
+	root.size = Vector2i(960, 600)
+	await capture(scene, "expedition-results-960")
+	check(scene.results_panel.get_global_rect().end.x <= 1440 and scene.results_panel.get_global_rect().end.y < 836, "Result controls fit the minimum supported desktop canvas")
+	root.size = Vector2i(1440, 900)
 	scene._restart()
 	await capture(scene, "realtime-lobby")
 	check(scene.opening.visible and scene.room_list.visible, "Online lobby still renders")

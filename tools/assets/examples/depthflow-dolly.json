@@ -1,0 +1,5 @@
+{
+  "motion": {"style": "dolly", "amplitude": 0.2},
+  "render": {"duration": 5},
+  "plan": "free"
+}

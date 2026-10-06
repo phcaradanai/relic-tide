@@ -15,8 +15,10 @@ $env:LOCALAPPDATA = $env:APPDATA
 New-Item -ItemType Directory (Join-Path $PSScriptRoot 'build') -Force | Out-Null
 $exportLog = Join-Path $env:APPDATA 'web-export.log'
 $exportError = "$exportLog.err"
+$launchOptions = @{}
+if ($IsWindows -or $PSVersionTable.PSEdition -eq 'Desktop') { $launchOptions.WindowStyle = 'Hidden' }
 $arguments = @('--headless', '--path', "`"$projectRoot`"", '--export-release', 'Web', "`"$(Join-Path $PSScriptRoot 'build/index.html')`"")
-$process = Start-Process -FilePath $GodotPath -ArgumentList $arguments -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $exportLog -RedirectStandardError $exportError
+$process = Start-Process -FilePath $GodotPath -ArgumentList $arguments @launchOptions -Wait -PassThru -RedirectStandardOutput $exportLog -RedirectStandardError $exportError
 if ($process.ExitCode -ne 0) { Get-Content -LiteralPath $exportError; throw 'Web export failed. Install matching Godot export templates.' }
 if (Select-String -LiteralPath $exportError -Pattern 'SCRIPT ERROR|Parse Error' -Quiet) { Get-Content -LiteralPath $exportError; throw 'Web export contains script errors.' }
 if (-not (Test-Path -LiteralPath (Join-Path $PSScriptRoot 'build/index.wasm'))) { throw 'Web export is incomplete. Inspect .runtime/web-export.log.' }

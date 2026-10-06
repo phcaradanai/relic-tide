@@ -68,9 +68,48 @@ func run() -> void:
 	scene.fixture.tick += 1
 	scene._on_state(View.project(scene.fixture, 0))
 	scene._use_nearest()
-	check(scene.valve_hold_active and scene.fixture.valve_holds.has(0), "Nearby use begins authoritative valve hold")
+	check(scene.interaction_hold_active and scene.fixture.valve_holds.has(0), "Nearby use begins authoritative valve hold")
 	scene._cancel_interaction_hold()
-	check(not scene.valve_hold_active and scene.fixture.valve_holds.is_empty(), "Key release clears client and server hold")
+	check(not scene.interaction_hold_active and scene.fixture.valve_holds.is_empty(), "Key release clears client and server hold")
+	scene._restart()
+	scene._start(2)
+	scene.fixture.explorers[0].position = Map.vault_control_position("A")
+	scene.fixture.explorers[0].region = "C1"
+	scene.fixture.explorers[1].position = Map.vault_control_position("B")
+	scene.fixture.explorers[1].region = "C1"
+	scene.fixture.tick += 1
+	scene._on_state(View.project(scene.fixture, 0))
+	scene._use_nearest()
+	check(scene.interaction_hold_active and scene.fixture.vault_holds.has("A"), "World control prompt begins co-op hold")
+	scene._toggle_help()
+	check(scene.fixture.vault_holds.is_empty(), "Opening guide cancels held cooperation")
+	scene._toggle_help()
+	scene.fixture.doors.D4.locked = false
+	scene.fixture.doors.D4.progress = 1.0
+	scene.fixture.explorers[0].position = Map.relic_position()
+	scene.fixture.explorers[0].region = "R3"
+	scene.fixture.tick += 1
+	scene._on_state(View.project(scene.fixture, 0))
+	scene._use_nearest()
+	check(scene.game.explorers[0].has_relic and scene.prediction.carrying, "Pickup updates scene and prediction on the same tick")
+	scene._drop_carried()
+	check(scene.game.relic.has("position") and not scene.game.explorers[0].has_relic, "Q drops physical relic before lantern")
+	scene._use_nearest()
+	scene.fixture.explorers[0].position = Map.extraction_position()
+	scene.fixture.explorers[0].region = "R0"
+	scene.fixture.tick += 1
+	scene._on_state(View.project(scene.fixture, 0))
+	scene._use_nearest()
+	for i in range(42): scene._step_movement(Vector2.ZERO)
+	check(scene.game.explorers[0].state == "escaped" and scene.game.explorers[0].score == 100, "Native held interaction renews and completes authoritative extraction")
+	var escaped_position: Vector2 = scene.prediction.position
+	scene._step_movement(Vector2.RIGHT)
+	check(scene.prediction.position == escaped_position, "Terminal explorer cannot predict a return to play")
+	scene.fixture.tick = int(scene.fixture.EXPEDITION_LENGTH / scene.fixture.STEP) - 1
+	scene._step_movement(Vector2.ZERO)
+	check(scene.results_panel.visible and scene.results_label.text.contains("100 points"), "Final outcomes render in native result panel")
+	scene._restart()
+	check(not scene.results_panel.visible and scene.intro, "Result exit restores reusable lobby")
 	# Reconcile delayed snapshots, then prove bounded prediction during a stall.
 	var rules := Rules.new()
 	var predictor := Prediction.new()

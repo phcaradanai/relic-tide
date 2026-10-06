@@ -1,0 +1,4 @@
+Generated using built-in image_gen on 2026-10-06, transparent_background=true.
+Source: /Users/oyl-mac_m1/.codex/generated_images/01a1117d-efb3-7aa0-8beb-2864e3a1cc65/exec-a899667f-bce8-4394-839a-ae018f8c44f6.png
+Copied without raster edits; runtime AtlasTexture crops transparent padding.
+Exact prompt: relic.prompt.txt. Used for the one ground/carried relic.

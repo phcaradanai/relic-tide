@@ -34,7 +34,14 @@ var lantern_texture: Texture2D
 var water_layer
 var gate_texture: Texture2D
 var interaction_sequence := -1
-var valve_hold_active := false
+var interaction_hold_active := false
+var hold_refresh_ticks := 0
+var relic_texture: Texture2D
+var wheel_texture: Texture2D
+var boat_texture: Texture2D
+var results_panel: PanelContainer
+var results_label: Label
+var survival_label: Label
 var prompt_label: Label
 var tide_label: Label
 var opening: PanelContainer
@@ -100,6 +107,9 @@ func _ready() -> void:
 	lantern_crop.atlas = lantern_source
 	lantern_crop.region = Rect2(lantern_source.get_image().get_used_rect())
 	lantern_texture = lantern_crop
+	relic_texture = _raster_crop("res://assets/relic.png")
+	wheel_texture = _atlas_icon(1, 1)
+	boat_texture = _atlas_icon(1, 2)
 	sprite_atlas = load("res://assets/explorers-unlit.png")
 	var cell := sprite_atlas.get_size() / Vector2(4, 1)
 	for i in range(4): sprite_regions.append(Rect2(Vector2(i * cell.x, 0), cell))
@@ -134,6 +144,19 @@ func _ready() -> void:
 		_join()
 	elif auto_connect: _refresh_rooms()
 	if not capture_path.is_empty(): _capture.call_deferred()
+func _raster_crop(path: String) -> Texture2D:
+	var source: Texture2D = load(path)
+	var crop := AtlasTexture.new()
+	crop.atlas = source
+	crop.region = Rect2(source.get_image().get_used_rect())
+	return crop
+func _atlas_icon(column: int, row: int) -> Texture2D:
+	var source: Texture2D = load("res://assets/action-icons.png")
+	var crop := AtlasTexture.new()
+	crop.atlas = source
+	var cell := source.get_size() / 4.0
+	crop.region = Rect2(Vector2(column, row) * cell, cell)
+	return crop
 func _style(fill: Color, border: Color = Color.TRANSPARENT) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = fill
@@ -192,8 +215,8 @@ func _build_ui() -> void:
 	var leave := _button("Leave", _restart, 96)
 	leave.position = Vector2(1315, 12)
 	ui.add_child(leave)
-	controls_label = _label("WASD / arrows · walk    E · door/light · hold at valve    Q · drop light    H · guide    R · leave", 17, MUTED)
-	controls_label.position = Vector2(432, 836)
+	controls_label = _label("WASD / arrows · walk    E · use / hold    Q · drop relic / lantern    H · guide    V · reduced motion    R · leave", 17, MUTED)
+	controls_label.position = Vector2(24, 836)
 	controls_label.hide()
 	ui.add_child(controls_label)
 	tide_label = _label("", 17, MUTED)
@@ -202,6 +225,25 @@ func _build_ui() -> void:
 	tide_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	tide_label.hide()
 	ui.add_child(tide_label)
+	survival_label = _label("", 18, GOLD)
+	survival_label.position = Vector2(24, 100)
+	survival_label.hide()
+	ui.add_child(survival_label)
+	results_panel = PanelContainer.new()
+	results_panel.position = Vector2(440, 260)
+	results_panel.custom_minimum_size = Vector2(560, 0)
+	results_panel.add_theme_stylebox_override("panel", _style(GLASS, EDGE))
+	ui.add_child(results_panel)
+	var result_box := VBoxContainer.new()
+	result_box.add_theme_constant_override("separation", 20)
+	results_panel.add_child(result_box)
+	result_box.add_child(_label("EXPEDITION COMPLETE", 24, GOLD))
+	results_label = _label("", 19)
+	results_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	results_label.custom_minimum_size.x = 520
+	result_box.add_child(results_label)
+	result_box.add_child(_button("Return to rooms [R]", _restart, 240))
+	results_panel.hide()
 	prompt_label = _label("", 19, GOLD)
 	prompt_label.position = Vector2(570, 550)
 	ui.add_child(prompt_label)
@@ -257,15 +299,15 @@ func _build_ui() -> void:
 	start_button.hide()
 	box.add_child(start_button)
 	help_panel = PanelContainer.new()
-	help_panel.position = Vector2(440, 570)
-	help_panel.size = Vector2(560, 200)
+	help_panel.position = Vector2(390, 520)
+	help_panel.size = Vector2(660, 240)
 	help_panel.add_theme_stylebox_override("panel", _style(GLASS, EDGE))
 	ui.add_child(help_panel)
 	var guide := VBoxContainer.new()
 	guide.add_theme_constant_override("separation", 10)
 	help_panel.add_child(guide)
 	guide.add_child(_label("Explore together", 24, GOLD))
-	guide.add_child(_label("WASD / arrows: walk. E: use a nearby door or pick up the lantern.\nHold E at the Workshop valve to redirect incoming water.\nQ: drop your lantern. Torches expand vision; walls block it.\nClosed doors slow water. The sealed refuge stays dry.", 18))
+	guide.add_child(_label("WASD / arrows: walk. E: use nearby objects. Q: drop relic, then lantern.\nHold separate vault controls with a partner for 1.5s to open D4.\nTake the idol, return to the Landing boat, hold E for 2s to escape.\nOnly extracted relics score. Carrying slows you by 25%.\nHold E at the Workshop valve to redirect incoming water.\nDeep water drains breath. A dry sealed refuge stays safe, but is not escape.", 18))
 	guide.add_child(_button("Return to exploration [H]", _toggle_help, 270))
 	help_panel.hide()
 func _host() -> void:
@@ -313,6 +355,7 @@ func _on_state(snapshot: Dictionary) -> void:
 	water_layer.set_depths(game.water_depths)
 	active_player = game.player
 	phase = game.phase
+	interaction_hold_active = not game.interaction.is_empty()
 	if fresh:
 		prediction.reset(snapshot)
 		interaction_sequence = -1
@@ -323,6 +366,7 @@ func _on_state(snapshot: Dictionary) -> void:
 	opening.hide()
 	controls_label.show()
 	tide_label.show()
+	survival_label.show()
 	for i in range(game.explorers.size()):
 		var p: Dictionary = game.explorers[i]
 		if p.state == "hidden":
@@ -339,6 +383,15 @@ func _on_state(snapshot: Dictionary) -> void:
 			remote_clock[i] = 0.0
 	status_label.text = "P%d · %s" % [active_player + 1, Map.NAMES[game.explorers[active_player].region]] if phase == "running" else snapshot.get("notice", "Expedition ended. Leave to return to the room list.")
 	if phase != "running": _stop_movement()
+	results_panel.visible = phase == "finished"
+	if phase == "finished":
+		var lines: Array[String] = []
+		for result in game.results: lines.append("%s · %s · %d points" % [result.name, result.state.capitalize(), result.score])
+		var names: Array[String] = []
+		for who in game.winners: names.append("P%d" % (who + 1))
+		lines.append("\nRelic extracted · %s wins" % ", ".join(names) if not names.is_empty() else "\nNo successful relic extraction")
+		if game.finish_reason == "deadline": lines.append("The tide deadline passed. Sheltered survivors remain alive.")
+		results_label.text = "\n".join(lines)
 	_update_vision()
 	vision.set_closed_doors(Map.closed_door_ids(game.doors))
 	queue_redraw()
@@ -349,6 +402,7 @@ func _update_vision() -> void:
 	vision.update_view(prediction.position, radius)
 	vision.set_closed_doors(closed)
 	camera.position = token_positions.get(active_player, prediction.position)
+	camera.force_update_scroll()
 	var region: String = Map.region_at(prediction.position)
 	var depth: float = game.water_depths.get(region, game.explorers[active_player].get("region_depth", 0.0))
 	status_label.text = "P%d · %s · %s" % [active_player + 1, Map.NAMES.get(region, "Ruin"), "Lantern" if game.explorers[active_player].has_light else "No lantern"] if phase == "running" else status_label.text
@@ -356,36 +410,56 @@ func _update_vision() -> void:
 		tide_label.text = "Tide reaches the ruin in %ds · this area dry" % maxi(0, ceili(TIDE_LEAD_IN - game.tide_seconds))
 	else:
 		tide_label.text = "Outer tide %0.2f · local depth %0.2f · %s" % [game.tide_level, depth, "passage submerged" if depth >= Map.BLOCKING_DEPTH else "dangerous water" if depth >= Map.DEEP_DEPTH else "wading" if depth >= Map.WADING_DEPTH else "shallow" if depth >= Map.SHALLOW_DEPTH else "dry"]
+	var self_view: Dictionary = game.explorers[active_player]
+	survival_label.text = "Breath %.1fs / 12 · %s · Banked %d · %ds left" % [self_view.breath, "Relic carried · slower" if self_view.has_relic else "No relic", self_view.score, maxi(0, ceili(Rules.EXPEDITION_LENGTH - game.tide_seconds))]
+	survival_label.modulate = COLORS[1] if self_view.breath < 4.0 else Color.WHITE
 	prompt_label.text = ""
 	if show_help or phase != "running": return
-	if game.lantern.has("position") and prediction.position.distance_to(game.lantern.position) <= 38:
-		prompt_label.text = "E · Pick up lantern"
+	if self_view.state != "exploring":
+		prompt_label.text = "Escaped · waiting for expedition results" if self_view.state == "escaped" else "Drowned · waiting for expedition results"
+		prompt_label.position = Vector2(450, 700)
 		return
-	var nearest := ""
-	var nearest_distance := Map.USE_RADIUS + 1.0
+	var nearby := _nearby_interaction()
+	if nearby.is_empty(): return
+	prompt_label.text = nearby.text
+	if not game.interaction.is_empty(): prompt_label.text += " · %d%%" % roundi(game.interaction.progress * 100)
+	var canvas_point: Vector2 = get_global_transform_with_canvas() * nearby.position
+	var prompt_width := font.get_string_size(prompt_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, 19).x
+	prompt_label.position = Vector2(clampf(canvas_point.x - prompt_width / 2, 24, Map.SIZE.x - prompt_width - 24), clampf(canvas_point.y + 30, 155, 790))
+func _nearby_interaction() -> Dictionary:
+	var options: Array[Dictionary] = []
+	var position: Vector2 = prediction.position
+	var closed := Map.closed_door_ids(game.doors)
+	if game.relic.has("position") and not game.explorers[active_player].has_relic:
+		options.append({"kind": "take_relic", "target": "", "position": game.relic.position, "radius": Map.USE_RADIUS, "text": "E · Take relic"})
+	if game.lantern.has("position"):
+		options.append({"kind": "take_light", "target": "", "position": game.lantern.position, "radius": 38.0, "text": "E · Pick up lantern"})
+	if game.extraction.has("position") and Map.extraction_rect().has_point(position):
+		options.append({"kind": "begin_extraction", "target": "", "position": game.extraction.position, "radius": Map.USE_RADIUS, "text": "Hold E · Escape with relic" if game.explorers[active_player].has_relic else "Hold E · Escape empty-handed"})
+	for control in game.vault:
+		var state: Dictionary = game.vault[control]
+		if state.locked: options.append({"kind": "begin_vault", "target": control, "position": state.position, "radius": Map.CONTROL_RADIUS, "text": "Hold E · Vault control %s · partner holds the other" % control})
+	if not game.valve.is_empty():
+		options.append({"kind": "begin_valve", "target": "", "position": Map.valve_position(), "radius": Map.USE_RADIUS, "text": "Hold E · Feed %s" % ("service passage" if game.valve.mode == "main" else "main crossing")})
 	for door_id in game.doors:
-		var location: Vector2 = game.doors[door_id].position
-		var distance := prediction.position.distance_to(location)
-		var sight_without_door := closed.duplicate()
-		sight_without_door.erase(door_id)
-		if distance <= nearest_distance and Map.line_of_sight(prediction.position, location, sight_without_door):
-			nearest = door_id
-			nearest_distance = distance
-	if not nearest.is_empty():
-		var state: Dictionary = game.doors[nearest]
-		if state.locked: prompt_label.text = "Locked gate · requires cooperation"
-		elif state.state == "obstructed": prompt_label.text = "Door blocked · clear the doorway · E to open"
-		elif state.refuge:
-			if state.sealed_safe: prompt_label.text = "E · Open sealed refuge"
-			elif state.target_open: prompt_label.text = "E · Close refuge door · seal before water arrives"
-			else: prompt_label.text = "E · Open refuge door"
-		else: prompt_label.text = "E · Close door" if state.target_open else "E · Open door"
-		return
-	if not game.valve.is_empty() and prediction.position.distance_to(Map.valve_position()) <= Map.USE_RADIUS:
-		prompt_label.text = "Hold E · Redirect water to %s" % ("service passage" if game.valve.mode == "main" else "main crossing")
-		if game.valve.progress > 0.0: prompt_label.text += " · %d%%" % roundi(game.valve.progress * 100.0)
+		var state: Dictionary = game.doors[door_id]
+		if state.locked: continue
+		var text_value := "E · Close door" if state.target_open else "E · Open door"
+		if state.state == "obstructed": text_value = "Door blocked · clear doorway · E to open"
+		elif state.refuge: text_value = "E · Open sealed dry refuge" if state.sealed_safe else "E · Close refuge before water arrives" if state.target_open else "E · Open refuge door"
+		options.append({"kind": "toggle_door", "target": door_id, "position": state.position, "radius": Map.USE_RADIUS, "text": text_value})
+	var best: Dictionary = {}
+	var distance := INF
+	for option in options:
+		var blocked := closed.duplicate()
+		if option.kind == "toggle_door": blocked.erase(option.target)
+		var reach := position.distance_to(option.position)
+		if reach > option.radius or reach >= distance or not Map.line_of_sight(position, option.position, blocked): continue
+		distance = reach
+		best = option
+	return best
 func _use_light(kind: String) -> void:
-	if intro or phase != "running" or show_help or not focused: return
+	if intro or phase != "running" or show_help or not focused or game.explorers[active_player].state != "exploring": return
 	_send_interaction(kind)
 	if kind == "take_light" or kind == "drop_light": return
 func _send_interaction(kind: String, target: String = "") -> void:
@@ -397,45 +471,43 @@ func _send_interaction(kind: String, target: String = "") -> void:
 			"take_light", "drop_light": accepted = fixture.use_light(active_player, kind, interaction_sequence)
 			"toggle_door": accepted = fixture.toggle_door(active_player, target, interaction_sequence)
 			"begin_valve": accepted = fixture.begin_valve(active_player, interaction_sequence)
+			"begin_vault": accepted = fixture.begin_vault(active_player, target, interaction_sequence)
+			"take_relic", "drop_relic": accepted = fixture.use_relic(active_player, kind, interaction_sequence)
+			"begin_extraction": accepted = fixture.begin_extraction(active_player, interaction_sequence)
+			"keep_interaction": accepted = fixture.keep_interaction(active_player, interaction_sequence)
 			"cancel_interaction": accepted = fixture.cancel_interaction(active_player, interaction_sequence)
 		if accepted: _on_state(View.project(fixture, active_player))
 	else: session.interaction(command)
 func _use_nearest() -> void:
-	if intro or phase != "running" or show_help or not focused: return
-	if game.lantern.has("position") and prediction.position.distance_to(game.lantern.position) <= 38:
-		_use_light("take_light")
-		return
-	var nearest := ""
-	var nearest_distance := Map.USE_RADIUS + 1.0
-	var closed := Map.closed_door_ids(game.doors)
-	for door_id in game.doors:
-		var location: Vector2 = game.doors[door_id].position
-		var distance := prediction.position.distance_to(location)
-		var sight_without_door := closed.duplicate()
-		sight_without_door.erase(door_id)
-		if distance <= nearest_distance and Map.line_of_sight(prediction.position, location, sight_without_door):
-			nearest = door_id
-			nearest_distance = distance
-	if not nearest.is_empty():
-		if not game.doors[nearest].locked: _send_interaction("toggle_door", nearest)
-		return
-	if not game.valve.is_empty() and prediction.position.distance_to(Map.valve_position()) <= Map.USE_RADIUS:
-		valve_hold_active = true
-		_send_interaction("begin_valve")
+	if intro or phase != "running" or show_help or not focused or game.explorers[active_player].state != "exploring": return
+	var nearby := _nearby_interaction()
+	if nearby.is_empty(): return
+	interaction_hold_active = nearby.kind in ["begin_valve", "begin_vault", "begin_extraction"]
+	hold_refresh_ticks = 0
+	_send_interaction(nearby.kind, nearby.target)
+func _drop_carried() -> void:
+	if intro or phase != "running" or show_help or not focused or game.explorers[active_player].state != "exploring": return
+	if game.explorers[active_player].has_relic: _send_interaction("drop_relic")
+	else: _use_light("drop_light")
 func _cancel_interaction_hold() -> void:
-	if not valve_hold_active: return
-	valve_hold_active = false
+	if not interaction_hold_active: return
+	interaction_hold_active = false
 	if not intro and phase == "running": _send_interaction("cancel_interaction")
 func _direction() -> Vector2:
-	if intro or phase != "running" or show_help or not focused: return Vector2.ZERO
+	if intro or phase != "running" or show_help or not focused or game.explorers[active_player].state != "exploring": return Vector2.ZERO
 	if get_viewport().gui_get_focus_owner() is LineEdit: return Vector2.ZERO
 	return Vector2(float(Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT)) - float(Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT)), float(Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN)) - float(Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP))).limit_length(1)
 func _step_movement(direction: Vector2) -> void:
+	if interaction_hold_active:
+		hold_refresh_ticks += 1
+		if hold_refresh_ticks >= 4:
+			hold_refresh_ticks = 0
+			_send_interaction("keep_interaction")
 	var command := prediction.advance(direction)
 	if fixture != null:
 		fixture.set_input(active_player, command.direction, command.sequence)
 		fixture.step()
-		if fixture.tick % 2 == 0: _on_state(View.project(fixture, active_player))
+		if fixture.finished or fixture.tick % 2 == 0: _on_state(View.project(fixture, active_player))
 	else: session.movement(command)
 func _stop_movement() -> void:
 	if intro or game == null: return
@@ -472,6 +544,7 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	if intro or game == null: return
 	_draw_doors()
+	_draw_objects()
 	var closed := Map.closed_door_ids(game.doors)
 	var order := token_positions.keys()
 	order.sort_custom(func(a, b): return token_positions[a].y < token_positions[b].y)
@@ -479,7 +552,7 @@ func _draw() -> void:
 		draw_texture_rect(lantern_texture, Rect2(game.lantern.position - Vector2(8, 27), Vector2(16, 28)), false)
 	for i: int in order:
 		var p: Dictionary = game.explorers[i]
-		if p.state == "hidden" or (i != active_player and not Map.can_see(prediction.position, p.position, game.explorers[active_player].has_light, closed)): continue
+		if p.state in ["hidden", "escaped"] or (i != active_player and not Map.can_see(prediction.position, p.position, game.explorers[active_player].has_light, closed)): continue
 		var pos: Vector2 = token_positions[i]
 		var moving: bool = walking.get(i, false)
 		var region: Rect2 = sprite_regions[i]
@@ -497,8 +570,21 @@ func _draw() -> void:
 		draw_set_transform(pos, 0, Vector2(-1, 1) if facing_left.get(i, false) else Vector2.ONE)
 		draw_texture_rect_region(texture, Rect2(offset, size), region)
 		draw_set_transform(Vector2.ZERO)
+		if p.has_relic and relic_texture: draw_texture_rect(relic_texture, Rect2(pos + Vector2(-7, -42), Vector2(23, 32)), false)
+		if p.state == "drowned": draw_string(font, pos + Vector2(-25, 12), "DROWNED", HORIZONTAL_ALIGNMENT_LEFT, -1, 12, COLORS[1])
 		if p.has_light and lantern_texture: draw_texture_rect(lantern_texture, Rect2(pos + Vector2(12, -36), Vector2(12, 22)), false)
 		draw_string(font, pos + Vector2(-11, -76), "P%d" % (i + 1), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, COLORS[i])
+func _draw_objects() -> void:
+	if game.relic.has("position"): draw_texture_rect(relic_texture, Rect2(game.relic.position - Vector2(12, 32), Vector2(24, 32)), false)
+	for control in game.vault:
+		var state: Dictionary = game.vault[control]
+		if not state.locked: continue
+		draw_texture_rect(wheel_texture, Rect2(state.position - Vector2(13, 25), Vector2(26, 26)), false, GOLD if state.held else Color.WHITE)
+		draw_string(font, state.position + Vector2(-8, -29), "%s %d%%" % [control, roundi(state.progress * 100)], HORIZONTAL_ALIGNMENT_LEFT, -1, 12, GOLD)
+	if not game.valve.is_empty(): draw_texture_rect(wheel_texture, Rect2(Map.valve_position() - Vector2(18, 32), Vector2(36, 36)), false)
+	if game.extraction.has("position"):
+		draw_texture_rect(boat_texture, Rect2(game.extraction.position - Vector2(23, 25), Vector2(46, 32)), false)
+		draw_string(font, game.extraction.position + Vector2(-25, 22), "ESCAPE", HORIZONTAL_ALIGNMENT_LEFT, -1, 12, GOLD)
 func _draw_doors() -> void:
 	if gate_texture == null: return
 	for door_id in game.doors:
@@ -517,7 +603,9 @@ func _toggle_help() -> void:
 	if intro: return
 	show_help = not show_help
 	help_panel.visible = show_help
-	if show_help: _stop_movement()
+	if show_help:
+		_cancel_interaction_hold()
+		_stop_movement()
 func _restart() -> void:
 	_stop_movement()
 	session.close()
@@ -527,8 +615,10 @@ func _restart() -> void:
 	intro = true
 	phase = "lobby"
 	show_help = false
-	valve_hold_active = false
+	interaction_hold_active = false
 	help_panel.hide()
+	results_panel.hide()
+	survival_label.hide()
 	opening.show()
 	controls_label.hide()
 	tide_label.hide()
@@ -558,7 +648,7 @@ func _input(event: InputEvent) -> void:
 	if get_viewport().gui_get_focus_owner() is LineEdit: return
 	match event.physical_keycode:
 		KEY_E: _use_nearest()
-		KEY_Q: _use_light("drop_light")
+		KEY_Q: _drop_carried()
 		KEY_H: _toggle_help()
 		KEY_V: reduced_motion = not reduced_motion
 		KEY_R: _restart()

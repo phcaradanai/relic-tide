@@ -12,6 +12,8 @@ var tick := -1
 var correction_distance := 0.0
 var closed_doors: Array[String] = []
 var water_depths: Dictionary = {}
+var carrying := false
+var active := true
 func reset(snapshot: Dictionary) -> void:
 	match_id = snapshot.match_id
 	position = snapshot.explorers[snapshot.you].position
@@ -22,14 +24,17 @@ func reset(snapshot: Dictionary) -> void:
 	_set_world(snapshot)
 
 func _set_world(snapshot: Dictionary) -> void:
+	carrying = snapshot.explorers[snapshot.you].get("has_relic", false)
+	active = snapshot.phase == "running" and snapshot.explorers[snapshot.you].state == "exploring"
 	water_depths = snapshot.get("water_depths", {}).duplicate()
 	closed_doors.clear()
 	for door_id in snapshot.get("doors", {}):
 		if snapshot.doors[door_id].progress <= 0.0001: closed_doors.append(door_id)
 
 func _move(direction: Vector2) -> void:
+	if not active: return
 	var region := Map.region_at(position)
-	position = Map.move(position, direction, STEP, closed_doors, water_depths.get(region, 0.0), water_depths)
+	position = Map.move(position, direction, STEP, closed_doors, water_depths.get(region, 0.0), water_depths, carrying)
 func advance(direction: Vector2) -> Dictionary:
 	sequence += 1
 	var command := {"direction": direction.limit_length(1), "sequence": sequence, "match_id": match_id}
@@ -42,7 +47,7 @@ func reconcile(snapshot: Dictionary) -> bool:
 	if snapshot.match_id != match_id:
 		reset(snapshot)
 		return true
-	if snapshot.tick <= tick: return false
+	if snapshot.tick < tick: return false
 	tick = snapshot.tick
 	_set_world(snapshot)
 	var before := position

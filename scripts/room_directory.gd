@@ -110,7 +110,10 @@ func step() -> void:
 	for room: Dictionary in rooms.values():
 		if room.phase != "running": continue
 		room.game.step()
-		if room.game.tick % 2 == 0: views(room)
+		if room.game.finished:
+			room.phase = "finished"
+			views(room)
+		elif room.game.tick % 2 == 0: views(room)
 func accept_event(peer: int, command: Dictionary) -> bool:
 	if not members.has(peer): return false
 	var room: Dictionary = rooms[members[peer]]
@@ -123,6 +126,10 @@ func accept_event(peer: int, command: Dictionary) -> bool:
 		"take_light", "drop_light": accepted = command.target.is_empty() and room.game.use_light(who, command.kind, command.sequence)
 		"toggle_door": accepted = room.game.toggle_door(who, command.target, command.sequence)
 		"begin_valve": accepted = command.target.is_empty() and room.game.begin_valve(who, command.sequence)
+		"begin_vault": accepted = room.game.begin_vault(who, command.target, command.sequence)
+		"take_relic", "drop_relic": accepted = command.target.is_empty() and room.game.use_relic(who, command.kind, command.sequence)
+		"begin_extraction": accepted = command.target.is_empty() and room.game.begin_extraction(who, command.sequence)
+		"keep_interaction": accepted = command.target.is_empty() and room.game.keep_interaction(who, command.sequence)
 		"cancel_interaction": accepted = command.target.is_empty() and room.game.cancel_interaction(who, command.sequence)
 	if not accepted: return false
 	views(room)

@@ -14,6 +14,13 @@ var vision_radius := 105.0
 var tide_level := 0.0
 var tide_seconds := 0.0
 var valve: Dictionary = {}
+var relic: Dictionary = {}
+var vault: Dictionary = {}
+var extraction: Dictionary = {}
+var interaction: Dictionary = {}
+var results: Array = []
+var winners: Array = []
+var finish_reason := ""
 func _init(snapshot: Dictionary = {}) -> void:
 	if snapshot.is_empty(): return
 	player = snapshot.you
@@ -29,7 +36,15 @@ func _init(snapshot: Dictionary = {}) -> void:
 	tide_level = snapshot.get("tide_level", 0.0)
 	tide_seconds = snapshot.get("tide_seconds", 0.0)
 	valve = snapshot.get("valve", {}).duplicate(true)
+	relic = snapshot.get("relic", {}).duplicate(true)
+	vault = snapshot.get("vault", {}).duplicate(true)
+	extraction = snapshot.get("extraction", {}).duplicate(true)
+	interaction = snapshot.get("interaction", {}).duplicate(true)
+	results = snapshot.get("results", []).duplicate(true)
+	winners = snapshot.get("winners", []).duplicate()
+	finish_reason = snapshot.get("finish_reason", "")
 static func project(game, who: int, token: String = "fixture", phase: String = "running") -> Dictionary:
+	if phase == "running" and game.finished: phase = "finished"
 	var visible: Array = []
 	var observer: Dictionary = game.explorers[who]
 	var map = preload("res://scripts/level_map.gd")
@@ -37,8 +52,13 @@ static func project(game, who: int, token: String = "fixture", phase: String = "
 	var radius: float = map.vision_radius(observer.position, observer.has_light, closed)
 	for i in range(game.explorers.size()):
 		var p: Dictionary = game.explorers[i]
-		if i == who or map.can_see_with_radius(observer.position, p.position, radius, closed):
-			visible.append({"name": p.name, "position": p.position, "velocity": p.velocity, "region": p.region, "state": p.state, "has_light": p.has_light})
+		if i == who or (p.state != "escaped" and map.can_see_with_radius(observer.position, p.position, radius, closed)):
+			var actor := {"name": p.name, "position": p.position, "velocity": p.velocity, "region": p.region, "state": p.state, "has_light": p.has_light, "has_relic": p.has_relic}
+			if i == who:
+				actor["breath"] = p.breath
+				actor["score"] = p.score
+				actor["region_depth"] = game.water_depths[p.region]
+			visible.append(actor)
 		else:
 			visible.append({"name": p.name, "state": "hidden"})
 	var ground_light: Dictionary = {}
@@ -61,4 +81,18 @@ static func project(game, who: int, token: String = "fixture", phase: String = "
 		var progress := 0.0
 		for hold in game.valve_holds.values(): progress = maxf(progress, hold.elapsed / game.VALVE_HOLD_SECONDS)
 		valve_view = {"mode": game.valve_mode, "progress": progress}
-	return {"you": who, "tick": game.tick, "match_id": token, "phase": phase, "ack_sequence": game.inputs[who].applied_sequence, "explorers": visible, "vision_radius": radius, "lantern": ground_light, "doors": visible_doors, "water_depths": visible_water, "region_depth": game.water_depths[observer.region], "tide_level": game.tide_level, "tide_seconds": float(game.tick) * game.STEP, "valve": valve_view}
+	var ground_relic: Dictionary = {}
+	if game.relic.state in ["pedestal", "ground"] and map.can_see_with_radius(observer.position, game.relic.position, radius, closed): ground_relic = {"position": game.relic.position, "state": game.relic.state}
+	var vault_view: Dictionary = {}
+	for control in map.VAULT_CONTROLS:
+		var location: Vector2 = map.vault_control_position(control)
+		if map.can_see_with_radius(observer.position, location, radius, closed):
+			vault_view[control] = {"position": location, "held": game.vault_holds.has(control), "progress": game.vault_progress / game.VAULT_HOLD_SECONDS, "locked": game.doors.D4.locked}
+	var extraction_view: Dictionary = {}
+	if map.can_see_with_radius(observer.position, map.extraction_position(), radius, closed): extraction_view = {"position": map.extraction_position()}
+	var snapshot := {"you": who, "tick": game.tick, "match_id": token, "phase": phase, "ack_sequence": game.inputs[who].applied_sequence, "explorers": visible, "vision_radius": radius, "lantern": ground_light, "doors": visible_doors, "water_depths": visible_water, "region_depth": game.water_depths[observer.region], "tide_level": game.tide_level, "tide_seconds": float(game.tick) * game.STEP, "valve": valve_view, "relic": ground_relic, "vault": vault_view, "extraction": extraction_view, "interaction": game.interaction(who)}
+	if phase == "finished" and game.finished:
+		snapshot["results"] = game.results.duplicate(true)
+		snapshot["winners"] = game.winners.duplicate()
+		snapshot["finish_reason"] = game.finish_reason
+	return snapshot

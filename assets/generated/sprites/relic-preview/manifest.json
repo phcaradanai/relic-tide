@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "kind": "sprite",
+  "name": "relic-preview",
+  "canvas": [
+    1254,
+    1254
+  ],
+  "frame_count": 1,
+  "filter": "linear",
+  "anchor": "center; set AnimatedSprite2D.offset for authored feet position",
+  "animations": [
+    {
+      "name": "idle",
+      "fps": 10,
+      "loop": true,
+      "frames": [
+        [
+          0,
+          1.0
+        ]
+      ]
+    }
+  ],
+  "provenance": {
+    "provider": "local-import",
+    "source": "assets/relic.png",
+    "sha256": "c4e45a17aaa8a87141a3917af7620cbde504459374a85075913d401ade00d685"
+  }
+}

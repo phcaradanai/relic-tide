@@ -15,6 +15,11 @@ const WADING_DEPTH := 0.6
 const DEEP_DEPTH := 1.2
 const BLOCKING_DEPTH := 1.8
 const USE_RADIUS := 64.0
+const CARRY_MULTIPLIER := 0.75
+const CONTROL_RADIUS := 24.0
+const VAULT_CONTROLS := {"A": Vector2(1268, 350), "B": Vector2(1326, 350)}
+const RELIC_ART_POSITION := Vector2(1300, 245)
+const EXTRACTION_ART_RECT := Rect2(330, 710, 75, 65)
 const VALVE_ART_POSITION := Vector2(880, 245)
 const ART_TORCHES := [Vector2(245, 375), Vector2(460, 455), Vector2(790, 355), Vector2(1295, 425), Vector2(1295, 650), Vector2(190, 740), Vector2(365, 245), Vector2(790, 270), Vector2(1300, 205)]
 const REGIONS := ["R0", "R1", "R2", "R3", "R4", "C0", "C1", "C2"]
@@ -65,6 +70,14 @@ static func door_position(door_id: String) -> Vector2:
 	return from_art(DOORS[door_id].art_position)
 static func valve_position() -> Vector2:
 	return from_art(VALVE_ART_POSITION)
+static func vault_control_position(control: String) -> Vector2:
+	return from_art(VAULT_CONTROLS[control])
+static func relic_position() -> Vector2:
+	return from_art(RELIC_ART_POSITION)
+static func extraction_rect() -> Rect2:
+	return Rect2(from_art(EXTRACTION_ART_RECT.position), from_art(EXTRACTION_ART_RECT.size))
+static func extraction_position() -> Vector2:
+	return extraction_rect().get_center()
 static func door_segment(door_id: String) -> PackedVector2Array:
 	var door: Dictionary = DOORS[door_id]
 	var half: float = door.width * SIZE.x / ART_SIZE.x * 0.5
@@ -213,9 +226,9 @@ static func speed_multiplier(depth: float) -> float:
 	if depth >= WADING_DEPTH: return 0.55
 	if depth >= SHALLOW_DEPTH: return 0.8
 	return 1.0
-static func move(point: Vector2, direction: Vector2, seconds: float, closed_doors: Array = [], start_depth: float = 0.0, region_depths: Dictionary = {}) -> Vector2:
+static func move(point: Vector2, direction: Vector2, seconds: float, closed_doors: Array = [], start_depth: float = 0.0, region_depths: Dictionary = {}, carrying: bool = false) -> Vector2:
 	if not direction.is_finite() or not is_finite(seconds) or seconds <= 0: return point
-	var displacement := direction.limit_length(1.0) * SPEED * speed_multiplier(start_depth) * minf(seconds, 0.25)
+	var displacement := direction.limit_length(1.0) * SPEED * speed_multiplier(start_depth) * (CARRY_MULTIPLIER if carrying else 1.0) * minf(seconds, 0.25)
 	var steps := maxi(1, ceili(displacement.length() / 4.0))
 	var step := displacement / steps
 	for i in range(steps):

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DepthArt" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/assets/depth_art.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/generated/depth/ruin-preview/image.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/generated/depth/ruin-preview/depth.png" id="3"]
+
+[resource]
+script = ExtResource("1")
+image = ExtResource("2")
+depth = ExtResource("3")
+near_is_white = true

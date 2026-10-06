@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "kind": "depth",
+  "name": "workshop-reference-v1",
+  "size": [
+    400,
+    380
+  ],
+  "encoding": "normalized-relative-inverse-depth-u8",
+  "near_is_white": true,
+  "source": "assets/authored/workshop-reference-v1.png",
+  "source_sha256": "24e939741d7aaf46d1dc8b381e83f0ded63e3e4ef12a09c5bb0cb5037b8843d5",
+  "depth_sha256": "7240cc51797b8b23b1c9c75d60484d5ffc325c3cbeedd4de0511abdb5788d27a",
+  "provenance": {
+    "provider": "depth-anything-v2-local",
+    "encoder": "vits",
+    "input_size": 518,
+    "device_requested": "auto",
+    "checkpoint_sha256": "715fade13be8f229f8a70cc02066f656f2423a59effd0579197bbf57860e1378"
+  }
+}

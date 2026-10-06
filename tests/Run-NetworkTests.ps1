@@ -6,7 +6,9 @@ $outputRoot = Join-Path $projectRoot 'test-output'
 New-Item -ItemType Directory -Path $outputRoot -Force | Out-Null
 $env:APPDATA = Join-Path $projectRoot '.runtime'
 $env:LOCALAPPDATA = $env:APPDATA
-$cases = @(@{ Count=2; Case='match' }, @{ Count=3; Case='match' }, @{ Count=4; Case='match' }, @{ Count=2; Case='disconnect' }, @{ Count=2; Case='host-leave' }, @{ Count=3; Case='lobby' }, @{ Count=2; Case='latency' }, @{ Count=2; Case='doors' })
+$launchOptions = @{}
+if ($IsWindows -or $PSVersionTable.PSEdition -eq 'Desktop') { $launchOptions.WindowStyle = 'Hidden' }
+$cases = @(@{ Count=2; Case='match' }, @{ Count=3; Case='match' }, @{ Count=4; Case='match' }, @{ Count=2; Case='disconnect' }, @{ Count=2; Case='host-leave' }, @{ Count=3; Case='lobby' }, @{ Count=2; Case='latency' }, @{ Count=2; Case='doors' }, @{ Count=2; Case='expedition' }, @{ Count=3; Case='expedition' }, @{ Count=4; Case='expedition' }, @{ Count=2; Case='expedition-latency' })
 if ($OnlyCase) { $cases = @($cases | Where-Object { $_.Case -eq $OnlyCase }) }
 $port = 24602
 foreach ($case in $cases) {
@@ -15,27 +17,27 @@ foreach ($case in $cases) {
 	$delayProxy = $null
 	$clientPort = $port
     $serverLog = Join-Path $outputRoot "room-server-$port.log"
-    $serverArgs = @('--headless', '--path', "`"$projectRoot`"", '--script', 'res://server/room_server.gd', '--', "--port=$port")
-    $server = Start-Process -FilePath $GodotBin -ArgumentList $serverArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput $serverLog -RedirectStandardError "$serverLog.err"
+    $serverArgs = @('--headless', '--log-file', "`"$serverLog.engine`"", '--path', "`"$projectRoot`"", '--script', 'res://server/room_server.gd', '--', "--port=$port")
+    $server = Start-Process -FilePath $GodotBin -ArgumentList $serverArgs @launchOptions -PassThru -RedirectStandardOutput $serverLog -RedirectStandardError "$serverLog.err"
     Start-Sleep -Milliseconds 300
     try {
-		if ($case.Case -eq 'latency') {
+		if ($case.Case -in @('latency', 'expedition-latency')) {
 			$clientPort = $port + 100
 			$proxyScript = Join-Path $PSScriptRoot 'network_delay_proxy.mjs'
-			$delayProxy = Start-Process -FilePath (Get-Command node).Source -ArgumentList "`"$proxyScript`"", "$clientPort", "$port" -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $outputRoot 'delay-proxy.log') -RedirectStandardError (Join-Path $outputRoot 'delay-proxy.err')
+			$delayProxy = Start-Process -FilePath (Get-Command node).Source -ArgumentList "`"$proxyScript`"", "$clientPort", "$port" @launchOptions -PassThru -RedirectStandardOutput (Join-Path $outputRoot 'delay-proxy.log') -RedirectStandardError (Join-Path $outputRoot 'delay-proxy.err')
 			Start-Sleep -Milliseconds 250
 		}
         for ($i = 0; $i -lt $case.Count; $i++) {
             $role = if ($i -eq 0) { 'host' } elseif ($case.Case -eq 'lobby' -and $i -eq 2) { 'browser' } else { 'client' }
             $log = Join-Path $outputRoot "network-$($case.Case)-$($case.Count)-$i.log"
             $logs += $log
-            $testScript = if ($case.Case -eq 'lobby') { 'res://tests/lobby_peer_test.gd' } else { 'res://tests/network_peer_test.gd' }
-            $arguments = @('--headless', '--path', "`"$projectRoot`"", '--script', $testScript, '--', "--role=$role", "--count=$($case.Count)", "--port=$clientPort", "--case=$($case.Case)")
+            $testScript = if ($case.Case -eq 'lobby') { 'res://tests/lobby_peer_test.gd' } elseif ($case.Case -like 'expedition*') { 'res://tests/expedition_peer_test.gd' } else { 'res://tests/network_peer_test.gd' }
+            $arguments = @('--headless', '--log-file', "`"$log.engine`"", '--path', "`"$projectRoot`"", '--script', $testScript, '--', "--role=$role", "--count=$($case.Count)", "--port=$clientPort", "--case=$($case.Case)")
             if ($RenderLobby -and $case.Case -eq 'lobby') { $arguments = @($arguments | Where-Object { $_ -ne '--headless' }) }
-            $processes += Start-Process -FilePath $GodotBin -ArgumentList $arguments -WindowStyle Hidden -PassThru -RedirectStandardOutput $log -RedirectStandardError "$log.err"
+            $processes += Start-Process -FilePath $GodotBin -ArgumentList $arguments @launchOptions -PassThru -RedirectStandardOutput $log -RedirectStandardError "$log.err"
             if ($i -eq 0) { Start-Sleep -Milliseconds 250 }
         }
-        $deadline = [DateTime]::UtcNow.AddSeconds(22)
+        $deadline = [DateTime]::UtcNow.AddSeconds($(if ($case.Case -like 'expedition*') { 110 } else { 22 }))
         while (@($processes | Where-Object { -not $_.HasExited }).Count -gt 0 -and [DateTime]::UtcNow -lt $deadline) { Start-Sleep -Milliseconds 100 }
         foreach ($process in $processes) {
             if (-not $process.HasExited) { throw 'Network test process timeout.' }

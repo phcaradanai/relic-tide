@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "kind": "sprite",
+  "name": "explorer-p1-carry-e-v2",
+  "canvas": [
+    288,
+    288
+  ],
+  "frame_count": 6,
+  "filter": "linear",
+  "anchor": "center; set AnimatedSprite2D.offset for authored feet position",
+  "animations": [
+    {
+      "name": "carry_e",
+      "fps": 1000,
+      "loop": true,
+      "frames": [
+        [
+          0,
+          125.0
+        ],
+        [
+          1,
+          125.0
+        ],
+        [
+          2,
+          125.0
+        ],
+        [
+          3,
+          125.0
+        ],
+        [
+          4,
+          125.0
+        ],
+        [
+          5,
+          125.0
+        ]
+      ]
+    }
+  ],
+  "provenance": {
+    "provider": "aseprite",
+    "source": "assets/authored/explorer-p1-carry-e-v2.aseprite",
+    "sha256": "e74400fc2319508f54547c8e94e30afdb487d872f87ed8b6e84f639049e3e26f"
+  }
+}

@@ -30,7 +30,7 @@ spacing:
 
 ## Status and source of truth
 
-This is the approved real-time target. The current build renders assets/ruin-movement.png as the 1440×900 walkable floor, with isolated raster explorers. Stage 3 overlays an authored water texture clipped to shared region geometry and a separate transparent gate sprite; collision, door sight and water flow use the same map data. The background remains a prototype rather than final layered-scene art. Relic, vault-cooperation and extraction layers remain stage 4. PRODUCT.md owns scope; REALTIME_SPEC.md owns rules; REALTIME_PLAN.md owns delivery stages.
+This is the approved real-time target. The current build renders assets/ruin-movement.png as the 1440×900 walkable floor, with isolated raster explorers. Stage 3 overlays an authored water texture clipped to shared region geometry and a separate transparent gate sprite; collision, door sight and water flow use the same map data. The background remains a prototype rather than final layered-scene art. Stage 4 adds a separate transparent idol sprite, raster wheel controls and Landing boat from the existing atlas, local breath/carry/score feedback and native final results. Carried art is observable only with a visible holder. Full directional carrying/mechanism poses and final layered scenery remain stage 5. PRODUCT.md owns scope; REALTIME_SPEC.md owns rules; REALTIME_PLAN.md owns delivery stages.
 
 ## Visual direction
 

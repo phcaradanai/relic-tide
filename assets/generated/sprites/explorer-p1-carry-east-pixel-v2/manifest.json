@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "kind": "sprite",
+  "name": "explorer-p1-carry-east-pixel-v2",
+  "canvas": [
+    216,
+    216
+  ],
+  "frame_count": 9,
+  "filter": "linear",
+  "anchor": "center; set AnimatedSprite2D.offset for authored feet position",
+  "animations": [
+    {
+      "name": "carry_e",
+      "fps": 8.0,
+      "loop": true,
+      "frames": [
+        [
+          0,
+          1.0
+        ],
+        [
+          1,
+          1.0
+        ],
+        [
+          2,
+          1.0
+        ],
+        [
+          3,
+          1.0
+        ],
+        [
+          4,
+          1.0
+        ],
+        [
+          5,
+          1.0
+        ],
+        [
+          6,
+          1.0
+        ],
+        [
+          7,
+          1.0
+        ],
+        [
+          8,
+          1.0
+        ]
+      ]
+    }
+  ],
+  "provenance": {
+    "provider": "pixellab",
+    "seed": 42,
+    "source": "assets/authored/explorer-p1-carry-east-reference-v2.png",
+    "source_sha256": "af3e4e14193883931567913b6eda308ff439e0c428229f07d96aef2fa4ded7f7",
+    "prompt": "Walk east to the right in place, slowly and carefully carrying the golden turquoise idol in the forward right hand. Keep the idol firmly gripped, touching the fingers, and moving with the hand throughout. Preserve the exact painted young explorer, brown hair, mint cloak, backpack, boots and the complete idol design from the first frame. Alternate planted left and right feet with visible boot and knee movement through a complete repeating walk cycle. Stable torso scale and feet baseline; only natural walking motion. Preserve the hand, idol, face, palette and painted shading consistently in every frame. No camera movement, no background, no additional equipment, no lantern. Transparent background. Seamlessly return to the opening stance.",
+    "job_id": "d2af089d-bb99-43b1-a0d3-319f4c952d98",
+    "usage": {
+      "type": "generations",
+      "generations": 6.0
+    },
+    "requested_frame_count": 8,
+    "returned_frame_count": 9,
+    "reviewed_frame_count_override": true
+  }
+}

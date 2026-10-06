@@ -95,5 +95,62 @@ func _init() -> void:
 	packets.clear()
 	directory.request(60, "list", {})
 	check(packets.any(func(p): return p.kind == "rooms"), "Movement flood does not consume lobby budget")
+	var loop := Directory.new()
+	loop.create_room(80, 2)
+	loop.join_room(90, loop.members[80])
+	loop.start_room(80)
+	var expedition: Dictionary = loop.rooms[loop.members[80]]
+	var rules = expedition.game
+	var map = Directory.Rules.Map
+	var use := {"kind": "begin_vault", "target": "A", "sequence": 0, "match_id": expedition.match_id}
+	rules.explorers[0].position = map.vault_control_position("A")
+	rules.explorers[0].region = "C1"
+	rules.explorers[1].position = map.vault_control_position("B")
+	rules.explorers[1].region = "C1"
+	check(loop.accept_event(80, use), "Connection-derived first vault operator")
+	use.target = "B"
+	use.sequence = 1
+	check(not loop.accept_event(80, use), "A connection cannot claim both cooperative controls")
+	use.sequence = 0
+	check(loop.accept_event(90, use), "Distinct peer claims the second control")
+	for i in range(30):
+		for peer in [80, 90]:
+			var who: int = expedition.peers.find(peer)
+			loop.accept_event(peer, {"kind": "keep_interaction", "target": "", "sequence": rules.event_sequences[who] + 1, "match_id": expedition.match_id})
+		loop.step()
+	check(not rules.doors.D4.locked, "Authority advances two-peer unlocking without client progress")
+	rules.doors.D4.progress = 1.0
+	rules.explorers[0].position = map.relic_position()
+	rules.explorers[0].region = "R3"
+	use.kind = "take_relic"
+	use.target = ""
+	use.sequence = rules.event_sequences[0] + 1
+	use.score = 10000
+	check(not loop.accept_event(80, use), "Injected relic score rejected by exact event schema")
+	use.erase("score")
+	use.match_id = "stale"
+	check(not loop.accept_event(80, use), "Stale relic event rejected")
+	use.match_id = expedition.match_id
+	check(loop.accept_event(80, use) and rules.relic.holder == 0, "Validated pickup owns one server relic")
+	check(not loop.accept_event(80, use), "Duplicate relic packet cannot duplicate ownership")
+	rules.explorers[0].position = map.extraction_position()
+	rules.explorers[0].region = "R0"
+	use.kind = "begin_extraction"
+	use.sequence += 1
+	check(loop.accept_event(80, use), "Peer begins nearby extraction")
+	for i in range(40):
+		loop.accept_event(80, {"kind": "keep_interaction", "target": "", "sequence": rules.event_sequences[0] + 1, "match_id": expedition.match_id})
+		loop.step()
+	check(rules.explorers[0].score == 100 and rules.explorers[0].state == "escaped", "Authority alone banks completed extraction")
+	use.kind = "drop_relic"
+	use.sequence = rules.event_sequences[0] + 1
+	check(not loop.accept_event(80, use), "Terminal peer cannot create another relic")
+	rules.tick = int(rules.EXPEDITION_LENGTH / rules.STEP) - 1
+	loop.step()
+	check(expedition.phase == "finished", "Room lifecycle transitions to finished at deadline")
+	loop.disconnected(80)
+	check(expedition.phase == "finished" and rules.results[0].score == 100, "Completed results survive peer departure")
+	loop.disconnected(90)
+	check(loop.rooms.is_empty(), "Completed room is removed after its last member leaves")
 	print("Authority: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
