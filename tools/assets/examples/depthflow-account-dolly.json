@@ -1,4 +1,4 @@
 {
-  "motion": {"style": "dolly", "amplitude": 0.2},
-  "render": {"duration": 5}
+  "motion": {"style": "dolly", "amplitude": 0.5},
+  "render": {"duration": 10}
 }
