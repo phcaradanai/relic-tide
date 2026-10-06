@@ -1,0 +1,1 @@
+Generated with built-in imagegen on 2026-10-06. Transparent pickup/carried light raster for local-vision gameplay. Prompt: lantern.prompt.txt. Original retained at C:/Users/phcar/.codex/generated_images/01a11070-ccae-7cc0-9720-b40d758eae08/exec-3120fcee-2b7a-434d-a52a-9d8fed1a72b8.png. Runtime trims transparent margins through an AtlasTexture; no painted content is replaced.

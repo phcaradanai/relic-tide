@@ -1,0 +1,13 @@
+# Replace with your owned domain before use.
+game.example.com {
+    encode zstd gzip
+    @rooms path /rooms
+    handle @rooms {
+        reverse_proxy 127.0.0.1:24567
+    }
+    handle {
+        root * /srv/relic-tide/web
+        file_server
+    }
+}
+

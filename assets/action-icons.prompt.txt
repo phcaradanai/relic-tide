@@ -1,0 +1,3 @@
+Built-in image_gen, 2026-10-06, transparent_background=true.
+Generate one uniform 4x4 transparent raster atlas, painted brass/parchment/turquoise Relic Tide objects, no text or backgrounds. Ordered rows: compass/magnifying map/hand holding idol/dropping satchel; air flask/sluice wheel/push hands/stealing hand; rescue hands/escape boat/padlock/guidebook; wave/paired explorers/leave door/banked chest. Readable isolated silhouettes with padding, generated at 1248x1248. Actual alpha checked; runtime samples atlas cells and uses small cached menu thumbnails.
+Source: exec-1b64abb5-71e1-4b51-9e6b-99e6f2ed15a1.png. Existing artwork palette preserved. No generation API runs in the game.

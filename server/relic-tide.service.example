@@ -1,0 +1,15 @@
+# Adapt Godot path, project directory and an existing unprivileged user before use.
+[Unit]
+Description=Relic Tide room server
+After=network.target
+
+[Service]
+Type=simple
+User=relic-tide
+WorkingDirectory=/opt/relic-tide
+ExecStart=/usr/local/bin/godot --headless --path /opt/relic-tide --script res://server/room_server.gd -- --bind=127.0.0.1 --port=24567
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

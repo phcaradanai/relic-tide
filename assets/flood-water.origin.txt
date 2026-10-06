@@ -1,0 +1,1 @@
+Generated 2026-10-06 with the built-in imagegen tool. This is the raster flood surface tiled within shared logical region masks; the region mask geometry is gameplay alignment, not replacement scenery. Original generated image preserved at C:/Users/phcar/.codex/generated_images/01a11070-ccae-7cc0-9720-b40d758eae08/exec-a646ad03-9622-47ef-8d83-b455cb77e1ad.png.

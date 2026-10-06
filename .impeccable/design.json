@@ -1,0 +1,315 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-06T17:38:32.912287+07:00",
+  "title": "Design System: Relic Tide",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Parchment Ink"
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Sea Mist"
+      },
+      "gold": {
+        "role": "primary",
+        "displayName": "Treasure Gold"
+      },
+      "dark": {
+        "role": "neutral",
+        "displayName": "Deep Water Ink"
+      },
+      "player-one": {
+        "role": "player",
+        "displayName": "P1 Mint"
+      },
+      "player-two": {
+        "role": "player",
+        "displayName": "P2 Coral"
+      },
+      "player-three": {
+        "role": "player",
+        "displayName": "P3 Amber"
+      },
+      "player-four": {
+        "role": "player",
+        "displayName": "P4 Lavender"
+      }
+    },
+    "typographyMeta": {
+      "title": {
+        "purpose": "Header title; native SystemFont."
+      },
+      "panel-title": {
+        "purpose": "Opening, guide and result headings."
+      },
+      "status": {
+        "purpose": "Local tide and nearby interaction status in the target; legacy planner status is replaced during migration."
+      },
+      "panel-body": {
+        "purpose": "Overlay instructions and results."
+      },
+      "body": {
+        "purpose": "Forecast and default labels."
+      },
+      "control": {
+        "purpose": "Buttons, summaries, event log and player labels. OptionButton only overrides size, retaining its native theme font."
+      },
+      "room-label": {
+        "purpose": "Unknown marker and visible relic count in generated room icon hotspots; room names and depths in tooltips."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "local-prediction",
+        "value": "20Hz shared collision, bounded 12 pending commands, acknowledgement replay",
+        "purpose": "Immediate independent movement reconciled to authority"
+      },
+      {
+        "name": "remote-interpolation",
+        "value": "100ms snapshots, 10fps isolated walk poses",
+        "purpose": "Visible nearby movement"
+      },
+      {
+        "name": "player-camera",
+        "value": "1.65x zoom centered on explorer; no decorative drift or pointer parallax",
+        "purpose": "Only local surroundings, per user refinement"
+      },
+      {
+        "name": "local-vision",
+        "value": "105px unlit; 220px lantern; up to 250px near a torch, walls occlude",
+        "purpose": "Native light mask/shadows plus server LOS filtering"
+      }
+    ],
+    "breakpoints": [],
+    "nativeLayout": {
+      "camera": "Player-centered 1.65x",
+      "source": "scripts/main.gd, scripts/level_map.gd, scripts/vision_layer.gd",
+      "artRect": [
+        0,
+        0,
+        1440,
+        900
+      ],
+      "minimumWindow": [
+        960,
+        600
+      ],
+      "statusPosition": [
+        485,
+        15
+      ],
+      "lobbyPanel": [
+        430,
+        270,
+        580,
+        515
+      ],
+      "standingExplorerWidth": 45,
+      "standingExplorerMaxHeight": 66,
+      "logicalCanvas": [
+        1440,
+        900
+      ],
+      "noPlanner": true,
+      "promptPosition": [
+        570,
+        550
+      ],
+      "walkingExplorerSize": [
+        56,
+        72
+      ],
+      "controlsPosition": [
+        432,
+        836
+      ]
+    },
+    "nativeRoomBrowser": {
+      "source": "scripts/main.gd, scripts/session.gd and scripts/room_directory.gd",
+      "controls": "Create room, Join room, Refresh rooms, six-character room code, 2–4-player capacity selector and native available-room list; no IP or port fields",
+      "list": "Connected/max players and textual full status; full lobbies remain visible, started rooms are omitted; select then Join or double-click an available room",
+      "lobby": "Wrapped code, player identity and count/capacity; code read-only; creator start enabled from two players",
+      "authority": "Central Godot WebSocket service sends recipient-specific views; browser derives same-site WS/WSS /rooms, with optional operator window.relicTideServerURL override",
+      "verification": "See REALTIME_VERIFICATION.md for stage-2 proof; public WSS/WAN unverified"
+    },
+    "nativeStates": {
+      "lighting": "CanvasModulate black, radial PointLight2D mask with wall occluders",
+      "buttonBorder": "1px glass, gold keyboard focus",
+      "resourceHUD": "Own identity, region and local water depth; visible nearby door controls; no whole map or remote player markers",
+      "explorerRendering": "Server LOS/light filtered; unshaded raster actors above floor shadows, y sorted, no cached hidden coordinates",
+      "guide": "H stops own intention while authority continues",
+      "doorsAndWater": "One progress value drives gate collision, sprite, sight occlusion and flow; local raster water uses per-region masks"
+    },
+    "artwork": {
+      "layers": [
+        "assets/ruin-movement.png",
+        "assets/explorers-unlit.png",
+        "assets/explorers-unlit-walk.png",
+        "assets/lantern.png",
+        "assets/flood-water.png",
+        "assets/sluice-gate.png"
+      ],
+      "walkAtlas": "6 columns x 4 rows, connected-component isolation",
+      "depthMeaning": "Raster flood surface masks to authored rooms/corridors; refuge depth remains zero while its gate is fully sealed; painted shrine is still scenery",
+      "historicalSources": [
+        "assets/city.png",
+        "assets/city-flood.png",
+        "assets/explorers.png",
+        "assets/explorers-walk.png",
+        "assets/action-icons.png"
+      ],
+      "provenance": "Built-in imagegen, adjacent prompt/origin files; originals preserved"
+    },
+    "browserDelivery": {
+      "source": "web/README.md and export_presets.cfg",
+      "preset": "Godot 4.7.2 single-threaded Compatibility/WebGL 2",
+      "launcher": "Play.cmd or Play-Web.cmd calls Play-Web.ps1; local HTTP proxy plus headless room service at http://127.0.0.1:8080",
+      "build": "web/Build-Web.ps1; deploy every generated web/build file together",
+      "transport": "Same-site WS/WSS /rooms; optional operator window.relicTideServerURL set before engine startup",
+      "supported": "Desktop/laptop mouse and keyboard; canvas at least 960 × 600 with letterboxing",
+      "lifecycle": "Inactive tabs can pause; keep visible. Reload/close aborts active match; no reconnect",
+      "pending": "No public host/domain provisioned; HTTPS/WSS, WAN and other browser engines unverified",
+      "mobile": "390 × 844 phone portrait inspected and unsupported; no mobile reflow",
+      "evidence": [
+        "test-output/realtime-landing.png",
+        "test-output/vision-no-lantern.png",
+        "test-output/vision-with-lantern.png",
+        "test-output/vision-near-torch.png",
+        "test-output/vision-wall-shadow.png"
+      ],
+      "evidenceNote": "Stage-2 tests and browser observations are recorded below; stage-3 gameplay is code-complete and Web-exported, but has not been playtested."
+    },
+    "reducedMotion": {
+      "source": "V; meaningful movement retained",
+      "behavior": "No decorative loops currently; camera follows actual gameplay without shake or drift"
+    },
+    "finishVerification": {
+      "tests": {
+        "render": 10,
+        "scene": 44,
+        "rules": 555,
+        "authority": 35,
+        "privacy": 64,
+        "networkScenarios": 7,
+        "webSmoke": 8
+      },
+      "disposition": "stage-2-movement-and-local-vision-complete",
+      "evidence": "REALTIME_VERIFICATION.md",
+      "note": "Fresh stage-2 checks and browser observations; door/water/extraction acceptance is subsequent work",
+      "date": "2026-10-06",
+      "delayedTransport": {
+        "maxSnapshotLeadPx": 85,
+        "physicalPacketLoss": false,
+        "maxReconciliationCorrectionPx": 34,
+        "periodicPauseMs": 180,
+        "WAN": false,
+        "delayEachWayMs": 100
+      }
+    },
+    "authorizedTarget": {
+      "realTimeImplemented": true,
+      "firstLevelRefugeCount": 1,
+      "identity": "Real-time 2-4-player physical cooperation/betrayal and extraction",
+      "nextStage": 4,
+      "refugeCountMin": 1,
+      "legacyFields": "Legacy verification below is historical; active motion/layout/artwork fields describe stage 2",
+      "refugeCountMax": 1,
+      "completedStage": 3,
+      "specification": "REALTIME_SPEC.md",
+      "roadmap": "REALTIME_PLAN.md",
+      "guarantee": "Dry refuge admits zero water while fully closed, without pressure leaks, protection expiry or forced flooding",
+      "updatedOn": "2026-10-06",
+      "visionRefinement": "Light range + LOS; no full-map view; supersedes same-region-only visibility",
+      "stage3Status": "code-complete; web export built; gameplay acceptance unverified"
+    },
+    "legacyFinishVerification": {
+      "note": "Passed checks reported by implementation/verification handoff; documentation-only update does not rerun them.",
+      "detect": [],
+      "disposition": "ship",
+      "tests": {
+        "rules": 41390,
+        "render": 4,
+        "webSmoke": 8,
+        "authority": 30,
+        "scene": 90,
+        "network": 6,
+        "privacy": 39
+      }
+    },
+    "legacyStage1Verification": {
+      "note": "Fresh legacy baseline on 2026-10-06; these checks do not validate the real-time target. See REALTIME_SPEC.md.",
+      "tests": {
+        "network": 6,
+        "authority": 30,
+        "render": 4,
+        "rules": 41390,
+        "privacy": 39,
+        "scene": 106,
+        "webSmoke": 8
+      },
+      "disposition": "stage-1-specification-complete; real-time-target-not-implemented"
+    },
+    "stage3Implementation": {
+      "evidence": "REALTIME_VERIFICATION.md",
+      "movement": "0.15 shallow x0.8; 0.6 wading x0.55; 1.2 deep x0.35; 1.8 blocks entry",
+      "date": "2026-10-06",
+      "tide": "45s lead-in to 2.2 depth at 360s; 1.5s held valve toggles C1/C2 feed; service valve enables explicit C1 drain",
+      "rules": "6 doors; D4 locked for stage-4 coop latch, D5 sole refuge R4; 8% ordinary closed-door conductance; refuge closed conductance zero; blocked doorway held at >=20% open; door update before water transfer",
+      "assets": [
+        "assets/flood-water.png",
+        "assets/sluice-gate.png"
+      ],
+      "verification": "Rules 587, privacy 69, authority 39, scene 49, renderer 16 checks all pass; eight local network scenarios pass across runs; final Godot 4.7.2 Web export and localhost web smoke pass. Human/balance, stage-3 browser gameplay and WAN playtest pending.",
+      "waterRendering": "Separate normally lit raster water layer at floor depth; normalized repeating UVs; wall/door shadows and local radius hide unseen water.",
+      "doorBoundary": "Fully closed doors never reopen from nearby occupancy; obstruction protects a door only during closure; live occluders are removed on opening.",
+      "privacy": "Projected visible doors/region depths only; refuge dry indicator only inside R4.",
+      "preview": "http://127.0.0.1:8086/; room service 24610; reload existing tab for final build"
+    }
+  },
+  "components": [],
+  "narrative": {
+    "northStar": "The painted flooding ruin, with physical decisions happening in front of the player",
+    "overview": "Stage 2 provides independent online movement in raster rooms/corridors with local light/LOS, physical lantern and player-centered camera. Next: physical doors, regional water and one guaranteed refuge.",
+    "keyCharacteristics": [
+      "Elevated top-down 2D with a 2.5D impression and recognizable raster explorers.",
+      "Independent real-time movement and nearby object prompts.",
+      "Regional water and physical doors that alter paths; one refuge in the first level.",
+      "Light-dependent local vision, visible held objects and recipient-filtered state",
+      "Stable background, reduced decorative motion, compact transparent native controls and system fonts."
+    ],
+    "rules": [
+      {
+        "name": "Raster world",
+        "body": "Separate interactive world art into raster assets. Invisible collision, flood-mask and shadow geometry is permitted; no drawn scenery/explorer substitutes.",
+        "section": "elevation"
+      },
+      {
+        "name": "Guaranteed scarce refuge",
+        "body": "Only 1-2 refuges per level, one in the first. Fully closed dry refuge admits zero water indefinitely while closed. No hidden expiry/pressure failure.",
+        "section": "world"
+      },
+      {
+        "name": "Readable private state",
+        "body": "Display nearby physical interactions and held relic artwork while omitting remote explorer coordinates and exact rival inventory/score.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Keep raster artwork dominant and native controls compact.",
+      "Make water visuals agree with authoritative depth and dry sealed refuges.",
+      "Animate actual directional movement, carried relics and door progress.",
+      "Preserve player numbers, keyboard access, reduced decorative motion and provenance.",
+      "Validate the first room visually and the first level with independent online players."
+    ],
+    "donts": [
+      "Do not create drawn/procedural scenery or explorer replacements.",
+      "Do not restore turn waiting, plan locks or fixed anchor travel as target behavior.",
+      "Do not reveal remote player positions or full rival inventories.",
+      "Do not invalidate sealed-refuge protection through time, pressure or match ending.",
+      "Do not treat historical legacy screenshots/finish verdicts as real-time acceptance."
+    ]
+  }
+}
