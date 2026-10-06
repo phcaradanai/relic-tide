@@ -4,16 +4,33 @@ The browser runs the existing Godot game and painted scene. A central headless G
 
 ## Play on this computer
 
-Double-click `Play.cmd` or `Play-Web.cmd`, then open <http://127.0.0.1:8080>. The launcher starts **both** the web server and room service; keep its terminal open. Ctrl+C stops both. Create a room and join its code or list entry from another browser tab. Players never configure an endpoint.
+- **macOS / Linux:**
+  ```bash
+  export GODOT_BIN="/path/to/Godot.app/Contents/MacOS/Godot" # or your Godot 4 binary
+  node web/serve.mjs --godot="$GODOT_BIN" --port=8080
+  ```
+- **Windows:**
+  Double-click `Play.cmd` or `Play-Web.cmd` (or run `pwsh ./Play-Web.ps1`).
+
+Then open <http://127.0.0.1:8080>. The launcher starts **both** the web server and room service; keep its terminal open. Ctrl+C stops both. Create a room and join its code or list entry from another browser tab. Players never configure an endpoint.
 
 Developer prerequisites: Node.js 22+, Godot 4.7.2 (or compatible Godot 4 with matching export templates), and the build below. Set `GODOT_BIN` if Godot is not on PATH. Players visiting the deployed site need only a WebGL 2 capable browser.
 
 ## Build
 
+### PowerShell (Windows)
 ```powershell
 $env:GODOT_BIN = 'C:/path/to/Godot.exe'
 ./web/Build-Web.ps1
 ./Play-Web.ps1
+```
+
+### Bash (macOS / Linux)
+```bash
+export GODOT_BIN="/path/to/Godot.app/Contents/MacOS/Godot"
+mkdir -p web/build
+"$GODOT_BIN" --headless --path . --export-release Web "$(pwd)/web/build/index.html"
+node web/serve.mjs --godot="$GODOT_BIN" --port=8080
 ```
 
 Install matching Godot export templates before building. The script uses project-local `APPDATA`, so its template directory is `.runtime/Godot/export_templates/<version>.stable/`. Copy `web_*.zip` files and `version.txt` from the official template archive into that directory. This checkout already has 4.7.2 templates. Obtain versions through [Godot's official download archive](https://godotengine.org/download/archive/).
