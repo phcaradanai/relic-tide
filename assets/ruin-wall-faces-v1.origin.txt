@@ -1,0 +1,11 @@
+Derived raster material, not new scenery.
+Original: assets/ruin-movement.png (1586 x 992).
+Authoring: tools/assets/examples/export-wall-faces.gd.
+Floor and obstacle coordinates: scripts/level_map.gd, converted from shared art space.
+Image is converted from RGB to RGBA before alpha masking.
+Local facade band: 40 left/right, 130 north, 28 south logical units, 9-unit feather.
+All floor interiors are transparent, except authored obstacle faces.
+Master: assets/authored/ruin-wall-faces-v1.png.
+Workshop crop (630,0,400,380) is replaced by the approved DepthFlow Orbit layer.
+Runtime alpha mask and hashes: assets/generated/sprites/workshop-orbit-v1/manifest.json.
+Local light only; hidden floors and actors retain their original sight/privacy rules.

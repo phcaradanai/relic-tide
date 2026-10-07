@@ -1,12 +1,51 @@
 # Relic Tide asset pipeline
 
-**Current decision, 2026-10-07:** active production uses PixelLab → Aseprite → Godot, with local Depth-Anything-V2 for depth assets. The user resumed DepthFlow after adding allowance and confirming watermark-free access; its commands and fixed-origin adapter are enabled again. The earlier pause is superseded. No subscription/billing settings were changed.
+Latest production expansion, 2026-10-07: Lagoon, Foundry and Catacombs are complete playable raster maps with no decorative background, DA-V2 depth layer or DepthFlow video. The original eight-way explorer and its four cloth palettes/15 integrated actions remain. New environment, prop and survival-icon sheets are original transparent raster assets with prompt provenance. Gameplay zoom 2.6 targets the character scale in the user's supplied Among Us / Goose Goose Duck images. See [current verification](EXPANSION_VERIFICATION.md).
 
-Use `tools/assets/examples/depthflow-account-dolly.json` to reproduce the latest account request. It requests dolly amplitude `0.5` for 10 seconds, matching the signed-in Workspace's default amplitude and the Gallery sample duration. The API Quick Start shows amplitude `0.2`, duration `5`, and `plan: free`; both account renders omitted that free-plan override. The `0.2`/5s render barely moved. Even the `0.5`/10s render produced less than 1px estimated camera displacement in sampled frames. The API Quick Start does not explain mapping Advanced Mode controls to request fields, so Gallery-level motion is not verified through the API. The two account renders used 20 credits each; the account header now shows 560 (600→580→560). `depthflow-dolly.json` retains the explicit `free` setting solely as a historical comparison.
+The original PixelLab brine stalker now has walk (12 frames), idle (8), attack (8) and stun (4) in all eight directions: 256 frames and 32 tags. `tools/assets/monster_production.py` preserves accepted receipts and completes missing directions in their existing animation groups. All native pixels are retained on a common 120×120 transparent canvas; runtime feet anchor is (60,99), displayed height 52. Runtime resources are in `assets/generated/sprites/brine-stalker-v1/`, with editable Aseprite/source provenance preserved. Recorded PixelLab allowance changed from 1,788 to 1,703 during this batch (85 units); no dollar price is inferred. No DepthFlow render was submitted for the expansion.
 
-Live quality trial: PixelLab's renewed `Tier 1: Pixel Apprentice` account started at 2,000 generations. One successful carry animation used **6 generations**, leaving **1,994**; USD credits remained 0. It returned **9 transparent 216×216 frames** for an 8-frame request. All frames were reviewed and preserved, with requested/returned counts and usage in the manifest. See [quality record](ASSET_QUALITY.md) and `assets/authored/README.md` for editable source and the Workshop comparison scene. This candidate needs artist corrections before gameplay adoption.
+Historical model/grip/background pass: the first model used 82 PixelLab generations (1,994→1,912); the grip/pickup extension used another 124 (1,912→1,788). An explicitly approved DepthFlow render cost 20 credits (560→540). Its Workshop Orbit overlay was retired after the user rejected the pasted appearance; the later Atlantis/DA-V2 background is also superseded by the latest playable-map request. [Historical quality evidence](ASSET_QUALITY.md) retains those results and limits.
 
-These are build-time tools, separate from gameplay/network code. They preserve supplied raster artwork, its pixels and aligned frame canvases. A candidate sprite does not replace existing explorers automatically. Review against DESIGN.md: painted limestone, turquoise water, warm torch/relic light and mint/coral/amber/lavender identities. Pixel art is an option, not a project-wide style change. No procedural scenery or polygon characters are added.
+The generic tooling below preserves source files. Dedicated production authoring in `assemble_character.py` pads native pixels, corrects carrying torso/legs, mutes backpack glass and makes cloth hue variants. It does not generate extra frames or bill providers. Gameplay authority remains separate.
+
+## Current directional production
+
+`tools/assets/character_production.py` uses the official v2 managed endpoints `/create-character-v3`, `/animate-character`, `/background-jobs/{id}`, and `/characters/{id}/zip`. The approved eight-way character and all seven animation groups are already completed. Receipts and the original 552-PNG ZIP stay in ignored `.asset-work/characters/explorer-eight-way-v1/`. A receipt is reserved before a paid POST. Only an identical request explicitly rejected with HTTP 429 may retry; accepted or ambiguous submissions are never resent.
+
+```zsh
+.venv-assets/bin/python tools/assets/character_production.py status
+.venv-assets/bin/python tools/assets/character_production.py collect
+```
+
+Both commands are read-only provider operations. `produce` resumes accepted jobs and submits missing action groups; it is a production/billing command, not a free preview. Do not delete receipts to repeat the completed batch.
+
+`assemble_character.py` packs the explicit ZIP animation metadata into four `assets/generated/sprites/explorer-eight-way-pN-v1/` resources and creates `assets/authored/explorer-eight-way-v1.aseprite`. Existing bundles are protected from overwrite. The original rejected carry-idle frames remain in the ZIP; production uses supporting torso pixels from real carry-walk frames and planted idle legs. The four Aseprite layers are editable color variants of one original model. Preserve the 88×88 canvas, `(44,74)` foot anchor and action/direction names; collapse does not loop. The motion driver honors both ordinary SpriteFrames durations and Aseprite's millisecond durations.
+
+The approved Orbit request is `tools/assets/examples/depthflow-orbit-production-v1.json`. It includes the Workspace's full motion/render defaults with Orbit amplitude1.2, speed1, 8s and loop/smooth enabled. It has already been submitted once. `assemble_workshop_orbit.py` is local-only; it packs one complete observed five-second loop and generates its fixed floor-exclusion mask. This packing is historical and no longer exported. Regenerate current v2 geometry-only wall/floor masks with `tools/assets/examples/export-scene-masks.gd`; v1 masters stay archived. Never animate an interactive floor or change the player camera to follow this clip.
+
+## Integrated grips and crouching pickups (v2)
+
+`holding_production.py` extends the existing character; it never creates a duplicate model. Three eight-direction holding walk studies and four 16-frame pickup groups are complete. For a custom start/end pair, v3 accepts one direction per request; subsequent directions extend the returned `animation_group_id`. Every accepted request has its own receipt. Unknown receipts block later paid submissions; only a definite 429 rejection can retry. `status` and `collect` never submit. The new 1,352-PNG export stays in `.asset-work/characters/explorer-holding-v2/`; the original 552-PNG export remains intact.
+
+The generated holding studies missed or duplicated some props, and several rear pickups barely bent. Local native raster authoring corrects these defects using actual PixelLab forearms, fingers, alternating gait and knee/lean poses. Source relic/lantern art is reduced to native pixels, with near-transparent stray pixels excluded before cropping. Props sit beneath fingers and behind the torso in rear views. Both hands and the prop share each sprite frame and its bob; `explorer_sprite.gd` draws one complete pose and has no independent held-item icon overlay.
+
+The shipped bundles are `assets/generated/sprites/explorer-holding-pN-v2/`: 1,376 frames per palette, 120 tags, 88×88 canvas, foot anchor `(44,74)`, standing height 44. Actions are `walk`, `idle`, `use`, `wade`, `down`, `relic_walk`, `lantern_walk`, `dual_walk`, the three corresponding held idles, and `pickup_relic`, `pickup_lantern`, `pickup_relic_light`, `pickup_lantern_relic`. Pickups play once at 18 fps (about0.89s). Their final frame exactly matches the corresponding planted held idle.
+
+Only a visible, server-confirmed ownership transition starts a pickup. Repeated snapshots, joining, revealing a hidden holder and denied pickups never restart it. The local player holds movement neutral during the crouch; death, dropping, hidden-state reset and substantial remote movement cancel it. Ownership, contested pickup and recipient filtering still belong to the authority, with no new private state in packets.
+
+`assets/authored/` is intentionally `.gdignore`d. Keep runtime prop PNGs at `assets/relic-grip-v2.png` and `assets/lantern-grip-v2.png`; the explicit Web export includes them and all four new atlas/resources. Editable source is `assets/authored/explorer-holding-v2.aseprite`, with four palette layers. Show one layer at a time.
+
+```zsh
+# Completed provider operations: read-only status/export
+.venv-assets/bin/python tools/assets/holding_production.py status
+.venv-assets/bin/python tools/assets/holding_production.py collect
+# Local authoring only; packing protects existing bundles from overwrite
+.venv-assets/bin/python tools/assets/author_holding_refs.py
+.venv-assets/bin/python tools/assets/author_rear_pickups.py
+.venv-assets/bin/python tools/assets/assemble_holding.py --pack-only
+```
+
+After packing, run Aseprite natively with `tools/assets/examples/assemble-eight-way.lua`, passing `root`, `manifest=.asset-work/characters/explorer-holding-v2/assembled/aseprite.json` and `output=assets/authored/explorer-holding-v2.aseprite` as absolute paths. On this Mac the native app needs desktop execution; sandboxed Aseprite can abort. Import in Godot before testing. Do not remove receipts or source ZIPs to rebuild local art.
 
 ## Setup on this Mac (zsh)
 
@@ -177,7 +216,7 @@ The wrapper targets `depthflow==1.0.1` and opens a GLFW window on macOS, includi
 
 ## Reusable Godot depth layer and sample
 
-The first stage-5 toolchain study is now `scenes/samples/workshop_study.tscn`. It combines a real local DA-V2 Workshop depth resource and an Aseprite-authored six-frame P1 carry study, preserving the existing painted artwork. The editable `.aseprite` source, full canvas, feet anchor and provenance are described in `assets/authored/README.md`. Space pauses/resumes, Right steps a paused pose, and Esc closes. Depth motion remains off. This is a separate art study; final room layering and directional pose production remain outstanding.
+The first stage-5 toolchain study is now `scenes/samples/workshop_study.tscn`. It combines a real local DA-V2 Workshop depth resource and an Aseprite-authored six-frame P1 carry study, preserving the existing painted artwork. The editable `.aseprite` source, full canvas, feet anchor and provenance are described in `assets/authored/README.md`. Space pauses/resumes, Right steps a paused pose, and Esc closes. Depth motion remains off. This is the historical separate art study. Directional poses are now in production; broader room layering remains later work.
 
 ```zsh
 "/Users/oyl-mac_m1/Downloads/Godot.app/Contents/MacOS/Godot" \
@@ -194,7 +233,7 @@ The included `ruin-preview` depth map is a real local DA-V2 inference of existin
 
 For another background, attach `scripts/assets/depth_layer.gd` to a Sprite2D and assign its exported `art` to the generated `art.tres`. Each instance creates its own ShaderMaterial. `motion_enabled=false` and `reduced_motion=true` are safe defaults. An approved decorative layer can set motion enabled and reduced motion false, then call `set_view_offset(Vector2)` explicitly; input is bounded to three source pixels. Call `set_reduced_motion(true)` to reset displacement. Do not attach displacement to interactive floors, doors or objects that must stay aligned with collision, LOS and authoritative coordinates. Flat/default rendering preserves source colors and alpha. Depth textures are numeric data and have no shader `source_color` hint.
 
-The existing Web export uses an explicit resource list. Reusable depth scripts and shader are included; sample artwork is intentionally not in the shipped expedition. When adopting a generated asset, add its `sprite.tscn`/`frames.tres` or `art.tres` to `export_files` in `export_presets.cfg` if it is loaded dynamically; static scene dependencies are collected by Godot. Keep tools, keys, receipts, environments and previews excluded. Do not change the production entry scene for an art experiment.
+The existing Web export uses an explicit resource list. Production explorer, Atlantis depth pair, v2 masks and scene mechanisms are explicitly included; historical study artwork is excluded. When adopting a generated asset, add its `sprite.tscn`/`frames.tres` or `art.tres` to `export_files` in `export_presets.cfg` if it is loaded dynamically; static scene dependencies are collected by Godot. Keep tools, keys, receipts, environments and previews excluded. Do not change the production entry scene for an art experiment.
 
 ## Validation
 
@@ -233,3 +272,9 @@ All CLI arguments are identical across shells; use one line in PowerShell or bac
 - Depth-Anything-V2 source/model license: https://github.com/DepthAnything/Depth-Anything-V2
 - Open-source DepthFlow inputs/animation/export: https://depth.tremeschin.com/docs/inputs/, https://depth.tremeschin.com/docs/animation/, https://depth.tremeschin.com/docs/exporting/
 - Paid DepthFlow image-upload quick start: https://www.depthflow.io/apis/api-keys (authenticated, read 2026-10-06) and account payload: https://www.depthflow.io/apis/dashboard (read 2026-10-07); fixed same-origin upload route, credential gate and direct MP4 verified. JSON/polling fields remain unverified. The Dashboard's legacy `api.depthflow.ai` route conflicts with the verified current upload origin; the adapter retains the working `depthflow.io` route.
+
+## Current coherent scene composition · 2026-10-07
+
+`assets/city.png` is reused through `assets/generated/depth/atlantis-background-v1/` (actual local CPU vits inference, 1536×1024, near-white). `scripts/atlantis_background.gd` puts it on a separate CanvasLayer with a slow time loop, reduced-motion switch and subdued play tint. The level painting never receives displacement. `shaders/local_scene.gdshader` and `local_water.gdshader` fade the local scene without revealing unlit floor content. Generic depth shader soft-focus/desaturation defaults are zero, preserving old depth studies.
+
+`assets/generated/environment/sluice-set-v2.png` is a built-in imagegen asset made against the painted level reference, with actual transparent alpha and its exact `.prompt.txt`, `.origin.txt` and `.manifest.json`. It supplies masonry jambs, a horizontal moving slab, an authored side slab and grounded wheel pedestals. Native nine-slicing keeps jamb scale while matching shared threshold width. World pieces use feet-depth ordering and local sight; unlocked wheels remain in the scene. Workshop valve and extraction boat are the originals in the painting, with shared reachable approaches. No new PixelLab/DepthFlow credit was consumed for this pass.

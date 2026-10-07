@@ -17,9 +17,14 @@ func run() -> void:
 	scene.auto_connect = false
 	root.add_child(scene)
 	scene.set_process(false)
-	check(scene.intro and scene.opening.visible, "Native online lobby opens")
+	check(scene.intro and scene.start_screen.visible and not scene.opening.visible, "Native Start screen opens before room selection")
 	check(scene.room_list is ItemList and scene.code_field is LineEdit, "Directory controls retained")
-	check(scene.walk_frames.size() == 24, "All isolated raster walk poses loaded")
+	check(scene.explorer_frames.size() == 4, "Four identifiable PixelLab explorer palettes loaded")
+	for frames: SpriteFrames in scene.explorer_frames:
+		for direction: String in scene.ExplorerSprite.Motion.DIRECTIONS:
+			for action: String in ["idle", "walk", "relic_walk", "relic_idle", "lantern_walk", "lantern_idle", "dual_walk", "dual_idle", "pickup_relic", "pickup_lantern", "pickup_relic_light", "pickup_lantern_relic", "use", "wade", "down"]:
+				check(frames.has_animation(action + "_" + direction) and frames.get_frame_count(action + "_" + direction) >= 8, "Authored %s %s motion loaded" % [action, direction])
+			check(not frames.get_animation_loop("down_" + direction), "Collapse does not loop back to standing")
 	check(scene.art.texture.resource_path == "res://assets/ruin-movement.png", "New raster floor is actual runtime background")
 	check(not scene.has_method("_commit") and not scene.has_method("_select"), "No turn-lock or action planner remains")
 	scene._start(4)
@@ -48,12 +53,20 @@ func run() -> void:
 	check(scene.intro and scene.game == null and scene.session.mode == "idle", "Leaving clears match and transport")
 	check(scene.code_field.editable and scene.room_list.visible and not scene.host_button.disabled, "Lobby reusable after leaving")
 	check(scene.art.position == Vector2.ZERO and scene.art.scale == Vector2.ONE, "Artwork has no mouse parallax")
-	check(scene.camera.position == Map.spawn(0) and not scene.camera.position_smoothing_enabled, "Camera follows player without decorative drift")
+	check(scene.camera.position == scene.Map.region_center("R0") - Vector2(280, 0) and not scene.camera.position_smoothing_enabled, "Start room uses fixed authored framing without decorative drift")
 	scene._start(2)
 	scene._use_light("take_light")
 	check(scene.game.explorers[0].has_light and scene.game.lantern.is_empty(), "Physical pickup reaches local scene through authority")
+	check(scene.explorer_sprites[0].pickup_action == "pickup_lantern", "Confirmed lantern acquisition starts the crouching pickup")
+	check(scene._direction() == Vector2.ZERO, "Local feet stay planted while picking up")
+	scene._on_state(View.project(scene.fixture, 0))
+	scene._update_explorer(0, 0.25, Vector2.ZERO)
+	var pickup_time: float = scene.explorer_sprites[0].pickup_clock
+	scene._on_state(View.project(scene.fixture, 0))
+	check(scene.explorer_sprites[0].pickup_clock == pickup_time, "Repeated snapshots do not restart a confirmed pickup")
 	scene._use_light("drop_light")
 	check(not scene.game.explorers[0].has_light and scene.game.lantern.has("position"), "Dropped light reappears in visible ground state")
+	check(not scene.explorer_sprites[0].picking_up(), "Ownership loss cancels unfinished pickup without a ghost item")
 	scene.vision.set_closed_doors(["D5"])
 	check(scene.vision.door_occluders.size() == 1, "Closed gate installs one light shadow")
 	scene.vision.set_closed_doors([])

@@ -1,315 +1,1281 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-06T17:38:32.912287+07:00",
+  "generatedAt": "2026-10-07T15:33:52.561498+00:00",
   "title": "Design System: Relic Tide",
   "extensions": {
     "colorMeta": {
       "ink": {
         "role": "neutral",
-        "displayName": "Parchment Ink"
+        "displayName": "Parchment Ink",
+        "tonalRamp": [
+          "oklch(15% 0.02754 90.909)",
+          "oklch(26.43% 0.02754 90.909)",
+          "oklch(37.86% 0.02754 90.909)",
+          "oklch(49.29% 0.02754 90.909)",
+          "oklch(60.71% 0.02754 90.909)",
+          "oklch(72.14% 0.02754 90.909)",
+          "oklch(83.57% 0.02754 90.909)",
+          "oklch(95% 0.02754 90.909)"
+        ]
       },
       "muted": {
         "role": "neutral",
-        "displayName": "Muted Sea Mist"
+        "displayName": "Muted Sea Mist",
+        "tonalRamp": [
+          "oklch(15% 0.02784 196.638)",
+          "oklch(26.43% 0.02784 196.638)",
+          "oklch(37.86% 0.02784 196.638)",
+          "oklch(49.29% 0.02784 196.638)",
+          "oklch(60.71% 0.02784 196.638)",
+          "oklch(72.14% 0.02784 196.638)",
+          "oklch(83.57% 0.02784 196.638)",
+          "oklch(95% 0.02784 196.638)"
+        ]
       },
       "gold": {
         "role": "primary",
-        "displayName": "Treasure Gold"
+        "displayName": "Treasure Gold",
+        "tonalRamp": [
+          "oklch(15% 0.10258 81.056)",
+          "oklch(26.43% 0.10258 81.056)",
+          "oklch(37.86% 0.10258 81.056)",
+          "oklch(49.29% 0.10258 81.056)",
+          "oklch(60.71% 0.10258 81.056)",
+          "oklch(72.14% 0.10258 81.056)",
+          "oklch(83.57% 0.10258 81.056)",
+          "oklch(95% 0.10258 81.056)"
+        ]
       },
       "dark": {
         "role": "neutral",
-        "displayName": "Deep Water Ink"
+        "displayName": "Deep Water Ink",
+        "tonalRamp": [
+          "oklch(15% 0.03496 232.834)",
+          "oklch(26.43% 0.03496 232.834)",
+          "oklch(37.86% 0.03496 232.834)",
+          "oklch(49.29% 0.03496 232.834)",
+          "oklch(60.71% 0.03496 232.834)",
+          "oklch(72.14% 0.03496 232.834)",
+          "oklch(83.57% 0.03496 232.834)",
+          "oklch(95% 0.03496 232.834)"
+        ]
+      },
+      "glass": {
+        "role": "neutral",
+        "displayName": "Deep Glass",
+        "tonalRamp": [
+          "oklch(15% 0.02346 238.197)",
+          "oklch(26.43% 0.02346 238.197)",
+          "oklch(37.86% 0.02346 238.197)",
+          "oklch(49.29% 0.02346 238.197)",
+          "oklch(60.71% 0.02346 238.197)",
+          "oklch(72.14% 0.02346 238.197)",
+          "oklch(83.57% 0.02346 238.197)",
+          "oklch(95% 0.02346 238.197)"
+        ]
+      },
+      "edge": {
+        "role": "neutral",
+        "displayName": "Sea Glass Edge",
+        "tonalRamp": [
+          "oklch(15% 0.04477 214.607)",
+          "oklch(26.43% 0.04477 214.607)",
+          "oklch(37.86% 0.04477 214.607)",
+          "oklch(49.29% 0.04477 214.607)",
+          "oklch(60.71% 0.04477 214.607)",
+          "oklch(72.14% 0.04477 214.607)",
+          "oklch(83.57% 0.04477 214.607)",
+          "oklch(95% 0.04477 214.607)"
+        ]
+      },
+      "start-surface": {
+        "role": "neutral",
+        "displayName": "Quiet Start Surface",
+        "tonalRamp": [
+          "oklch(15% 0.02346 238.197)",
+          "oklch(26.43% 0.02346 238.197)",
+          "oklch(37.86% 0.02346 238.197)",
+          "oklch(49.29% 0.02346 238.197)",
+          "oklch(60.71% 0.02346 238.197)",
+          "oklch(72.14% 0.02346 238.197)",
+          "oklch(83.57% 0.02346 238.197)",
+          "oklch(95% 0.02346 238.197)"
+        ]
+      },
+      "gear-surface": {
+        "role": "neutral",
+        "displayName": "Equipment Surface",
+        "tonalRamp": [
+          "oklch(15% 0.02346 238.197)",
+          "oklch(26.43% 0.02346 238.197)",
+          "oklch(37.86% 0.02346 238.197)",
+          "oklch(49.29% 0.02346 238.197)",
+          "oklch(60.71% 0.02346 238.197)",
+          "oklch(72.14% 0.02346 238.197)",
+          "oklch(83.57% 0.02346 238.197)",
+          "oklch(95% 0.02346 238.197)"
+        ]
+      },
+      "air": {
+        "role": "secondary",
+        "displayName": "Pale Air",
+        "tonalRamp": [
+          "oklch(15% 0.04956 209.043)",
+          "oklch(26.43% 0.04956 209.043)",
+          "oklch(37.86% 0.04956 209.043)",
+          "oklch(49.29% 0.04956 209.043)",
+          "oklch(60.71% 0.04956 209.043)",
+          "oklch(72.14% 0.04956 209.043)",
+          "oklch(83.57% 0.04956 209.043)",
+          "oklch(95% 0.04956 209.043)"
+        ]
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "Danger Coral",
+        "tonalRamp": [
+          "oklch(15% 0.14827 25.940)",
+          "oklch(26.43% 0.14827 25.940)",
+          "oklch(37.86% 0.14827 25.940)",
+          "oklch(49.29% 0.14827 25.940)",
+          "oklch(60.71% 0.14827 25.940)",
+          "oklch(72.14% 0.14827 25.940)",
+          "oklch(83.57% 0.14827 25.940)",
+          "oklch(95% 0.14827 25.940)"
+        ]
+      },
+      "alarm-surface": {
+        "role": "tertiary",
+        "displayName": "Alarm Wine",
+        "tonalRamp": [
+          "oklch(15% 0.06663 5.827)",
+          "oklch(26.43% 0.06663 5.827)",
+          "oklch(37.86% 0.06663 5.827)",
+          "oklch(49.29% 0.06663 5.827)",
+          "oklch(60.71% 0.06663 5.827)",
+          "oklch(72.14% 0.06663 5.827)",
+          "oklch(83.57% 0.06663 5.827)",
+          "oklch(95% 0.06663 5.827)"
+        ]
+      },
+      "alarm-countdown": {
+        "role": "tertiary",
+        "displayName": "Alarm Rose",
+        "tonalRamp": [
+          "oklch(15% 0.10495 26.273)",
+          "oklch(26.43% 0.10495 26.273)",
+          "oklch(37.86% 0.10495 26.273)",
+          "oklch(49.29% 0.10495 26.273)",
+          "oklch(60.71% 0.10495 26.273)",
+          "oklch(72.14% 0.10495 26.273)",
+          "oklch(83.57% 0.10495 26.273)",
+          "oklch(95% 0.10495 26.273)"
+        ]
+      },
+      "blueprint-surface": {
+        "role": "neutral",
+        "displayName": "Blueprint Surface",
+        "tonalRamp": [
+          "oklch(15% 0.02744 229.711)",
+          "oklch(26.43% 0.02744 229.711)",
+          "oklch(37.86% 0.02744 229.711)",
+          "oklch(49.29% 0.02744 229.711)",
+          "oklch(60.71% 0.02744 229.711)",
+          "oklch(72.14% 0.02744 229.711)",
+          "oklch(83.57% 0.02744 229.711)",
+          "oklch(95% 0.02744 229.711)"
+        ]
+      },
+      "blueprint-floor": {
+        "role": "secondary",
+        "displayName": "Blueprint Stone",
+        "tonalRamp": [
+          "oklch(15% 0.04732 205.358)",
+          "oklch(26.43% 0.04732 205.358)",
+          "oklch(37.86% 0.04732 205.358)",
+          "oklch(49.29% 0.04732 205.358)",
+          "oklch(60.71% 0.04732 205.358)",
+          "oklch(72.14% 0.04732 205.358)",
+          "oklch(83.57% 0.04732 205.358)",
+          "oklch(95% 0.04732 205.358)"
+        ]
       },
       "player-one": {
-        "role": "player",
-        "displayName": "P1 Mint"
+        "role": "secondary",
+        "displayName": "Mint Signal",
+        "tonalRamp": [
+          "oklch(15% 0.09150 181.626)",
+          "oklch(26.43% 0.09150 181.626)",
+          "oklch(37.86% 0.09150 181.626)",
+          "oklch(49.29% 0.09150 181.626)",
+          "oklch(60.71% 0.09150 181.626)",
+          "oklch(72.14% 0.09150 181.626)",
+          "oklch(83.57% 0.09150 181.626)",
+          "oklch(95% 0.09150 181.626)"
+        ]
       },
       "player-two": {
-        "role": "player",
-        "displayName": "P2 Coral"
+        "role": "identity",
+        "displayName": "P2 Coral",
+        "tonalRamp": [
+          "oklch(15% 0.09460 34.410)",
+          "oklch(26.43% 0.09460 34.410)",
+          "oklch(37.86% 0.09460 34.410)",
+          "oklch(49.29% 0.09460 34.410)",
+          "oklch(60.71% 0.09460 34.410)",
+          "oklch(72.14% 0.09460 34.410)",
+          "oklch(83.57% 0.09460 34.410)",
+          "oklch(95% 0.09460 34.410)"
+        ]
       },
       "player-three": {
-        "role": "player",
-        "displayName": "P3 Amber"
+        "role": "identity",
+        "displayName": "P3 Amber",
+        "tonalRamp": [
+          "oklch(15% 0.10918 87.852)",
+          "oklch(26.43% 0.10918 87.852)",
+          "oklch(37.86% 0.10918 87.852)",
+          "oklch(49.29% 0.10918 87.852)",
+          "oklch(60.71% 0.10918 87.852)",
+          "oklch(72.14% 0.10918 87.852)",
+          "oklch(83.57% 0.10918 87.852)",
+          "oklch(95% 0.10918 87.852)"
+        ]
       },
       "player-four": {
-        "role": "player",
-        "displayName": "P4 Lavender"
+        "role": "identity",
+        "displayName": "P4 Lavender",
+        "tonalRamp": [
+          "oklch(15% 0.09096 300.931)",
+          "oklch(26.43% 0.09096 300.931)",
+          "oklch(37.86% 0.09096 300.931)",
+          "oklch(49.29% 0.09096 300.931)",
+          "oklch(60.71% 0.09096 300.931)",
+          "oklch(72.14% 0.09096 300.931)",
+          "oklch(83.57% 0.09096 300.931)",
+          "oklch(95% 0.09096 300.931)"
+        ]
       }
     },
     "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Start title, native SystemFont."
+      },
       "title": {
-        "purpose": "Header title; native SystemFont."
+        "displayName": "Title",
+        "purpose": "Waiting/prototype header."
       },
       "panel-title": {
-        "purpose": "Opening, guide and result headings."
-      },
-      "status": {
-        "purpose": "Local tide and nearby interaction status in the target; legacy planner status is replaced during migration."
-      },
-      "panel-body": {
-        "purpose": "Overlay instructions and results."
+        "displayName": "Panel Title",
+        "purpose": "Guide and outcome heading."
       },
       "body": {
-        "purpose": "Forecast and default labels."
+        "displayName": "Body",
+        "purpose": "Wrapped guide and default native labels."
       },
       "control": {
-        "purpose": "Buttons, summaries, event log and player labels. OptionButton only overrides size, retaining its native theme font."
+        "displayName": "Control",
+        "purpose": "Explicitly styled native buttons and compact hints."
       },
-      "room-label": {
-        "purpose": "Unknown marker and visible relic count in generated room icon hotspots; room names and depths in tooltips."
+      "final-alert": {
+        "displayName": "Final Alert",
+        "purpose": "Two-line evacuation announcement."
+      },
+      "actor-label": {
+        "displayName": "Actor Label",
+        "purpose": "P1–P4 over observable explorer pixels."
+      },
+      "map-label": {
+        "displayName": "Map Label",
+        "purpose": "Short room names in the collected static blueprint."
       }
     },
-    "shadows": [],
+    "tonalRampPolicy": "Eight-step OKLCH documentation previews synthesized from normative native colors, preserving hue/chroma. They are not additional Godot runtime colors; alpha-backed colors are previewed opaquely.",
+    "shadows": [
+      {
+        "name": "native-label-shadow",
+        "value": "Godot font_shadow_color Color(0.01, 0.04, 0.06, 0.95); shadow_offset_y 2",
+        "purpose": "Legible native labels over the scene."
+      }
+    ],
     "motion": [
       {
         "name": "local-prediction",
-        "value": "20Hz shared collision, bounded 12 pending commands, acknowledgement replay",
-        "purpose": "Immediate independent movement reconciled to authority"
+        "value": "20Hz shared rules; maximum 12 pending intentions; acknowledgement replay",
+        "purpose": "Immediate independent movement, reconciled to authority."
+      },
+      {
+        "name": "rendered-feet",
+        "value": "Collision-checked fractional preview; bounded correction blending; shared camera/light anchor",
+        "purpose": "Steady walking with no corrective backward gait."
       },
       {
         "name": "remote-interpolation",
-        "value": "100ms snapshots, 10fps isolated walk poses",
-        "purpose": "Visible nearby movement"
+        "value": "100ms interpolation of observable snapshots",
+        "purpose": "Only nearby visible explorer motion."
       },
       {
-        "name": "player-camera",
-        "value": "1.65x zoom centered on explorer; no decorative drift or pointer parallax",
-        "purpose": "Only local surroundings, per user refinement"
+        "name": "explorer-animation",
+        "value": "15 actions × 8 directions; walk/wade/held walk 12fps; idle 6fps; pickup 18fps; use/down 8fps",
+        "purpose": "Native authored legs, fingers, held pixels and planted pickup motion."
       },
       {
-        "name": "local-vision",
-        "value": "105px unlit; 220px lantern; up to 250px near a torch, walls occlude",
-        "purpose": "Native light mask/shadows plus server LOS filtering"
+        "name": "final-alert",
+        "value": "3.2 seconds; 5 seconds with reduced motion",
+        "purpose": "Brief announcement; final clock and direction remain."
       }
     ],
     "breakpoints": [],
+    "previewTranslation": {
+      "platform": "Godot 4 GDScript, CanvasItem and native Control nodes",
+      "authority": "DESIGN.md primitives and native source are normative. HTML/CSS entries are self-contained design-panel translations, not a web game implementation or a Godot linter rule set.",
+      "icons": "Inline SVG image wrappers embed original authored atlas-cell pixels rendered at preview size with the native nearest filter. No external dependency, emoji, icon library or invented vector silhouette; source/runtime assets remain unchanged.",
+      "inheritedNativeStyles": "Controls without an explicit font or hover/pressed override retain Godot theme defaults; preview translations do not establish new native tokens.",
+      "samples": "ROOM CODE, equipment ownership, gauge fills, puzzle targets and 1:18 countdown are illustrative state, not additional product claims."
+    },
     "nativeLayout": {
-      "camera": "Player-centered 1.65x",
-      "source": "scripts/main.gd, scripts/level_map.gd, scripts/vision_layer.gd",
-      "artRect": [
-        0,
-        0,
+      "source": [
+        "scripts/main.gd",
+        "scripts/survival_hud.gd",
+        "scripts/expedition_world.gd",
+        "scripts/expedition_map.gd",
+        "project.godot"
+      ],
+      "logicalCanvas": [
         1440,
         900
+      ],
+      "developmentWindow": [
+        1280,
+        800
       ],
       "minimumWindow": [
         960,
         600
       ],
-      "statusPosition": [
-        485,
-        15
+      "stretch": "canvas_items",
+      "levelSize": [
+        3840,
+        2560
       ],
-      "lobbyPanel": [
-        430,
-        270,
-        580,
-        515
-      ],
-      "standingExplorerWidth": 45,
-      "standingExplorerMaxHeight": 66,
-      "logicalCanvas": [
-        1440,
-        900
-      ],
+      "camera": {
+        "production": 2.6,
+        "waiting": 1.18,
+        "start": 1.05,
+        "prototypeHistoricalOnly": 1.65
+      },
+      "vision": {
+        "powered": 1250,
+        "dark": 180,
+        "heldLanternInDarkness": 360,
+        "targetRoomPowerAlsoLimitsSight": true
+      },
+      "startPanel": {
+        "position": [
+          85,
+          220
+        ],
+        "minimumSize": [
+          515,
+          275
+        ]
+      },
+      "roomBrowser": {
+        "position": [
+          70,
+          175
+        ],
+        "size": [
+          580,
+          515
+        ]
+      },
+      "waitingPanel": {
+        "position": [
+          25,
+          230
+        ],
+        "minimumWidth": 275
+      },
+      "gearSlots": {
+        "start": [
+          24,
+          819
+        ],
+        "requestedSize": [
+          50,
+          50
+        ],
+        "stride": 61
+      },
+      "heart": {
+        "start": [
+          24,
+          23
+        ],
+        "requestedSize": [
+          40,
+          40
+        ],
+        "stride": 46,
+        "count": 3
+      },
+      "tide": {
+        "position": [
+          538,
+          30
+        ],
+        "requestedSize": [
+          420,
+          15
+        ]
+      },
+      "air": {
+        "position": [
+          72,
+          93
+        ],
+        "requestedSize": [
+          142,
+          12
+        ]
+      },
+      "puzzle": {
+        "position": [
+          505,
+          245
+        ],
+        "minimumSize": [
+          430,
+          325
+        ]
+      },
+      "blueprint": {
+        "position": [
+          345,
+          110
+        ],
+        "size": [
+          750,
+          665
+        ],
+        "geometryScale": 0.18
+      },
+      "finalPanel": {
+        "position": [
+          390,
+          275
+        ],
+        "minimumSize": [
+          660,
+          190
+        ]
+      },
+      "background": "None. The entire environment is playable raster floor/wall/prop artwork; unknown space remains dark.",
       "noPlanner": true,
-      "promptPosition": [
-        570,
-        550
-      ],
-      "walkingExplorerSize": [
-        56,
-        72
-      ],
-      "controlsPosition": [
-        432,
-        836
-      ]
+      "mobile": "Phone portrait has no production reflow.",
+      "finalCountdown": {
+        "position": [
+          654,
+          57
+        ],
+        "size": [
+          136,
+          34
+        ],
+        "backgroundToken": "dark"
+      },
+      "cameraFraming": "Calibrated to readable actor scale in the user-supplied Among Us / Goose Goose Duck screenshots. Authored standing body (44 world units) × zoom (2.6) ≈ 114 logical pixels, ≈ 12.7% of the 900-unit canvas height: an estimate, not exact visual parity. World geometry, sight ranges and privacy remain separate.",
+      "actorScaleEstimate": {
+        "standingWorldHeight": 44,
+        "zoom": 2.6,
+        "logicalBodyPixels": 114.4,
+        "logicalCanvasHeight": 900,
+        "viewportHeightPercent": 12.71,
+        "measurement": "Calculated framing estimate from authored body scale; animation poses can vary."
+      }
     },
     "nativeRoomBrowser": {
-      "source": "scripts/main.gd, scripts/session.gd and scripts/room_directory.gd",
-      "controls": "Create room, Join room, Refresh rooms, six-character room code, 2–4-player capacity selector and native available-room list; no IP or port fields",
-      "list": "Connected/max players and textual full status; full lobbies remain visible, started rooms are omitted; select then Join or double-click an available room",
-      "lobby": "Wrapped code, player identity and count/capacity; code read-only; creator start enabled from two players",
-      "authority": "Central Godot WebSocket service sends recipient-specific views; browser derives same-site WS/WSS /rooms, with optional operator window.relicTideServerURL override",
-      "verification": "See REALTIME_VERIFICATION.md for stage-2 proof; public WSS/WAN unverified"
+      "source": [
+        "scripts/main.gd",
+        "scripts/session.gd",
+        "scripts/room_directory.gd"
+      ],
+      "controls": "Start → create/code join/live browser → physical waiting; six-character codes and 2–4 capacity; no player IP/port fields.",
+      "selection": "Host-only Drowned Lagoon / Brass Foundry / Sunken Catacombs; map changes clear readiness.",
+      "ready": "Walking remains live while waiting. Ready/undo or Space. Creator starts only when 2–4 connected people are ready.",
+      "list": "Full lobbies remain visible but reject joins; running rooms are omitted.",
+      "lifecycle": "Active disconnect aborts explicitly; no reconnect or host migration."
     },
     "nativeStates": {
-      "lighting": "CanvasModulate black, radial PointLight2D mask with wall occluders",
-      "buttonBorder": "1px glass, gold keyboard focus",
-      "resourceHUD": "Own identity, region and local water depth; visible nearby door controls; no whole map or remote player markers",
-      "explorerRendering": "Server LOS/light filtered; unshaded raster actors above floor shadows, y sorted, no cached hidden coordinates",
-      "guide": "H stops own intention while authority continues",
-      "doorsAndWater": "One progress value drives gate collision, sprite, sight occlusion and flow; local raster water uses per-region masks"
+      "lighting": "Native CanvasModulate + PointLight2D, wall/gate occluders, target-room powered/dark visibility, dedicated material light.",
+      "buttonBorder": "1 logical unit glass edge; gold keyboard focus. Gear focus 2 logical units.",
+      "resourceHUD": "Three hearts, tide, conditional air, six authored local gear slots, local carried treasure, nearby E/hold badge.",
+      "explorerRendering": "Recipient-filtered actors above floor shadows; feet-based order; hidden positions are absent and cached trails removed.",
+      "mapPrivacy": "Collected static geography and owner marker only; no hidden actors or inventory.",
+      "worldDepth": "Low authored prop contours block feet without LOS/solid wedges; structural walls and shut gates block sight.",
+      "doorsAndWater": "Shared progress/geometry drives gate sprite, collision, sight and flow; fully shut production connector admits zero flow; existing water stays.",
+      "refuge": "Exactly one single-entry refuge per production map. Dry fully shut refuge remains dry indefinitely including the ending; safe emblem only from sealed_safe state.",
+      "puzzle": "Private runes/circuit/pressure challenge. Pressure markers draw inside the gauge; explicit wave + Hit [Space] action, target range and three-hit progress.",
+      "finale": "Wine-backed evacuation announcement, persistent red clock and Landing direction; countdown has dark backing.",
+      "localOverlays": "Local movement/interaction stops or changes with guide/puzzle/blueprint; online authority clock continues."
     },
     "artwork": {
-      "layers": [
-        "assets/ruin-movement.png",
-        "assets/explorers-unlit.png",
-        "assets/explorers-unlit-walk.png",
-        "assets/lantern.png",
-        "assets/flood-water.png",
-        "assets/sluice-gate.png"
+      "environment": [
+        "assets/generated/environment/expedition-kit-v1.png",
+        "assets/generated/environment/expedition-props-v1.png",
+        "assets/generated/environment/sluice-set-v2.png",
+        "assets/generated/environment/survival-icons-v1.png",
+        "assets/flood-water.png"
       ],
-      "walkAtlas": "6 columns x 4 rows, connected-component isolation",
-      "depthMeaning": "Raster flood surface masks to authored rooms/corridors; refuge depth remains zero while its gate is fully sealed; painted shrine is still scenery",
-      "historicalSources": [
-        "assets/city.png",
-        "assets/city-flood.png",
-        "assets/explorers.png",
-        "assets/explorers-walk.png",
-        "assets/action-icons.png"
+      "explorers": [
+        "assets/generated/sprites/explorer-holding-p1-v2/frames.tres",
+        "assets/generated/sprites/explorer-holding-p2-v2/frames.tres",
+        "assets/generated/sprites/explorer-holding-p3-v2/frames.tres",
+        "assets/generated/sprites/explorer-holding-p4-v2/frames.tres"
       ],
-      "provenance": "Built-in imagegen, adjacent prompt/origin files; originals preserved"
+      "explorer": {
+        "canvas": [
+          88,
+          88
+        ],
+        "frame_count": 1376,
+        "foot_anchor": [
+          44.0,
+          74.0
+        ],
+        "display_height": 44,
+        "display_scale": 0.7333333333333333,
+        "filter": "nearest"
+      },
+      "explorerActions": 15,
+      "explorerDirections": 8,
+      "explorerAuthoring": "Integrated real props and fingers; original gait, planted boots and authored rear kneeling poses; shared pixel bob; four cloth hues",
+      "explorerEditableSource": "assets/authored/explorer-holding-v2.aseprite",
+      "monster": "assets/generated/sprites/brine-stalker-v1/frames.tres",
+      "monsterMetadata": {
+        "canvas": [
+          120,
+          120
+        ],
+        "frame_count": 256,
+        "foot_anchor": [
+          60.0,
+          99.0
+        ],
+        "display_height": 52,
+        "display_scale": 0.7027027027027027,
+        "filter": "nearest"
+      },
+      "monsterActions": [
+        "walk",
+        "idle",
+        "attack",
+        "stun"
+      ],
+      "monsterDirections": 8,
+      "survivalIconOrder": [
+        "heart",
+        "empty_heart",
+        "air",
+        "wave",
+        "map",
+        "chart",
+        "oxygen",
+        "mask",
+        "medkit",
+        "gun",
+        "dart",
+        "treasure",
+        "closed_door",
+        "open_door",
+        "monster",
+        "refuge"
+      ],
+      "palette": "Blue limestone, sea-green oxidized metal, warm ochre brass, original native explorer pixels and restrained red danger.",
+      "provenance": "Adjacent prompt/origin/manifest files and editable Aseprite sources; preserve originals.",
+      "backgroundAssetsActive": false
     },
     "browserDelivery": {
-      "source": "web/README.md and export_presets.cfg",
-      "preset": "Godot 4.7.2 single-threaded Compatibility/WebGL 2",
-      "launcher": "Play.cmd or Play-Web.cmd calls Play-Web.ps1; local HTTP proxy plus headless room service at http://127.0.0.1:8080",
-      "build": "web/Build-Web.ps1; deploy every generated web/build file together",
-      "transport": "Same-site WS/WSS /rooms; optional operator window.relicTideServerURL set before engine startup",
-      "supported": "Desktop/laptop mouse and keyboard; canvas at least 960 × 600 with letterboxing",
-      "lifecycle": "Inactive tabs can pause; keep visible. Reload/close aborts active match; no reconnect",
-      "pending": "No public host/domain provisioned; HTTPS/WSS, WAN and other browser engines unverified",
-      "mobile": "390 × 844 phone portrait inspected and unsupported; no mobile reflow",
-      "evidence": [
-        "test-output/realtime-landing.png",
-        "test-output/vision-no-lantern.png",
-        "test-output/vision-with-lantern.png",
-        "test-output/vision-near-torch.png",
-        "test-output/vision-wall-shadow.png"
+      "source": [
+        "web/README.md",
+        "export_presets.cfg"
       ],
-      "evidenceNote": "Stage-2 tests and browser observations are recorded below; stage-3 gameplay is code-complete and Web-exported, but has not been playtested."
+      "runtime": "Single-threaded Godot Compatibility/WebGL 2",
+      "transport": "Central service; same-site WS/WSS /rooms; operator URL override is infrastructure only.",
+      "supported": "Desktop/laptop keyboard and mouse, minimum 960×600 canvas.",
+      "status": "Actual two-browser local WebGL proof passed: same-code join, both Ready, host entry, both WASD movement at 2.6 zoom, T1 circuit completion and authoritative chart + 45 treasure reward.",
+      "pending": [
+        "Public HTTPS/WSS",
+        "WAN real-time quality",
+        "Human balance/playtests",
+        "Other browser-engine proof"
+      ],
+      "browserEvidence": {
+        "session": "TaskSpace5",
+        "resumeAuthorization": "Explicit user authorization supplied; resumed validation completed.",
+        "host": [
+          "Start",
+          "Create room",
+          "Select Brass Foundry",
+          "Same-code room joined",
+          "Ready",
+          "Enter the ruin",
+          "WASD movement in actual WebGL"
+        ],
+        "guest": [
+          "Fresh Web export Start",
+          "Actual live room listed",
+          "Same-code room joined",
+          "Ready",
+          "WASD movement in actual WebGL"
+        ],
+        "productionZoom": 2.6,
+        "twoBrowserGameplayVerified": true,
+        "chest": {
+          "id": "T1",
+          "kind": "circuit",
+          "openedBy": "E",
+          "completedBy": "Actual native puzzle-button input",
+          "reward": {
+            "chart": true,
+            "treasure": 45
+          },
+          "capture": "test-output/expansion-web-chest-reward-final.png"
+        },
+        "transportEvidence": "Recorded outgoing binary Godot Variant WebSocket chest and puzzle intentions.",
+        "automationNote": "CDP mouseMoved plus 60 ms button down/up dwell established Godot GUI hover. This was driver setup, not a runtime-rule change; prior ambiguous tool clicks were not a product failure."
+      }
     },
     "reducedMotion": {
-      "source": "V; meaningful movement retained",
-      "behavior": "No decorative loops currently; camera follows actual gameplay without shake or drift"
+      "source": "V / scripts/explorer_motion.gd / scripts/survival_hud.gd",
+      "behavior": "Freeze decorative idle poses; keep real directional walking, pickup poses, water/gate/hazard updates and server time.",
+      "alarmAnnouncementSeconds": 5
     },
     "finishVerification": {
+      "date": "2026-10-07",
+      "disposition": "native-framing-review-passed; two-browser-local-WebGL-play-and-chest-input-passed; WAN-public-TLS-human-balance-unverified",
+      "reportedBy": "Implementation/verification handoff; this documentation pass does not rerun gameplay suites.",
       "tests": {
-        "render": 10,
-        "scene": 44,
-        "rules": 555,
-        "authority": 35,
-        "privacy": 64,
-        "networkScenarios": 7,
-        "webSmoke": 8
+        "survivalRules": 355,
+        "productionPrivacy": 93,
+        "waitingLifecycle": 31,
+        "productionRender": 93,
+        "strictRealSocketScenarios": 15,
+        "webSmoke": 8,
+        "puzzleInput": 101
       },
-      "disposition": "stage-2-movement-and-local-vision-complete",
-      "evidence": "REALTIME_VERIFICATION.md",
-      "note": "Fresh stage-2 checks and browser observations; door/water/extraction acceptance is subsequent work",
-      "date": "2026-10-06",
-      "delayedTransport": {
-        "maxSnapshotLeadPx": 85,
-        "physicalPacketLoss": false,
-        "maxReconciliationCorrectionPx": 34,
-        "periodicPauseMs": 180,
-        "WAN": false,
-        "delayEachWayMs": 100
+      "nativeEvidence": [
+        ".impeccable/review/expansion-blueprint-desktop.png",
+        ".impeccable/review/expansion-catacombs-archive-dry.png",
+        ".impeccable/review/expansion-catacombs-blackout.png",
+        ".impeccable/review/expansion-catacombs-desktop.png",
+        ".impeccable/review/expansion-catacombs-gate-closed.png",
+        ".impeccable/review/expansion-catacombs-gate-open.png",
+        ".impeccable/review/expansion-catacombs-lantern.png",
+        ".impeccable/review/expansion-catacombs-refuge.png",
+        ".impeccable/review/expansion-catacombs-water.png",
+        ".impeccable/review/expansion-finale-desktop.png",
+        ".impeccable/review/expansion-finale-small.png",
+        ".impeccable/review/expansion-foundry-archive-dry.png",
+        ".impeccable/review/expansion-foundry-blackout.png",
+        ".impeccable/review/expansion-foundry-desktop.png",
+        ".impeccable/review/expansion-foundry-gate-closed.png",
+        ".impeccable/review/expansion-foundry-gate-open.png",
+        ".impeccable/review/expansion-foundry-lantern.png",
+        ".impeccable/review/expansion-foundry-refuge.png",
+        ".impeccable/review/expansion-foundry-water.png",
+        ".impeccable/review/expansion-hunter-desktop.png",
+        ".impeccable/review/expansion-lagoon-archive-dry.png",
+        ".impeccable/review/expansion-lagoon-blackout.png",
+        ".impeccable/review/expansion-lagoon-desktop.png",
+        ".impeccable/review/expansion-lagoon-gate-closed.png",
+        ".impeccable/review/expansion-lagoon-gate-open.png",
+        ".impeccable/review/expansion-lagoon-lantern.png",
+        ".impeccable/review/expansion-lagoon-refuge.png",
+        ".impeccable/review/expansion-lagoon-water.png",
+        ".impeccable/review/expansion-puzzle-desktop.png",
+        ".impeccable/review/expansion-puzzle-small.png",
+        ".impeccable/review/expansion-start-desktop.png",
+        ".impeccable/review/expansion-start-small.png",
+        ".impeccable/review/expansion-waiting-desktop.png",
+        ".impeccable/review/expansion-waiting-small.png"
+      ],
+      "limits": [
+        "Public HTTPS/WSS and WAN unverified.",
+        "Human balance unverified.",
+        "Exact reference-game visual parity is not established."
+      ],
+      "latestBoundedReviewCorrections": [
+        "Pressure markers draw inside ProgressBar coordinates",
+        "Pressure action wave + Hit [Space]",
+        "Final countdown opaque dark Rect2(654,57,136,34) backing"
+      ],
+      "evidenceDocument": "EXPANSION_VERIFICATION.md",
+      "webBuild": "Final Web export completed successfully.",
+      "nativeFramingReview": {
+        "disposition": "ship",
+        "scope": "Final 2.6 framing and three bounded presentation fixes, reviewed from fresh native captures.",
+        "productionZoom": 2.6,
+        "maps": [
+          "lagoon",
+          "foundry",
+          "catacombs"
+        ],
+        "actorBodyHeightPxRange": [
+          110,
+          114
+        ],
+        "logicalCanvasHeight": 900,
+        "actorViewportHeightPercentRange": [
+          12,
+          13
+        ],
+        "pressureMarkers": "Clear inside the gauge.",
+        "pressureKeyLabel": "Wave + Hit [Space] clear.",
+        "finalClockContrast": "Opaque dark backing clear."
+      },
+      "browserEvidence": {
+        "session": "TaskSpace5",
+        "resumeAuthorization": "Explicit user authorization supplied; resumed validation completed.",
+        "host": [
+          "Start",
+          "Create room",
+          "Select Brass Foundry",
+          "Same-code room joined",
+          "Ready",
+          "Enter the ruin",
+          "WASD movement in actual WebGL"
+        ],
+        "guest": [
+          "Fresh Web export Start",
+          "Actual live room listed",
+          "Same-code room joined",
+          "Ready",
+          "WASD movement in actual WebGL"
+        ],
+        "productionZoom": 2.6,
+        "twoBrowserGameplayVerified": true,
+        "chest": {
+          "id": "T1",
+          "kind": "circuit",
+          "openedBy": "E",
+          "completedBy": "Actual native puzzle-button input",
+          "reward": {
+            "chart": true,
+            "treasure": 45
+          },
+          "capture": "test-output/expansion-web-chest-reward-final.png"
+        },
+        "transportEvidence": "Recorded outgoing binary Godot Variant WebSocket chest and puzzle intentions.",
+        "automationNote": "CDP mouseMoved plus 60 ms button down/up dwell established Godot GUI hover. This was driver setup, not a runtime-rule change; prior ambiguous tool clicks were not a product failure."
+      },
+      "nativeGUIInputRegression": {
+        "source": "tests/puzzle_input_test.gd",
+        "checks": 101,
+        "failures": 0,
+        "cases": [
+          "Real mouse input",
+          "E chest interaction",
+          "Native puzzle controls",
+          "Authoritative reward once",
+          "Rapid-burst protection",
+          "Exact 25.1-second puzzle lease expiry"
+        ],
+        "runtimeRuleFix": false
       }
     },
     "authorizedTarget": {
-      "realTimeImplemented": true,
-      "firstLevelRefugeCount": 1,
-      "identity": "Real-time 2-4-player physical cooperation/betrayal and extraction",
-      "nextStage": 4,
-      "refugeCountMin": 1,
-      "legacyFields": "Legacy verification below is historical; active motion/layout/artwork fields describe stage 2",
-      "refugeCountMax": 1,
-      "completedStage": 3,
+      "updatedOn": "2026-10-07",
       "specification": "REALTIME_SPEC.md",
       "roadmap": "REALTIME_PLAN.md",
-      "guarantee": "Dry refuge admits zero water while fully closed, without pressure leaks, protection expiry or forced flooding",
-      "updatedOn": "2026-10-06",
-      "visionRefinement": "Light range + LOS; no full-map view; supersedes same-region-only visibility",
-      "stage3Status": "code-complete; web export built; gameplay acceptance unverified"
+      "expansionBrief": "GAMEPLAY_EXPANSION.md",
+      "maps": [
+        "lagoon",
+        "foundry",
+        "catacombs"
+      ],
+      "levelSize": [
+        3840,
+        2560
+      ],
+      "roomsPerMap": 12,
+      "refugesPerMap": 1,
+      "identity": "Real-time 2–4-player physical cooperation/betrayal, survival equipment, private chest puzzles, intermittent hunters and extraction.",
+      "guarantee": "Dry refuge admits zero water while fully shut indefinitely, including exterior maximum water and expedition ending.",
+      "background": "No city or video backdrop.",
+      "prototype": "Internal regression fixture only, never a fourth public map."
     },
-    "legacyFinishVerification": {
-      "note": "Passed checks reported by implementation/verification handoff; documentation-only update does not rerun them.",
-      "detect": [],
-      "disposition": "ship",
-      "tests": {
-        "rules": 41390,
-        "render": 4,
-        "webSmoke": 8,
-        "authority": 30,
-        "scene": 90,
-        "network": 6,
-        "privacy": 39
+    "historicalPrototype": {
+      "active": false,
+      "archivedOn": "2026-10-07",
+      "capturedGeneratedAt": "2026-10-06T17:38:32.912287+07:00",
+      "applicability": "Historical prototype evidence only. The old camera, light ranges, seepage, phase/stage labels, screenshot and browser claims below are not current production guidance.",
+      "formerExtensions": {
+        "colorMeta": {
+          "ink": {
+            "role": "neutral",
+            "displayName": "Parchment Ink"
+          },
+          "muted": {
+            "role": "neutral",
+            "displayName": "Muted Sea Mist"
+          },
+          "gold": {
+            "role": "primary",
+            "displayName": "Treasure Gold"
+          },
+          "dark": {
+            "role": "neutral",
+            "displayName": "Deep Water Ink"
+          },
+          "player-one": {
+            "role": "player",
+            "displayName": "P1 Mint"
+          },
+          "player-two": {
+            "role": "player",
+            "displayName": "P2 Coral"
+          },
+          "player-three": {
+            "role": "player",
+            "displayName": "P3 Amber"
+          },
+          "player-four": {
+            "role": "player",
+            "displayName": "P4 Lavender"
+          }
+        },
+        "typographyMeta": {
+          "title": {
+            "purpose": "Header title; native SystemFont."
+          },
+          "panel-title": {
+            "purpose": "Opening, guide and result headings."
+          },
+          "status": {
+            "purpose": "Local tide and nearby interaction status in the target; legacy planner status is replaced during migration."
+          },
+          "panel-body": {
+            "purpose": "Overlay instructions and results."
+          },
+          "body": {
+            "purpose": "Forecast and default labels."
+          },
+          "control": {
+            "purpose": "Buttons, summaries, event log and player labels. OptionButton only overrides size, retaining its native theme font."
+          },
+          "room-label": {
+            "purpose": "Unknown marker and visible relic count in generated room icon hotspots; room names and depths in tooltips."
+          }
+        },
+        "shadows": [],
+        "motion": [
+          {
+            "name": "local-prediction",
+            "value": "20Hz shared collision, bounded 12 pending commands, acknowledgement replay",
+            "purpose": "Immediate independent movement reconciled to authority"
+          },
+          {
+            "name": "remote-interpolation",
+            "value": "100ms snapshots, 10fps isolated walk poses",
+            "purpose": "Visible nearby movement"
+          },
+          {
+            "name": "player-camera",
+            "value": "1.65x zoom centered on explorer; no decorative drift or pointer parallax",
+            "purpose": "Only local surroundings, per user refinement"
+          },
+          {
+            "name": "local-vision",
+            "value": "105px unlit; 220px lantern; up to 250px near a torch, walls occlude",
+            "purpose": "Native light mask/shadows plus server LOS filtering"
+          }
+        ],
+        "breakpoints": [],
+        "nativeLayout": {
+          "camera": "Player-centered 1.65x",
+          "source": "scripts/main.gd, scripts/level_map.gd, scripts/vision_layer.gd",
+          "artRect": [
+            0,
+            0,
+            1440,
+            900
+          ],
+          "minimumWindow": [
+            960,
+            600
+          ],
+          "statusPosition": [
+            485,
+            15
+          ],
+          "lobbyPanel": [
+            430,
+            270,
+            580,
+            515
+          ],
+          "standingExplorerWidth": 45,
+          "standingExplorerMaxHeight": 66,
+          "logicalCanvas": [
+            1440,
+            900
+          ],
+          "noPlanner": true,
+          "promptPosition": [
+            570,
+            550
+          ],
+          "walkingExplorerSize": [
+            56,
+            72
+          ],
+          "controlsPosition": [
+            432,
+            836
+          ]
+        },
+        "nativeRoomBrowser": {
+          "source": "scripts/main.gd, scripts/session.gd and scripts/room_directory.gd",
+          "controls": "Create room, Join room, Refresh rooms, six-character room code, 2–4-player capacity selector and native available-room list; no IP or port fields",
+          "list": "Connected/max players and textual full status; full lobbies remain visible, started rooms are omitted; select then Join or double-click an available room",
+          "lobby": "Wrapped code, player identity and count/capacity; code read-only; creator start enabled from two players",
+          "authority": "Central Godot WebSocket service sends recipient-specific views; browser derives same-site WS/WSS /rooms, with optional operator window.relicTideServerURL override",
+          "verification": "See REALTIME_VERIFICATION.md for stage-2 proof; public WSS/WAN unverified"
+        },
+        "nativeStates": {
+          "lighting": "CanvasModulate black, radial PointLight2D mask with wall occluders",
+          "buttonBorder": "1px glass, gold keyboard focus",
+          "resourceHUD": "Own identity, region and local water depth; visible nearby door controls; no whole map or remote player markers",
+          "explorerRendering": "Server LOS/light filtered; unshaded raster actors above floor shadows, y sorted, no cached hidden coordinates",
+          "guide": "H stops own intention while authority continues",
+          "doorsAndWater": "One progress value drives gate collision, sprite, sight occlusion and flow; local raster water uses per-region masks"
+        },
+        "artwork": {
+          "layers": [
+            "assets/ruin-movement.png",
+            "assets/explorers-unlit.png",
+            "assets/explorers-unlit-walk.png",
+            "assets/lantern.png",
+            "assets/flood-water.png",
+            "assets/sluice-gate.png"
+          ],
+          "walkAtlas": "6 columns x 4 rows, connected-component isolation",
+          "depthMeaning": "Raster flood surface masks to authored rooms/corridors; refuge depth remains zero while its gate is fully sealed; painted shrine is still scenery",
+          "historicalSources": [
+            "assets/city.png",
+            "assets/city-flood.png",
+            "assets/explorers.png",
+            "assets/explorers-walk.png",
+            "assets/action-icons.png"
+          ],
+          "provenance": "Built-in imagegen, adjacent prompt/origin files; originals preserved"
+        },
+        "browserDelivery": {
+          "source": "web/README.md and export_presets.cfg",
+          "preset": "Godot 4.7.2 single-threaded Compatibility/WebGL 2",
+          "launcher": "Play.cmd or Play-Web.cmd calls Play-Web.ps1; local HTTP proxy plus headless room service at http://127.0.0.1:8080",
+          "build": "web/Build-Web.ps1; deploy every generated web/build file together",
+          "transport": "Same-site WS/WSS /rooms; optional operator window.relicTideServerURL set before engine startup",
+          "supported": "Desktop/laptop mouse and keyboard; canvas at least 960 × 600 with letterboxing",
+          "lifecycle": "Inactive tabs can pause; keep visible. Reload/close aborts active match; no reconnect",
+          "pending": "No public host/domain provisioned; HTTPS/WSS, WAN and other browser engines unverified",
+          "mobile": "390 × 844 phone portrait inspected and unsupported; no mobile reflow",
+          "evidence": [
+            "test-output/realtime-landing.png",
+            "test-output/vision-no-lantern.png",
+            "test-output/vision-with-lantern.png",
+            "test-output/vision-near-torch.png",
+            "test-output/vision-wall-shadow.png"
+          ],
+          "evidenceNote": "Stage-2 tests and browser observations are recorded below; stage-3 gameplay is code-complete and Web-exported, but has not been playtested."
+        },
+        "reducedMotion": {
+          "source": "V; meaningful movement retained",
+          "behavior": "No decorative loops currently; camera follows actual gameplay without shake or drift"
+        },
+        "finishVerification": {
+          "tests": {
+            "render": 10,
+            "scene": 44,
+            "rules": 555,
+            "authority": 35,
+            "privacy": 64,
+            "networkScenarios": 7,
+            "webSmoke": 8
+          },
+          "disposition": "stage-2-movement-and-local-vision-complete",
+          "evidence": "REALTIME_VERIFICATION.md",
+          "note": "Fresh stage-2 checks and browser observations; door/water/extraction acceptance is subsequent work",
+          "date": "2026-10-06",
+          "delayedTransport": {
+            "maxSnapshotLeadPx": 85,
+            "physicalPacketLoss": false,
+            "maxReconciliationCorrectionPx": 34,
+            "periodicPauseMs": 180,
+            "WAN": false,
+            "delayEachWayMs": 100
+          }
+        },
+        "authorizedTarget": {
+          "realTimeImplemented": true,
+          "firstLevelRefugeCount": 1,
+          "identity": "Real-time 2-4-player physical cooperation/betrayal and extraction",
+          "nextStage": 4,
+          "refugeCountMin": 1,
+          "legacyFields": "Legacy verification below is historical; active motion/layout/artwork fields describe stage 2",
+          "refugeCountMax": 1,
+          "completedStage": 3,
+          "specification": "REALTIME_SPEC.md",
+          "roadmap": "REALTIME_PLAN.md",
+          "guarantee": "Dry refuge admits zero water while fully closed, without pressure leaks, protection expiry or forced flooding",
+          "updatedOn": "2026-10-06",
+          "visionRefinement": "Light range + LOS; no full-map view; supersedes same-region-only visibility",
+          "stage3Status": "code-complete; web export built; gameplay acceptance unverified"
+        },
+        "legacyFinishVerification": {
+          "note": "Passed checks reported by implementation/verification handoff; documentation-only update does not rerun them.",
+          "detect": [],
+          "disposition": "ship",
+          "tests": {
+            "rules": 41390,
+            "render": 4,
+            "webSmoke": 8,
+            "authority": 30,
+            "scene": 90,
+            "network": 6,
+            "privacy": 39
+          }
+        },
+        "legacyStage1Verification": {
+          "note": "Fresh legacy baseline on 2026-10-06; these checks do not validate the real-time target. See REALTIME_SPEC.md.",
+          "tests": {
+            "network": 6,
+            "authority": 30,
+            "render": 4,
+            "rules": 41390,
+            "privacy": 39,
+            "scene": 106,
+            "webSmoke": 8
+          },
+          "disposition": "stage-1-specification-complete; real-time-target-not-implemented"
+        },
+        "stage3Implementation": {
+          "evidence": "REALTIME_VERIFICATION.md",
+          "movement": "0.15 shallow x0.8; 0.6 wading x0.55; 1.2 deep x0.35; 1.8 blocks entry",
+          "date": "2026-10-06",
+          "tide": "45s lead-in to 2.2 depth at 360s; 1.5s held valve toggles C1/C2 feed; service valve enables explicit C1 drain",
+          "rules": "6 doors; D4 locked for stage-4 coop latch, D5 sole refuge R4; 8% ordinary closed-door conductance; refuge closed conductance zero; blocked doorway held at >=20% open; door update before water transfer",
+          "assets": [
+            "assets/flood-water.png",
+            "assets/sluice-gate.png"
+          ],
+          "verification": "Rules 587, privacy 69, authority 39, scene 49, renderer 16 checks all pass; eight local network scenarios pass across runs; final Godot 4.7.2 Web export and localhost web smoke pass. Human/balance, stage-3 browser gameplay and WAN playtest pending.",
+          "waterRendering": "Separate normally lit raster water layer at floor depth; normalized repeating UVs; wall/door shadows and local radius hide unseen water.",
+          "doorBoundary": "Fully closed doors never reopen from nearby occupancy; obstruction protects a door only during closure; live occluders are removed on opening.",
+          "privacy": "Projected visible doors/region depths only; refuge dry indicator only inside R4.",
+          "preview": "http://127.0.0.1:8086/; room service 24610; reload existing tab for final build"
+        }
+      },
+      "formerNarrative": {
+        "northStar": "The painted flooding ruin, with physical decisions happening in front of the player",
+        "overview": "Stage 2 provides independent online movement in raster rooms/corridors with local light/LOS, physical lantern and player-centered camera. Next: physical doors, regional water and one guaranteed refuge.",
+        "keyCharacteristics": [
+          "Elevated top-down 2D with a 2.5D impression and recognizable raster explorers.",
+          "Independent real-time movement and nearby object prompts.",
+          "Regional water and physical doors that alter paths; one refuge in the first level.",
+          "Light-dependent local vision, visible held objects and recipient-filtered state",
+          "Stable background, reduced decorative motion, compact transparent native controls and system fonts."
+        ],
+        "rules": [
+          {
+            "name": "Raster world",
+            "body": "Separate interactive world art into raster assets. Invisible collision, flood-mask and shadow geometry is permitted; no drawn scenery/explorer substitutes.",
+            "section": "elevation"
+          },
+          {
+            "name": "Guaranteed scarce refuge",
+            "body": "Only 1-2 refuges per level, one in the first. Fully closed dry refuge admits zero water indefinitely while closed. No hidden expiry/pressure failure.",
+            "section": "world"
+          },
+          {
+            "name": "Readable private state",
+            "body": "Display nearby physical interactions and held relic artwork while omitting remote explorer coordinates and exact rival inventory/score.",
+            "section": "colors"
+          }
+        ],
+        "dos": [
+          "Keep raster artwork dominant and native controls compact.",
+          "Make water visuals agree with authoritative depth and dry sealed refuges.",
+          "Animate actual directional movement, carried relics and door progress.",
+          "Preserve player numbers, keyboard access, reduced decorative motion and provenance.",
+          "Validate the first room visually and the first level with independent online players."
+        ],
+        "donts": [
+          "Do not create drawn/procedural scenery or explorer replacements.",
+          "Do not restore turn waiting, plan locks or fixed anchor travel as target behavior.",
+          "Do not reveal remote player positions or full rival inventories.",
+          "Do not invalidate sealed-refuge protection through time, pressure or match ending.",
+          "Do not treat historical legacy screenshots/finish verdicts as real-time acceptance."
+        ]
       }
     },
-    "legacyStage1Verification": {
-      "note": "Fresh legacy baseline on 2026-10-06; these checks do not validate the real-time target. See REALTIME_SPEC.md.",
-      "tests": {
-        "network": 6,
-        "authority": 30,
-        "render": 4,
-        "rules": 41390,
-        "privacy": 39,
-        "scene": 106,
-        "webSmoke": 8
-      },
-      "disposition": "stage-1-specification-complete; real-time-target-not-implemented"
-    },
-    "stage3Implementation": {
-      "evidence": "REALTIME_VERIFICATION.md",
-      "movement": "0.15 shallow x0.8; 0.6 wading x0.55; 1.2 deep x0.35; 1.8 blocks entry",
-      "date": "2026-10-06",
-      "tide": "45s lead-in to 2.2 depth at 360s; 1.5s held valve toggles C1/C2 feed; service valve enables explicit C1 drain",
-      "rules": "6 doors; D4 locked for stage-4 coop latch, D5 sole refuge R4; 8% ordinary closed-door conductance; refuge closed conductance zero; blocked doorway held at >=20% open; door update before water transfer",
-      "assets": [
-        "assets/flood-water.png",
-        "assets/sluice-gate.png"
+    "historicalCamera": {
+      "active": false,
+      "supersededOn": "2026-10-07",
+      "supersededBy": 2.6,
+      "framings": [
+        {
+          "zoom": 0.85,
+          "note": "Initial expansion view; user reported characters/props too small."
+        },
+        {
+          "zoom": 1.55,
+          "note": "Provisional intermediate framing; superseded after the user supplied reference screenshots."
+        }
       ],
-      "verification": "Rules 587, privacy 69, authority 39, scene 49, renderer 16 checks all pass; eight local network scenarios pass across runs; final Godot 4.7.2 Web export and localhost web smoke pass. Human/balance, stage-3 browser gameplay and WAN playtest pending.",
-      "waterRendering": "Separate normally lit raster water layer at floor depth; normalized repeating UVs; wall/door shadows and local radius hide unseen water.",
-      "doorBoundary": "Fully closed doors never reopen from nearby occupancy; obstruction protects a door only during closure; live occluders are removed on opening.",
-      "privacy": "Projected visible doors/region depths only; refuge dry indicator only inside R4.",
-      "preview": "http://127.0.0.1:8086/; room service 24610; reload existing tab for final build"
+      "reason": "User requested readable Among Us / Goose Goose Duck screenshot scale; final calibration uses 2.6."
     }
   },
-  "components": [],
+  "components": [
+    {
+      "name": "Shared native action",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Start, room actions, Guide and Leave share the same quiet native skin.",
+      "html": "<button class=\"ds-action\">START</button>",
+      "css": ".ds-action{background:rgba(6.375, 17.85, 25.5, 0.78);color:#f1ead6;padding:12px 18px;border:1px solid rgba(183.6, 224.4, 234.6, 0.38);border-radius:12px;min-height:42px;font:17px \"Segoe UI\", Verdana, sans-serif;cursor:pointer}.ds-action:hover,.ds-action:active{background:rgba(6.375, 17.85, 25.5, 0.78);border-color:rgba(183.6, 224.4, 234.6, 0.38)}.ds-action:focus-visible{outline:none;border-color:#edc47b}.ds-action:disabled{color:#b9d3d3;cursor:default}",
+      "nativeSource": "scripts/main.gd::_button / _style"
+    },
+    {
+      "name": "Room code field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Six-character joining code; native focus owns keyboard input.",
+      "html": "<input class=\"ds-code\" aria-label=\"Six-character room code\" maxlength=\"6\" placeholder=\"Six-character room code\"/>",
+      "css": ".ds-code{background:rgba(6.375, 17.85, 25.5, 0.78);color:#f1ead6;border:1px solid rgba(183.6, 224.4, 234.6, 0.38);border-radius:12px;padding:12px 18px;min-height:42px;width:325px;font:17px \"Segoe UI\", Verdana, sans-serif}.ds-code::placeholder{color:#b9d3d3}.ds-code:hover{border-color:rgba(183.6, 224.4, 234.6, 0.38)}.ds-code:focus-visible{outline:none;border-color:#edc47b}.ds-code:disabled{color:#b9d3d3}",
+      "nativeSource": "scripts/main.gd::_glass_input / _build_ui; native theme controls font where not overridden"
+    },
+    {
+      "name": "Quiet Start panel",
+      "kind": "card",
+      "refersTo": "panel-start",
+      "description": "A native title/action overlay beside the real Landing floor.",
+      "html": "<section class=\"ds-start\"><div class=\"ds-start-title\">RELIC TIDE</div><p class=\"ds-start-tagline\">Take the relic. Trust no one. Beat the tide.</p><button class=\"ds-action\">START</button><p class=\"ds-start-note\">2–4 explorers · online</p></section>",
+      "css": ".ds-action{background:rgba(6.375, 17.85, 25.5, 0.78);color:#f1ead6;padding:12px 18px;border:1px solid rgba(183.6, 224.4, 234.6, 0.38);border-radius:12px;min-height:42px;font:17px \"Segoe UI\", Verdana, sans-serif;cursor:pointer}.ds-action:hover,.ds-action:active{background:rgba(6.375, 17.85, 25.5, 0.78);border-color:rgba(183.6, 224.4, 234.6, 0.38)}.ds-action:focus-visible{outline:none;border-color:#edc47b}.ds-action:disabled{color:#b9d3d3;cursor:default}.ds-start{background:rgba(6.375, 17.85, 25.5, 0.95);color:#f1ead6;padding:12px 18px;border-radius:12px;width:515px;min-height:275px;display:flex;flex-direction:column;gap:23px;font-family:\"Segoe UI\", Verdana, sans-serif}.ds-start-title{font-size:54px;color:#edc47b}.ds-start-tagline{font-size:20px;margin:0}.ds-start-note{font-size:17px;color:#b9d3d3;margin:0}.ds-start .ds-action{width:100%;min-width:260px}",
+      "nativeSource": "scripts/main.gd::_build_expansion_ui / _show_start"
+    },
+    {
+      "name": "Physical waiting controls",
+      "kind": "nav",
+      "refersTo": "panel-glass",
+      "description": "Host chooses the map while explorers can move and ready in the staging floor.",
+      "html": "<nav class=\"ds-waiting\" aria-label=\"Expedition selection\"><div class=\"ds-waiting-code\">ROOM CODE<br/>2 / 3 explorers · P1</div><button class=\"ds-action ds-selected\" aria-pressed=\"true\">Drowned Lagoon</button><button class=\"ds-action\" aria-pressed=\"false\">Brass Foundry</button><button class=\"ds-action\" aria-pressed=\"false\">Sunken Catacombs</button><button class=\"ds-action\">Ready · undo</button><button class=\"ds-action\" disabled>Enter the ruin</button></nav>",
+      "css": ".ds-action{background:rgba(6.375, 17.85, 25.5, 0.78);color:#f1ead6;padding:12px 18px;border:1px solid rgba(183.6, 224.4, 234.6, 0.38);border-radius:12px;min-height:42px;font:17px \"Segoe UI\", Verdana, sans-serif;cursor:pointer}.ds-action:hover,.ds-action:active{background:rgba(6.375, 17.85, 25.5, 0.78);border-color:rgba(183.6, 224.4, 234.6, 0.38)}.ds-action:focus-visible{outline:none;border-color:#edc47b}.ds-action:disabled{color:#b9d3d3;cursor:default}.ds-waiting{display:flex;flex-direction:column;gap:18px;background:rgba(6.375, 17.85, 25.5, 0.78);padding:12px 18px;border-radius:12px;width:275px;font-family:\"Segoe UI\", Verdana, sans-serif}.ds-waiting-code{font-size:22px;color:#edc47b}.ds-waiting .ds-action{min-width:238px}.ds-waiting .ds-selected{color:#edc47b}",
+      "nativeSource": "scripts/main.gd::_build_expansion_ui / _on_lobby; sample code/count are illustrative, native selected control is modulated gold"
+    },
+    {
+      "name": "Hearts and survival gauges",
+      "kind": "custom",
+      "refersTo": "tide-gauge",
+      "description": "Authored full/empty hearts and compact native tide/air tracks. Sample state is illustrative.",
+      "html": "<div class=\"ds-survival\"><div class=\"ds-hearts\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" role=\"img\" aria-label=\"heart\"><image href=\"data:image/png;base64,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\" width=\"40\" height=\"40\"/></svg><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" role=\"img\" aria-label=\"heart\"><image href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAJMElEQVR42u2YaXBV5RnH/8/Z7rlrkpuEkAAmLAIRXMJSimLVGdsypYhd0MJ0tK51pu3UobVjVaTodNGZfum0U9txHB3FBSyVoq1WpxgaE5ASZE1CQhJDlpu75C7nnnPuPcv79ENph9oKQWnHD/w/nTPzznt+8zzPed7n/wIXdEEXdEEfFM2ZgwAA+kTCfeuGxtsGdlzjfH/9zOvPx4bKuQLw6S+bQNgMBoCtayFt+IuW+voiik6LBimaL/wpHpLf+859/rLTN9h8av0HxOclPJomgwAjqJKlSmSqMkxNghnRyAZgHXi8xcntWOn6Vrf3h+/O9X68eooLwCIiU5HI1BWyAgpZBJgSofjG9y4Ln60UlMlGrakmsOe5R69qWX7nU4TOB+AVCyhmbHDJotbOFHceNSibtTGzbg7GnlyFvx3JAwENL224RF3SJEMP6Sh5DNsuEXyNu7qTSLPIxsPqwQnT/dSHRfKshbx2LeSD7+gH33zs03MbWi6jwbZdtHN3HoNjNgKyhJGCCyEEWhqC2HnEwPULY7h13TLc//M2OGWBou1C04CQTJADClwAOgg1URXrr6/k1gM2//D3Q+Khh0Ro82aIcwWkqrCc+fP9F0cbZtXij7tS1HUiicMH8vSz+THWNBVsMW45moUVIdywpAq6LNPCWVF+bV8OiUwZbX0FbFtQhVlRDWVBCMHDrb0m5l6kgEIxrFumczpZwDe2JMuuQJTo3yN5phTT7Z+dfvNtV8cjtdWEXXsS1Ll/CD+Z10TK6ukILZ5J/mAvkwG0z63BcMLCZ94aoTWLYxipkGksbfP+QZPydyxlRAJgowhZD1BpPMcvyQF0pw3c259E2a2mDV+K82/vCatN8eEdgLvmdAj5w+i4fW1wX+uRvdcsjUkv7+yn1zoN/GJWPSqvu5zUR58FFq8AutsJyy6FnCsiLAGrwxIeey9Hl8+NYuBEkQ6uXwbpV8+BcwegKAy2GGpUR0AWkMuM2oCG91yXewZMkqDQykUVs5mVF3sT1sRZAeWyu2B2jO6ur45I29+x8MtZ1aieNgV8UQPkhVfC3fsKVFUAJxIEJpKFQE1NEFeC6ebXh9Fz93LQkkZ2jDSp6TQ5e98nCQSEArCTWYRiKio84o5eg0Y0Gffd3EQ79hTQlzFeHc24A2dNsWEKuaT73HkowXnPI/YlsKxCnj8D/pMPQlEkeMMpSK4PjGfA376N5Oe2ck08hu2XeIDigvrHofWPM5suSSTAogxzIA2jJNA97qEy6FNLLIjH+9LImCWoAY0UlvTTOaQPAwwpKASiFWieNwWW48E0XfhFE96WNyHyNvj4GJA3MdGVAF86HfTCyygXSpg+uwbTQwRiicWoATGSg5swwZAxMpClosVgqGieGkaVKmCHZ0ADEA4okH0XpCg8KcCCw0HLNnkobSOoqdBCOkgCqDEOjIxAlEowBicQv/cO5r4J9ibKTIoEJ5vnhqkhdpIllOwy4MtEqgpoGrvss+8JEDP3DqZ4JOdgzFfYFMBEwUIxEIXrIDupRm2W/Eg5qlNdZRiWl0GuWIaaEqiif3QByygiNLUS3vPbQOQBigSZAdcRiM+YBlX4cIpFuOyy8Bh+yUUgoLNX9qhryKCe2ml82PTQftEUwqDEmZSLwlhBsCTCk4qgrshGwfB4LONRbU0Mo3kD8BkTQ1lCQEMuU4LvuBCej1KhBAkMx3ahhoJQ4hF4BYvtQgmlsgOZFOzuSqOQKxFCGrKSjC0tCyijO2wEs3CZqTvpIRIJkueSOynAsYH+45t2DIl5zRUISS5+M+JTMltGT7KE8d4JCE1gfMxAomcMgUgYnuGQpKso54oY+GsXRtN5ikaiCECn/QdP0vSoDsNhbu+d4DBUzG/rQFIwFfcfw01L61GhyTg8akKuzrVPqg8uuBYoJ/XV2XGr/t6vzaCekQmMJlzEBDBhOKgKyGDB8FhCIW+RPrUOqb4UHMeHYAXCI2QMEydGDAhJhu95AKn0ftanpCmwZ2o1BnyJvlDjY80iHW90edh1KGHdOYqftZ52kpzpqKO1ayEVj8etpqgqz63X8XZnGndQEOGIDMsTuDgehPAZsqrA9QXpJLGsSVQuCx7L2ZhWE+SM4VJPzqapQYWHCjLZwuOnmy5GJD6BmYkcFs1Q+N1+Gzu7C/6ipU6ktRX+6UeddAZA3rYNwim7Db9uGxcHTxb4rnUNaGv08GpvEUZJQiplQUgyXJ8hyxKrIR8MiYcKPmqjKjRJptG8h4iqcVeOkXaI+xwN2tgQ5qXS+OmDi7C7z+TnO9NYucqJtbbC++BEM5mxnLAJtPTZmL1wqi7VxgKkOgUMT1kK0aRg2dZOrKjTEYtIGM7aGDcZ8yuiYEXgeMJCWTB83+N3bYmyoTjSThHBKhtfuaaef9eW4J1HsvzQRg6eGmT/Y9ySJzWptgJX1c9+bOvBoR/U1+i0vgWUSqXRcSwJZcViHC57HM4KqpCAqAq4noejmTJMn2AxQQ0I9JRjtGOsH1++OoSrr6jCC3tKeO1Q0tgouGJz63+HwzkaGzpVE8aNV1QrNyyNyvucCuovx8BBD7fsHURdRAYxECaB7ryAYfko2z6OUQAd1gQ+tyLOLbMr8XRbVrx9KCEYCJ1t5JfOAZAB8EYg9r6gN55pt8WgfikuN/sxdOgknlgxF/1Fm0cKJTAByaKErCBsmxfBK0oZK5dEQHmHnzqqiu6B/PavrkVkMh+VztWXbAbE/kPpG/WoumT3My+KBTMiaGyowrHtB5AyBXllj83lFciwg31VURzrTOOuR+5E1yhjS5fpyROp5WOGvW7btn/9rWc0TPJHNVB9w4XUjLqI51XVXDvMQayqMemZEwU0NFfSTT+6jh5+Yh86hnP45hdr8WZnHuO+zpWKe//e7vFX/q9GWJWlJIgKt19V676+odnreKDOL+y5ydu4qtZvrgl5C5qnewQqVFUE3/4oZl75uICuL+o2AfRIe8aM6JqSLctYY3fg+Z4gz2kKo+PYSIbB9dm8zR/F/0rnIYi8GRAPr19Sd3gw611SCX7rMLhRcUT70ZPi89aNDQDEeTPnH0e3X9fUeG1zlbP1nkZXlqTSldXV0U/aHc0/YbKnnujjAtL/EPL83rt8wrJAuKDzVG5/B4S0oJvAuPSmAAAAAElFTkSuQmCC\" width=\"40\" height=\"40\"/></svg><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" role=\"img\" aria-label=\"empty_heart\"><image href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAG20lEQVR42u1YaWxU1xU+575tFu/LDF7GY+MN28JJMzYOTcQkLiZuQSDSTHCISIShJqRt2h+N2gSVkaWQH21TooYUqVGXhIJUO5CkP5KKyIknBYeQ1CympnhfBi8z9ozHy5u3zHu3P+xSkhgztkFFKke6un/uvee737nnnE8X4K7dtbt2166Z2w3E7QZyp+LDZx4r2G3iULmjQAEAut1A4mO4Ye/RR5TDT2TI1li2e45J/Mr40r5bDwYBGIKAiMDzzOzMMVCUYe7sOLJRiVx6QS0uzld/saNQAYDJlgZXEscSYAgCYXB2ntsfLcibLUC3GxCanaTe4wmJgyf4gbf3gyxTSLSn016/jKoiQkl+AiSwCvBVH2LvGw7YP1gGtqErVBvrhKersiAzgwVRAghOURgIRCDY46MHPghsd42ET9QDUJgdiwfodgNpb041+Xzi6IfHtnFa1k9I4YYdNClWoGniANU0Fo/skLDisAB1pRT3PJxM6xtGsWkijo4NjeFrNYmw79NkyjEaqJEwWHkKcfFm3Jw5DgzSyPd+1+MDAPucO7oYgOh2A3pbc1f29gTbDtXlkYvSCvzVu3043N2jhWY0SowGSiMqW5CbAVMrVhIMDcGejEl4v5un54en8Ftl6fSSN6QHerw6yyJKKhITD5BotYJfsJKXyn3AhkX6skf97PHesXX1APp8QMgNmMO+ZjtflMWe//EeB/OD3kLy+3da4Z8XOjXHPbYN0zNhU8gfNFdXZcX0dXYHckIdNN9qhrfbJBgIiTidZYMp76BOA2NtdcGwedAvGv0TM0K/c8Z4vq1HLpG79D98gXAg+Sl8ao25/CWCnywqxA4HcIIYE3h1p1047rXBe50R6Dz5kVpenp5y5oxXui4cCABgzzRuKS3JPVq7SuIOn2UIz4mqMSY2p/H99pH5/K0tz3pFIvxef2wq952kGWpVg/S1j0bfnQgpj0eVrjlpQvPpg+XKqVPH1O3ObAUAxOrqPGGhJ+G0xydsqbCEtznTldREwzdv8r6RMOTShvWrlcKnn1Df25WuFlr48HwRnTfEqk74f5wfpYcaGqFFtyAAxFb8rUtdINuopz8UmtS0e4+fGvb5g9KnC2UmAFBd01c3f/IvlR0dgYM9yWAwcdTl+vqlyA3irmtoxPapBPiGOoAAoN/oEV/v9OMvxq9ENGq7Cbj/EqGqELZmgcBEMCRqWtRJomu6YVIDrSz0d/iMZuuLLOg0yr6NPIuwN+KBGSGV8gIhUQNExJA2JdEEXaLZdPC29UmBJUySQYdUXwcwOkGfzxldiDVdC6aaEA1ExwqrATmBqb/FvROb/wT8vso0XOvMhVByLkTo/MfPC9Ceb91x9GyAfN4dgWEU4LffL3u+qtRqulXgXC4XCaFprDjfiPtePQerJtv08Wn1qMXiodHpOgBis5jf2v6ARd613qa88liGCgDSVxTKkvSiy+ViAODqyRfylOHW3UrlmjwVAESXC5hFn8szZHRnRZxU8uQutfyHtcqKHIvodNoNSwB4TZaxHDtW9/pP5bxNj6oV9+QpBEGqczi4pSlkAMISHKitTFfuXVOoVO/crPysplikdFEs4n+UtsHAT337l88pRdufVB66P1NhGVDmmLuhCl9QntcD6BGd2rtD9I9J8lW90xuGZHmEfb2uKFxdnccvSq7Vw8QzB18Uxk9fRJvvIjSf8fq2PuoyNjaCDjevsVEwKTB/2XtfkrSh0qE8vylNeWSVWVqgn18LqdPpZFcmCzM/35YvF2yskh3ZcbLAkdE5cpYtWL+0dl1Zxtauoem3rDmFwv7VHfTyRIJ+2a9kHGkaClxXpGdZA4D29kyBHYexPZUp7J8/DuAHF0KRFFt8w4VzA7XRsoaLLxFAThzHmZp1K7HMEsZxkVDJCFvMxd6TXZ8Xtv61qSO/ejON8/ns3BpD2P9QaSx7qJXBK10Bvad/zDznk0bbcZZUx9wABAGGN296UBlpWK8eqMmQjRyKEfGs0vijAsXEYbj5xfzwO8+lyzVr02SBIyGn08kup9jjUkACQWn1/fepv9mdo0SaNqqjb+Sp363OVn9dk6mkJsTI5Q+vVWJiDTNOJywZHLPUG3kAwE3h5bO6VPjsg8aSEX8Q+4QUuDwVD3GqiNSUCC0tF8VwWI3v7196luJys7vZ6SQxcs90QYzGDEwgdKUVgW2oTb+qm2hpadaKN9/0TCzHB7OczR4A6O/vp6nxAq9E6APrclmc7hugUxqPvUPBY6dbOhuW++CZW5E1tX7R04TEkplidsiIcKo96Hk2KLo8/+Mvj6//zWwttTAI5+7kD67Z7L4N/y5wuw79v7A7mrl/A1ub4Idw5c+RAAAAAElFTkSuQmCC\" width=\"40\" height=\"40\"/></svg></div><div class=\"ds-gauge-row\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"46\" height=\"46\" viewBox=\"0 0 46 46\" role=\"img\" aria-label=\"wave\"><image href=\"data:image/png;base64,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\" width=\"46\" height=\"46\"/></svg><div class=\"ds-tide\" role=\"meter\" aria-label=\"Tide deadline\" aria-valuenow=\"45\" aria-valuemin=\"0\" aria-valuemax=\"100\"><span></span></div></div><div class=\"ds-gauge-row\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"39\" height=\"39\" viewBox=\"0 0 39 39\" role=\"img\" aria-label=\"air\"><image href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACcAAAAnCAYAAACMo1E1AAAGFElEQVR42u1Ya1BU5xl+3nPOLsvusuwNWMImLIF4gYoiLQYzCBKmiSY0XkLQSQpjbGPaadrajs60k+nJjhkqUyeZZmzSoc2MmclVYqqiuWkSNa2uETJCYKmwKLKKC2uW655l9+w5X3+0mXEcG9mCzWV8/pzz4zvvPN/zvt/5nvcFbuImbuKbDfov7zci/jdfoVmJVVNTww3n51NPt/8nciSawut0k06L869tmZiC280AsK9ko+X19TpNcZVU1vBc9PRge/TogC/a0u+LubY+HdPOWRS5fePP7kokID9LitG9ophyrNV/+eNd2zSOHAdt7xzHSa+X+3PnKDdlzUJ9XQ0X5vg6mZKkyaKCT+D1sutlkJst2U6cOjfUvf85wROJU33+ApqTZqJBWzoMyYSM8134xD9MnREdReYWbl91/3rzVZ9fM9XCjFmJIs3tubjr/Rd+K+xs66eGsgUgxDE0MgVjaAjc8KjawxtxD8XQbzDSQ4+swvMrVl0EkPxlxGZFufIj4M68996q37QGIGhVMFVC46dnGY0HSJpiIDmKhfwIvMER2LQSDnUMQnhgEwd2/XMxc+Vc/QJnu1fr8Q1SnzQBOUlgR9v6WGhShil8GcQRM9rNpEccfmMKQpJARxrX0Zqq+8uHgKM3lFw/XGCTPhroHUaqndjhI14mT0kwcQwSb2Umi4bCRGR0pSGd8bCpCtMoCjSy8PmNVw794CNRNTPLwF/0T8GYpSWNKjEhWQ+HlodGo5JGb4bdpKdal4V1Xo5jIjwJVY1Fr/MHYDOuuRJJklXPoVjD2lLY0jiKhAnJvEpmDVg8xUo+ssCaaaGmIieW2MxU69RgXeM+Nvj3d3q+JCxL6IYQRZHzer0EAI4NG4TAyW7DMPpiQNpUblFRcsfn0VCJw0B7PUE2lJqKZWaJWTMdNBYhOrR6MQAFze29eL39krLv54+GlYlR62yllbxeL+05Ezyuz8wo3KoVOP67BXTgyRYgPOYJBrHSu+dNtTV/Iff2i7/D653nEFCtlJuWigP+GA76B5kQkag0x8R+eF+dsnFHY0bTpk2zcrcSAOhumzd26sRe3YvdIdIJEv523M/OnL1AW9ZVqTt+sTm87MF70vvChuoLe9999Xu/3MBtry7m5lqIItEwq93ThW5Pu5Lc+sFQqLPdNd37dVo151j+g7Ldh99KJlXl/lCRT61KElIRZWS2s50n+mj9jqcNXk/P5oxx34HiyjKbdTS45vvla2O5rgrlO8WPKLddGGh5eF523oNLl+QlUs/CNGqN3M0fvH27XQ+LdJltPfkZJk57WXhSxnK7DCarWJlXgtd8/xQrTHnPNDc3RQAcBGBQwEh84ina9peXJoUUc9cDhTnWRFzJdcm5AUCOU9XuNiQzHgtMYQyNKMjLFBAzmTCm6rHv7EWCqnDXqojfv3lnKHzOw/3qdK/u5R9t7gBQMF1y00orcYL8Ss1iZgwEma9nnDmtAozZORTj7FQ2P5vbVmAjJqtcc3OzepUybGF1RW7xy0fjzX96Iz6ntHBRImmdFrkkkhoPnx9kVr3KZLOZ8beYMTYew7H1JXjIrkWG3QmLM/1UTc3uq+ORq69vFAMd1gJKtbU1NcVn2wkTRJH4vf8I79y1DQ1tl2ieJZXuytbBpdfRiqw09Zb8SnnNsw1mdHXx+/cf6VfGQ7rFKytc2YFA+Bpqzr7LLX388XTt/NKJtB8/NbXvM0/kZM+HUdOWZ6NJS1eHy7eKTvGjj3RC/tJIYLIjuqHlWPTXnadjKSXLg/+/foMxuuPh+vtgy/KRI7vXsaxyxRdO2FRUGZOVUZkpQXnhH9+KGZ54RtbXPhmfSa9CCa8XRRKvPM3/blrop8dboyf6LkHu90OWIux8rpNeqyxEzd21A/G61XfA7VYTJZeoK2Fwu5n7CufwxQbtqVYW6D5FDhYFy8mgF4qzcafNzJgcGflP15UwZuJK2BVPtaG6WtlYNR+hWx1Yu2QOdAJPuXVb2KKVy0u/8ga4XBQF/tb5o/XvHIy19HbKuuKyyNeqQRdFkeM5AmOML37sMc23YuxwE//LpODbNjD6euBf3COJGWs0030AAAAASUVORK5CYII=\" width=\"39\" height=\"39\"/></svg><div class=\"ds-air\" role=\"meter\" aria-label=\"Air remaining\" aria-valuenow=\"70\" aria-valuemin=\"0\" aria-valuemax=\"100\"><span></span></div></div></div>",
+      "css": ".ds-survival{display:flex;flex-direction:column;gap:18px}.ds-hearts{display:flex;gap:6px}.ds-gauge-row{display:flex;align-items:center;gap:12px}.ds-tide,.ds-air{background:#0a202b;border:1px solid #b9d3d3;border-radius:5px;overflow:hidden}.ds-tide{width:420px;height:15px}.ds-air{width:142px;height:12px}.ds-tide span,.ds-air span{display:block;height:100%;border-radius:4px}.ds-tide span{width:45%;background:#85e1d1}.ds-air span{width:70%;background:#b9e8f0}",
+      "nativeSource": "scripts/survival_hud.gd::_bar / _draw; requested native gauge sizes may grow to native theme minima"
+    },
+    {
+      "name": "Authored equipment row",
+      "kind": "custom",
+      "refersTo": "gear-slot",
+      "description": "Six local equipment slots with native tooltips, availability and gold focus. Sample ownership is illustrative.",
+      "html": "<div class=\"ds-gear\"><button class=\"ds-gear-slot\" aria-label=\"map\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"42\" height=\"42\" viewBox=\"0 0 42 42\" role=\"img\" aria-label=\"map\"><image href=\"data:image/png;base64,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\" width=\"42\" height=\"42\"/></svg></button><button class=\"ds-gear-slot\" aria-label=\"chart\" disabled><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"42\" height=\"42\" viewBox=\"0 0 42 42\" role=\"img\" aria-label=\"chart\"><image href=\"data:image/png;base64,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\" width=\"42\" height=\"42\"/></svg></button><button class=\"ds-gear-slot\" aria-label=\"oxygen\" disabled><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"42\" height=\"42\" viewBox=\"0 0 42 42\" role=\"img\" aria-label=\"oxygen\"><image href=\"data:image/png;base64,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\" width=\"42\" height=\"42\"/></svg></button><button class=\"ds-gear-slot\" aria-label=\"mask\" disabled><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"42\" height=\"42\" viewBox=\"0 0 42 42\" role=\"img\" aria-label=\"mask\"><image href=\"data:image/png;base64,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\" width=\"42\" height=\"42\"/></svg></button><button class=\"ds-gear-slot\" aria-label=\"medkit\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"42\" height=\"42\" viewBox=\"0 0 42 42\" role=\"img\" aria-label=\"medkit\"><image href=\"data:image/png;base64,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\" width=\"42\" height=\"42\"/></svg></button><button class=\"ds-gear-slot\" aria-label=\"gun\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"42\" height=\"42\" viewBox=\"0 0 42 42\" role=\"img\" aria-label=\"gun\"><image href=\"data:image/png;base64,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\" width=\"42\" height=\"42\"/></svg></button></div>",
+      "css": ".ds-gear{display:flex;gap:11px}.ds-gear-slot{display:flex;align-items:center;justify-content:center;background:rgba(6.375, 17.85, 25.5, 0.86);border:0;border-radius:6px;padding:4px;width:50px;height:50px;cursor:pointer}.ds-gear-slot:hover:not(:disabled),.ds-gear-slot:active:not(:disabled){background:rgba(6.375, 17.85, 25.5, 0.86)}.ds-gear-slot:focus-visible{outline:2px solid #edc47b;outline-offset:-2px}.ds-gear-slot:disabled{cursor:default;opacity:.38}",
+      "nativeSource": "scripts/survival_hud.gd::_ready / update_state; preview skin does not replace native inherited hover/pressed states"
+    },
+    {
+      "name": "Private pressure puzzle",
+      "kind": "custom",
+      "refersTo": "panel-puzzle",
+      "description": "A nearby chest challenge with visible target markers, three-hit progress and explicit Space action. Sample values are illustrative.",
+      "html": "<section class=\"ds-puzzle\"><div class=\"ds-puzzle-title\">Balance the pressure</div><p class=\"ds-puzzle-hint\">Target 43–71 · 0 / 3</p><div class=\"ds-pressure\"><span class=\"ds-pressure-fill\"></span><i class=\"ds-marker ds-marker-a\"></i><i class=\"ds-marker ds-marker-b\"></i></div><button class=\"ds-puzzle-hit\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"42\" height=\"42\" viewBox=\"0 0 42 42\" role=\"img\" aria-label=\"wave\"><image href=\"data:image/png;base64,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\" width=\"42\" height=\"42\"/></svg><span>Hit [Space]</span></button><div class=\"ds-puzzle-progress\"></div><button class=\"ds-puzzle-close\">Close [Esc]</button></section>",
+      "css": ".ds-puzzle{background:#0a202b;color:#b9d3d3;border-radius:12px;padding:24px 26px;min-width:378px;min-height:277px;display:flex;flex-direction:column;gap:18px;font-family:\"Segoe UI\", Verdana, sans-serif}.ds-puzzle-title{font-size:25px;color:#edc47b}.ds-puzzle-hint{font-size:17px;margin:0}.ds-pressure{position:relative;width:378px;height:24px;background:#0a202b}.ds-pressure-fill{display:block;width:52%;height:100%;background:#b9e8f0}.ds-marker{position:absolute;top:0;bottom:0;width:3px;background:#edc47b}.ds-marker-a{left:43%}.ds-marker-b{left:71%}.ds-puzzle-hit,.ds-puzzle-close{background:#0a202b;color:#f1ead6;border:0;font:17px \"Segoe UI\", Verdana, sans-serif;cursor:pointer}.ds-puzzle-hit{display:flex;align-items:center;justify-content:center;gap:10px;min-width:180px;min-height:63px}.ds-puzzle-close{min-height:36px}.ds-puzzle-hit:hover,.ds-puzzle-close:hover{background:#0a202b}.ds-puzzle-hit:focus-visible,.ds-puzzle-close:focus-visible{outline:2px solid #edc47b}.ds-puzzle-hit:active,.ds-puzzle-close:active{color:#f1ead6}.ds-puzzle-progress{width:378px;height:6px;background:#0a202b}",
+      "nativeSource": "scripts/expedition_puzzle.gd::_render_phase / _draw_pressure; markers draw inside ProgressBar coordinates, wave + Hit [Space]; unoverridden buttons/gauges retain native theme."
+    },
+    {
+      "name": "Final evacuation announcement",
+      "kind": "custom",
+      "refersTo": "final-alert",
+      "description": "Wine-backed wave announcement; red deadline/countdown and extraction cue remain after it closes.",
+      "html": "<div class=\"ds-alarm\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"145\" height=\"145\" viewBox=\"0 0 145 145\" role=\"img\" aria-label=\"wave\"><image href=\"data:image/png;base64,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\" width=\"145\" height=\"145\"/></svg><div>EVACUATE<br/>Return to the Landing</div></div><div class=\"ds-countdown\" aria-label=\"Evacuation time remaining\">1:18</div>",
+      "css": ".ds-alarm{display:flex;align-items:center;gap:26px;background:#491e29;color:#f1ead6;border-radius:12px;min-width:660px;min-height:190px;font:30px \"Segoe UI\", Verdana, sans-serif}.ds-countdown{display:inline-block;background:#0a202b;color:#ef9990;font:23px \"Segoe UI\", Verdana, sans-serif;width:136px;height:34px;display:flex;align-items:center;padding-left:19px;margin-top:10px;box-sizing:border-box}",
+      "nativeSource": "scripts/survival_hud.gd::_ready / advance / _draw; opaque dark countdown Rect2(654, 57, 136, 34); sample 1:18 is illustrative."
+    }
+  ],
   "narrative": {
     "northStar": "The painted flooding ruin, with physical decisions happening in front of the player",
-    "overview": "Stage 2 provides independent online movement in raster rooms/corridors with local light/LOS, physical lantern and player-centered camera. Next: physical doors, regional water and one guaranteed refuge.",
+    "overview": "Relic Tide uses an elevated top-down 2D view with a 2.5D impression: blue limestone, sea-green oxidized metal, turquoise water and warm ochre brass. Original explorer pixels and restrained red danger belong to the same material world. Preserve the recognizable mint, coral, amber and lavender crew identities, supplementing color with P1–P4 labels. The supplied/generated raster medium, palette and native system fonts remain the incumbent identity.\n\nThe production expansion keeps the world dominant and the interface compact. Separate authored floors, wall reveals, gates, props, characters and water form the entire environment. No Atlantis city, DepthFlow video or decorative backdrop appears behind or over the level. Unknown space stays dark. Physical movement, a closing gate, a chest and a pursuing hunter carry the action; nearby authored emblems explain what the player can do.\n\nEastward and Children of Morta remain quality references for grounded steps and material detail; Among Us and Goose Goose Duck remain readability references. Use original assets, never copied characters or scenery. Preserve the real eight-direction held-item poses and the steady camera following reconciled rendered feet. The 7 October expansion changes map scale, sight and survival feedback without replacing this visual identity.",
     "keyCharacteristics": [
-      "Elevated top-down 2D with a 2.5D impression and recognizable raster explorers.",
-      "Independent real-time movement and nearby object prompts.",
-      "Regional water and physical doors that alter paths; one refuge in the first level.",
-      "Light-dependent local vision, visible held objects and recipient-filtered state",
-      "Stable background, reduced decorative motion, compact transparent native controls and system fonts."
+      "Elevated top-down raster rooms and segmented corridors, with authored stone, brass and water materials.",
+      "Three large playable expeditions, a quiet Start screen and a physical waiting room.",
+      "Broad normal sight, meaningful darkness and gate shadows, with a steady feet-centered camera.",
+      "Four recognizable explorers with real directional steps, pickups and physically held relic/lantern artwork.",
+      "Authored hearts, tide, air and equipment emblems, short functional labels and a clear evacuation alarm.",
+      "Native Godot controls, system fonts, keyboard focus and recipient-specific world feedback."
     ],
     "rules": [
       {
-        "name": "Raster world",
-        "body": "Separate interactive world art into raster assets. Invisible collision, flood-mask and shadow geometry is permitted; no drawn scenery/explorer substitutes.",
+        "name": "The Material Continuity Rule",
+        "body": "New raster assets use the established limestone, sea-green and ochre-brass material vocabulary; a new gameplay role does not authorize a new visual identity.",
+        "section": "colors"
+      },
+      {
+        "name": "The Readable Identity Rule",
+        "body": "Player numbers and observable held objects supplement crew colors; color never permits disclosure of a hidden explorer.",
+        "section": "colors"
+      },
+      {
+        "name": "The Functional Text Rule",
+        "body": "Keep short action names, room codes, ammunition, oxygen and countdown numbers where they clarify use; authored emblems replace verbose live diagnostics.",
+        "section": "typography"
+      },
+      {
+        "name": "The Rendered Feet Rule",
+        "body": "Camera and local light follow the same reconciled rendered feet. Small corrections blend, fractional previews use shared collision/water/carry rules, and corrections never create a backward gait. No shake, bob, pointer drift or decorative camera motion is added.",
+        "section": "layout"
+      },
+      {
+        "name": "The Raster World Rule",
+        "body": "Visible floors, walls, props, explorers, monsters and emblems use supplied or original generated raster pixels. Geometry may supply invisible collision, flood masks and shadow occlusion; the static blueprint and directional HUD arrow may use native diagram geometry.",
         "section": "elevation"
       },
       {
-        "name": "Guaranteed scarce refuge",
-        "body": "Only 1-2 refuges per level, one in the first. Fully closed dry refuge admits zero water indefinitely while closed. No hidden expiry/pressure failure.",
-        "section": "world"
+        "name": "The Private Geography Rule",
+        "body": "Static structure may be revealed by collected equipment; unseen actors and private state remain absent from recipient packets, not merely hidden by the renderer.",
+        "section": "components"
       },
       {
-        "name": "Readable private state",
-        "body": "Display nearby physical interactions and held relic artwork while omitting remote explorer coordinates and exact rival inventory/score.",
-        "section": "colors"
+        "name": "The Sealed Dry Refuge Rule",
+        "body": "Each production map has one single-entry refuge. Show guaranteed-safe feedback only when it is dry and its gate fully shut. It stays dry for as long as that gate remains closed, including at maximum exterior water and the ending; shelter never implies extracted treasure.",
+        "section": "components"
       }
     ],
     "dos": [
-      "Keep raster artwork dominant and native controls compact.",
-      "Make water visuals agree with authoritative depth and dry sealed refuges.",
-      "Animate actual directional movement, carried relics and door progress.",
-      "Preserve player numbers, keyboard access, reduced decorative motion and provenance.",
-      "Validate the first room visually and the first level with independent online players."
+      "Do preserve original raster materials, complete silhouettes, four numbered crew identities and source provenance.",
+      "Do use current map scale, readable camera framing and powered/dark/lantern sight while keeping walls and shut gates opaque.",
+      "Do anchor camera, light and grounded directional poses to the same reconciled rendered feet.",
+      "Do keep authored hearts, gear and object badges compact, with functional labels, numeric counts and keyboard focus.",
+      "Do make gate opening and regional water agree with authority; a dry sealed refuge stays visibly dry indefinitely while closed.",
+      "Do verify real Start, waiting, all map themes, darkness, gates, refuge, puzzle, hunter and finale at supported desktop sizes."
     ],
     "donts": [
-      "Do not create drawn/procedural scenery or explorer replacements.",
-      "Do not restore turn waiting, plan locks or fixed anchor travel as target behavior.",
-      "Do not reveal remote player positions or full rival inventories.",
-      "Do not invalidate sealed-refuge protection through time, pressure or match ending.",
-      "Do not treat historical legacy screenshots/finish verdicts as real-time acceptance."
+      "Don't restore decorative Atlantis, city/video backdrops, pointer parallax or moving imagery over the playable map.",
+      "Don't replace scenery, explorer poses or authored emblems with drawn/procedural substitutes or copied reference-game assets.",
+      "Don't restore simultaneous-turn waiting, plan locks, fixed anchor travel or a planning sidebar.",
+      "Don't reveal hidden actors, exact rival inventories, private puzzles or live remote scores through a map or client-only hiding.",
+      "Don't portray late closure as draining water, or invalidate a dry sealed refuge through leaks, pressure, expiry or the ending.",
+      "Don't treat prototype screenshots, old stage counts or a local native render as current browser, WAN or human-balance acceptance."
     ]
   }
 }

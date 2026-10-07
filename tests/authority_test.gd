@@ -1,5 +1,6 @@
 extends SceneTree
 const Directory = preload("res://scripts/room_directory.gd")
+const LegacyMap = preload("res://scripts/level_map.gd")
 var checks := 0
 var failures := 0
 var packets: Array = []
@@ -54,7 +55,7 @@ func _init() -> void:
 	check(not directory.accept_event(10, event), "Repeated event rejected")
 	var door_event := {"kind": "toggle_door", "target": "D5", "sequence": 2, "match_id": room.match_id}
 	check(not directory.accept_event(10, door_event), "Remote door command rejected")
-	room.game.explorers[0].position = Directory.Rules.Map.door_position("D5") + Vector2(0, 35)
+	room.game.explorers[0].position = LegacyMap.door_position("D5") + Vector2(0, 35)
 	room.game.explorers[0].region = "R4"
 	door_event.sequence = 3
 	check(directory.accept_event(10, door_event), "Server derives the nearby door operator from the connection")
@@ -64,12 +65,12 @@ func _init() -> void:
 	door_event.erase("progress")
 	door_event.target = 5
 	check(not directory.accept_event(10, door_event), "Wrong target type rejected")
-	room.game.explorers[0].position = Directory.Rules.Map.spawn(0)
+	room.game.explorers[0].position = LegacyMap.spawn(0)
 	room.game.explorers[0].region = "R0"
 	var before: Vector2 = room.game.explorers[1].position
 	for i in range(2): directory.step()
 	check(room.game.tick == 2 and room.game.explorers[1].position.x > before.x, "Clock progresses without all-player input")
-	check(room.game.explorers[0].position == Directory.Rules.Map.spawn(0), "Silent creator remains still")
+	check(room.game.explorers[0].position == LegacyMap.spawn(0), "Silent creator remains still")
 	check(packets.any(func(p): return p.peer == 10 and p.kind == "view" and p.data.tick == 2), "10Hz addressed snapshots")
 	check(not directory.join_room(30, code), "Running room cannot be joined")
 	packets.clear()
@@ -101,7 +102,7 @@ func _init() -> void:
 	loop.start_room(80)
 	var expedition: Dictionary = loop.rooms[loop.members[80]]
 	var rules = expedition.game
-	var map = Directory.Rules.Map
+	var map = LegacyMap
 	var use := {"kind": "begin_vault", "target": "A", "sequence": 0, "match_id": expedition.match_id}
 	rules.explorers[0].position = map.vault_control_position("A")
 	rules.explorers[0].region = "C1"

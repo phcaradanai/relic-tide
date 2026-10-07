@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/generated/sprites/explorer-holding-p4-v2/frames.tres" id="1"]
+
+[node name="explorer-holding-p4-v2" type="AnimatedSprite2D"]
+texture_filter = 1
+sprite_frames = ExtResource("1")
+animation = &"walk_south"

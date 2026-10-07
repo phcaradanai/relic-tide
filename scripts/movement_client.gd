@@ -1,7 +1,7 @@
 class_name MovementPrediction
 extends RefCounted
 ## Local fixed-step prediction. Only direction/sequence go over the wire.
-const Map = preload("res://scripts/level_map.gd")
+const MapType = preload("res://scripts/expedition_map.gd")
 const STEP := 0.05
 const MAX_PENDING := 12
 var position := Vector2.ZERO
@@ -14,7 +14,11 @@ var closed_doors: Array[String] = []
 var water_depths: Dictionary = {}
 var carrying := false
 var active := true
+var Map = MapType.new()
+var oxygen_enabled := false
+var move_factor := 1.0
 func reset(snapshot: Dictionary) -> void:
+	Map = MapType.new(snapshot.get("map_id", "prototype"))
 	match_id = snapshot.match_id
 	position = snapshot.explorers[snapshot.you].position
 	sequence = snapshot.ack_sequence
@@ -25,7 +29,9 @@ func reset(snapshot: Dictionary) -> void:
 
 func _set_world(snapshot: Dictionary) -> void:
 	carrying = snapshot.explorers[snapshot.you].get("has_relic", false)
-	active = snapshot.phase == "running" and snapshot.explorers[snapshot.you].state == "exploring"
+	active = snapshot.phase in ["running", "waiting"] and snapshot.explorers[snapshot.you].state == "exploring"
+	oxygen_enabled = snapshot.explorers[snapshot.you].get("oxygen_enabled", false)
+	move_factor = snapshot.explorers[snapshot.you].get("move_factor", 1.0)
 	water_depths = snapshot.get("water_depths", {}).duplicate()
 	closed_doors.clear()
 	for door_id in snapshot.get("doors", {}):
@@ -34,7 +40,7 @@ func _set_world(snapshot: Dictionary) -> void:
 func _move(direction: Vector2) -> void:
 	if not active: return
 	var region := Map.region_at(position)
-	position = Map.move(position, direction, STEP, closed_doors, water_depths.get(region, 0.0), water_depths, carrying)
+	position = Map.move(position, direction * move_factor, STEP, closed_doors, water_depths.get(region, 0.0), water_depths, carrying, oxygen_enabled)
 func advance(direction: Vector2) -> Dictionary:
 	sequence += 1
 	var command := {"direction": direction.limit_length(1), "sequence": sequence, "match_id": match_id}

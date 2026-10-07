@@ -40,6 +40,7 @@ func run() -> void:
 	root.add_child(scene)
 	scene.set_process(false)
 	scene._start(4)
+	# The scene contains only playable art; no decorative backdrop remains.
 	scene._process(0.0)
 	var landing := await capture(scene, "realtime-landing")
 	check(not landing.is_empty() and landing.get_pixel(720, 450).get_luminance() > 0.02, "Local player and floor render")
@@ -115,6 +116,7 @@ func run() -> void:
 	set_position(scene, Vector2(1300, 245), true)
 	await capture(scene, "relic-ground")
 	scene._use_nearest()
+	scene.explorer_sprites[0].advance_visual(1.0, Vector2.ZERO, "dual_walk")
 	var held_relic := await capture(scene, "relic-carried")
 	check(scene.game.explorers[0].has_relic and scene.game.relic.is_empty(), "Actual carried relic removes the ground sprite")
 	check(scene.relic_texture.atlas.get_image().get_pixel(0, 0).a == 0.0, "Generated idol has real transparent alpha")
@@ -138,7 +140,7 @@ func run() -> void:
 	root.size = Vector2i(1440, 900)
 	scene._restart()
 	await capture(scene, "realtime-lobby")
-	check(scene.opening.visible and scene.room_list.visible, "Online lobby still renders")
+	check(scene.start_screen.visible and not scene.opening.visible, "Restart returns to the real Start screen")
 	scene.queue_free()
 	await process_frame
 	print("Render: %d checks, %d failures" % [checks, failures])

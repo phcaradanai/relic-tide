@@ -1,0 +1,1 @@
+Generated with the built-in imagegen tool on 2026-10-07. Style/camera reference: assets/ruin-movement.png. Four transparent raster parts, no provider secrets. Used by scripts/world_mechanisms.gd; frame nine-slicing preserves the stone jamb scale, moving slabs follow door progress. Side gate is authored in side perspective; controls are physical wheel/pedestal art.

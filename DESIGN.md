@@ -6,116 +6,298 @@ colors:
   muted: "#b9d3d3"
   gold: "#edc47b"
   dark: "#0a202b"
+  glass: "rgba(6.375, 17.85, 25.5, 0.78)"
+  edge: "rgba(183.6, 224.4, 234.6, 0.38)"
+  start-surface: "rgba(6.375, 17.85, 25.5, 0.95)"
+  gear-surface: "rgba(6.375, 17.85, 25.5, 0.86)"
+  air: "#b9e8f0"
+  danger: "#ef786f"
+  alarm-surface: "#491e29"
+  alarm-countdown: "#ef9990"
+  blueprint-surface: "rgba(6.375, 22.95, 30.6, 0.97)"
+  blueprint-floor: "#487277"
   player-one: "#85e1d1"
   player-two: "#ffb29f"
   player-three: "#f3d17e"
   player-four: "#d6bfff"
 typography:
+  display:
+    fontFamily: "Segoe UI, Verdana"
+    fontSize: "54px"
   title:
     fontFamily: "Segoe UI, Verdana"
     fontSize: "26px"
+  panel-title:
+    fontFamily: "Segoe UI, Verdana"
+    fontSize: "24px"
   body:
     fontFamily: "Segoe UI, Verdana"
     fontSize: "18px"
   control:
     fontFamily: "Segoe UI, Verdana"
     fontSize: "17px"
+  final-alert:
+    fontFamily: "Segoe UI, Verdana"
+    fontSize: "30px"
+  actor-label:
+    fontFamily: "Segoe UI, Verdana"
+    fontSize: "13px"
+  map-label:
+    fontFamily: "Segoe UI, Verdana"
+    fontSize: "12px"
 rounded:
   control: "12px"
+  gear: "6px"
+  gauge-track: "5px"
+  gauge-fill: "4px"
 spacing:
   page-inset: "24px"
+  control-inline: "18px"
+  control-block: "12px"
+  panel-inline: "26px"
+  panel-block: "24px"
+  gear-inset: "4px"
+components:
+  button:
+    backgroundColor: "{colors.glass}"
+    textColor: "{colors.ink}"
+    typography: "{typography.control}"
+    rounded: "{rounded.control}"
+    padding: "12px 18px"
+    height: "42px"
+  button-disabled:
+    backgroundColor: "{colors.glass}"
+    textColor: "{colors.muted}"
+    typography: "{typography.control}"
+    rounded: "{rounded.control}"
+    padding: "12px 18px"
+    height: "42px"
+  field:
+    backgroundColor: "{colors.glass}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.control}"
+    padding: "12px 18px"
+    height: "42px"
+  panel-glass:
+    backgroundColor: "{colors.glass}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.control}"
+    padding: "12px 18px"
+  panel-start:
+    backgroundColor: "{colors.start-surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.control}"
+    padding: "12px 18px"
+  panel-puzzle:
+    backgroundColor: "{colors.dark}"
+    textColor: "{colors.muted}"
+    rounded: "{rounded.control}"
+    padding: "24px 26px"
+    width: "430px"
+    height: "325px"
+  gear-slot:
+    backgroundColor: "{colors.gear-surface}"
+    rounded: "{rounded.gear}"
+    padding: "4px"
+    size: "50px"
+  tide-gauge:
+    backgroundColor: "{colors.dark}"
+    rounded: "{rounded.gauge-track}"
+    width: "420px"
+    height: "15px"
+  air-gauge:
+    backgroundColor: "{colors.dark}"
+    rounded: "{rounded.gauge-track}"
+    width: "142px"
+    height: "12px"
+  final-alert:
+    backgroundColor: "{colors.alarm-surface}"
+    textColor: "{colors.ink}"
+    typography: "{typography.final-alert}"
+    rounded: "{rounded.control}"
+    width: "660px"
+    height: "190px"
 ---
 
 # Design System: Relic Tide
 
-## Status and source of truth
+## Overview
 
-This is the approved real-time target. The current build renders assets/ruin-movement.png as the 1440×900 walkable floor, with isolated raster explorers. Stage 3 overlays an authored water texture clipped to shared region geometry and a separate transparent gate sprite; collision, door sight and water flow use the same map data. The background remains a prototype rather than final layered-scene art. Stage 4 adds a separate transparent idol sprite, raster wheel controls and Landing boat from the existing atlas, local breath/carry/score feedback and native final results. Carried art is observable only with a visible holder. Full directional carrying/mechanism poses and final layered scenery remain stage 5. PRODUCT.md owns scope; REALTIME_SPEC.md owns rules; REALTIME_PLAN.md owns delivery stages.
+**Creative North Star: "The painted flooding ruin, with physical decisions happening in front of the player"**
 
-## Visual direction
+Relic Tide uses an elevated top-down 2D view with a 2.5D impression: blue limestone, sea-green oxidized metal, turquoise water and warm ochre brass. Original explorer pixels and restrained red danger belong to the same material world. Preserve the recognizable mint, coral, amber and lavender crew identities, supplementing color with P1–P4 labels. The supplied/generated raster medium, palette and native system fonts remain the incumbent identity.
 
-**The painted flooding ruin, with decisions happening in front of the player.**
+The production expansion keeps the world dominant and the interface compact. Separate authored floors, wall reveals, gates, props, characters and water form the entire environment. No Atlantis city, DepthFlow video or decorative backdrop appears behind or over the level. Unknown space stays dark. Physical movement, a closing gate, a chest and a pursuing hunter carry the action; nearby authored emblems explain what the player can do.
 
-An elevated top-down 2D view gives a 2.5D impression. Moonlit stone, dark ruined walls and turquoise water frame warm torches and golden relic light. Preserve recognizable explorer identities and the supplied/generated raster medium.
+Eastward and Children of Morta remain quality references for grounded steps and material detail; Among Us and Goose Goose Duck remain readability references. Use original assets, never copied characters or scenery. Preserve the real eight-direction held-item poses and the steady camera following reconciled rendered feet. The 7 October expansion changes map scale, sight and survival feedback without replacing this visual identity.
 
-The first attached reference is the working direction for painterly surfaces and characters. The second informs clear multiplayer identities, readable doors, water and compact HUD. Pixel-art treatment is not a newly locked requirement.
+**Key Characteristics:**
 
-Use one finished room sample to settle perspective, scale, animation and lighting before producing the entire map.
+- Elevated top-down raster rooms and segmented corridors, with authored stone, brass and water materials.
+- Three large playable expeditions, a quiet Start screen and a physical waiting room.
+- Broad normal sight, meaningful darkness and gate shadows, with a steady feet-centered camera.
+- Four recognizable explorers with real directional steps, pickups and physically held relic/lantern artwork.
+- Authored hearts, tide, air and equipment emblems, short functional labels and a clear evacuation alarm.
+- Native Godot controls, system fonts, keyboard focus and recipient-specific world feedback.
 
-## World composition and asset contract
+### Current evidence and historical scope
 
-Separate floor, wall/foreground, doorway, valve/mechanism, pedestal/relic, explorer and water artwork. Interactive objects cannot be baked inseparably into a whole-level painting. Author the surfaces revealed by opening doors and walking behind foreground walls.
+This merge records the approved 7 October production expansion implemented in scripts/main.gd, survival_hud.gd, expedition_world.gd, expedition_puzzle.gd, expedition_blueprint.gd and vision_layer.gd, with shared coordinates from expedition_map.gd. PRODUCT.md owns product truth and GAMEPLAY_EXPANSION.md owns the expansion's surface direction. Frontmatter values come from native code; pixel values express logical Godot canvas units, not a CSS implementation. Control dimensions are requested/minimum sizes; Godot theme minima may expand them.
 
-Visible scenery and explorers remain raster artwork. Geometry may define invisible collision, interaction bounds, flood masks or shadow occlusion, but may not become drawn scenery or a replacement character. There is no fixed requirement to preserve the legacy four-layer stack.
+The finish handoff reports survival rules (355 checks), production privacy (93), waiting lifecycle (31), production rendering at the final (2.6) zoom (93) and all fifteen strict real-socket scenarios passing. The final Web build and smoke checks (8) also pass. The actual .impeccable/review/expansion-*.png native captures cover Start, waiting, all three map themes, dry/wet rooms, gate states, refuge, blackouts, lantern, puzzle, blueprint, hunter and finale, including supported small-canvas overlays. The independent visual reviewer returned a ship disposition for the reference-like framing and corrected pressure markers, Hit [Space] label and final-clock contrast. Measured actor bodies occupy (110–114 logical pixels of the 900-unit canvas height), approximately (12–13%), across all three maps.
 
-A shared level definition must align room regions, collision, door thresholds, interaction positions and flood masks between the client and the authoritative service. Stable ids in REALTIME_SPEC.md are the starting contract.
+The resumed TaskSpace5 browser run passed actual two-client code joining, Ready, host entry and WASD movement in the fresh WebGL export at (2.6) zoom. E opened chest T1's circuit, native puzzle-button input completed it, and the authority awarded a chart plus (45 treasure), captured in test-output/expansion-web-chest-reward-final.png. Recorded outgoing binary Godot Variant WebSocket chest/puzzle commands confirm the real service path. The native GUI input regression in tests/puzzle_input_test.gd passes (101 checks), covering real mouse/E input, one-time reward, rapid-burst protection and the exact (25.1-second) puzzle lease expiry. Public HTTPS/WSS, WAN performance, human balance and exact reference-game visual parity remain unverified. EXPANSION_VERIFICATION.md records the suite evidence and limits.
 
-Occlusion follows the explorer's feet and authored foreground boundaries. A character behind a wall should be partially hidden; door collision and visible opening must agree. Do not let painterly perspective hide the traversable floor or interaction reach.
+The five-room Sluice Vault, its narrow camera, older light ranges, ordinary-door seepage and all city/video composition passes are historical prototype evidence. They are not active production guidance. The sidecar preserves older metadata inside an explicitly inactive historical block.
 
-## Character and object readability
+## Colors
 
-- Preserve P1–P4 labels and the established mint/coral/amber/lavender identities; color is supplemented by player number.
-- Provide actual directional walking, standing, carrying and mechanism-use poses. Animation advances with movement, not a fixed six-second trip between anchors.
-- A visible relic carrier has unmistakable held artwork and a readable slower pace.
-- Gates show open, opening, closing, shut and obstructed states.
-- A valve shows which corridor it currently feeds.
-- An interact prompt sits near the relevant world object and shows action/progress, rather than a bottom-row planning menu.
-- A two-person mechanism shows whether one or two people are actively holding its controls.
+The material palette is cool stone and sea-green against warm ochre brass. The normative frontmatter captures repeated native UI colors rather than inventing hex values for painted scenery.
 
-The one refuge looks distinct through authored sealed-door artwork and a persistent refuge symbol/name. Its safe status is shown only once the door is fully closed and the room is dry. A closing or obstructed door must not display guaranteed-safe feedback.
+### Primary
 
-## Water and warnings
+- **Treasure Gold** (gold): title lettering, treasure, selected-map emphasis, mechanism progress and keyboard focus. Tide changes to this warning color after seventy percent of the expedition clock.
 
-Render local room/corridor depth from the same authoritative state that determines speed, breath and traversal. Dry floor, ankle-deep water, wading water and dangerous/submerged passages must have different visible treatments.
+### Secondary
 
-Stage 3 uses an authored repeating flood texture with region masks and depth-scaled opacity; visible water overlays never extend into a protected room. Later polish may add authored foam/splash animation and light reflections. Budget lights and overlays for the browser renderer.
+- **Mint Signal** (player-one): P1 identity and normal tide fill. Other identities use **Coral** (player-two), **Amber** (player-three) and **Lavender** (player-four), always paired with a player number.
+- **Pale Air** (air): breath/oxygen fill and the remaining oxygen count.
+- **Blueprint Stone** (blueprint-floor): unlocked static map geometry; it does not color the live world.
 
-Water rises outside a correctly sealed refuge while its interior stays visibly dry. Do not use a full-screen/global flood crossfade that visually floods a protected room. Normal closed doors show their delayed seepage consistently. The current gate is a shared raster sprite scaled through opening/closing progress.
+### Tertiary
 
-Give readable waterline, door-threshold and imminent-danger signals. Supplement color with motion/state symbols and sound. Changing the valve redirects water gradually; the scene must not imply that existing water vanished instantly.
+- **Danger Coral** (danger): active breach marks, final tide fill and the extraction direction arrow during the alarm.
+- **Alarm Rose** (alarm-countdown): remaining evacuation time.
+- **Alarm Wine** (alarm-surface): the brief evacuation announcement panel.
 
-## Controls and HUD
+### Neutral
 
-Prototype controls are WASD/arrow movement, E nearby interaction/hold, Q drop, H guide, V reduced motion and R leave. Lobby fields retain text-entry ownership; movement/interaction commands are disabled during lobby typing. Movement is normalized diagonally and validated by the server.
+- **Parchment Ink** (ink): native labels and useful numeric counts.
+- **Muted Sea Mist** (muted): secondary instructions, disabled control text and gauge/map outlines.
+- **Deep Water Ink** (dark): puzzle panels and gauge tracks.
+- **Deep Glass** (glass) and **Sea Glass Edge** (edge): compact room, guide, results and text controls; translucency keeps the playable setting present.
+- **Quiet Start Surface** (start-surface), **Equipment Surface** (gear-surface) and **Blueprint Surface** (blueprint-surface): the denser backing required by these overlays.
 
-Keep the expedition world dominant. A compact transparent HUD shows local water danger, breath when relevant, carried relic and extracted score. Room code/identity remain accessible. There is no plan lock, waiting-for-all indicator, initiative order or turn counter in the target.
+**The Material Continuity Rule.** New raster assets use the established limestone, sea-green and ochre-brass material vocabulary; a new gameplay role does not authorize a new visual identity.
 
-Map presentation may show static geography, the current region and known environmental information. Never display live player markers in remote regions. Exact rival inventory/score remains private even when a visible carried object is rendered.
+**The Readable Identity Rule.** Player numbers and observable held objects supplement crew colors; color never permits disclosure of a hidden explorer.
 
-Use native Godot controls and SystemFont requesting Segoe UI then Verdana. Keep current parchment/sea/gold palette and translucent glass controls as a starting point. No CSS-based interface, persistent side panel or mobile reflow is introduced.
+## Typography
 
-## Layout, camera and reduced motion
+**Display Font:** Native SystemFont, requesting Segoe UI then Verdana.
 
-Retain the logical 1440 × 900 canvas, canvas_items stretching with aspect keep, and minimum supported desktop canvas 960 × 600. The native development window remains 1280 × 800.
+**Body Font:** The same native font request for explicitly styled labels and buttons. Some OptionButton, LineEdit and puzzle controls retain Godot's native theme font where code does not override it.
 
-User refinement on 2026-10-06: do not show the full map. Center a 1.65× camera on the explorer and reveal only the local light radius with wall shadows. The camera follows actual movement without shake, bob, smoothing drift or mouse parallax. Torches expand nearby vision; a held lantern expands vision away from torches. Native PointLight2D/CanvasModulate use an invisible radial light mask and invisible shadow occluders. A narrow raster wall face is revealed around floor boundaries; authority still filters actors against exact floor LOS.
+**Character:** Plain, functional lettering keeps the raster world in charge. System fonts are an explicit user/project requirement, including the Start title; do not replace them to satisfy a generic craft font preference. No custom weight, tracking or line-height scale is established.
 
-V and browser prefers-reduced-motion suppress decorative water displacement, light drift, idle bob and opening breathing. Player position, collisions, water danger, door state and other meaningful gameplay updates continue. Reduced motion cannot pause the server or hide an impending hazard.
+### Hierarchy
 
-Opening, lobby, guide and results use compact native overlays. Opening the guide does not pause the online expedition.
+- **Display** (display): Start title; the tagline uses a smaller native label (20 logical units).
+- **Title** (title): waiting/prototype header. Waiting room code/identity and local treasure use compact title-sized labels (22).
+- **Panel title** (panel-title): guide and outcome headings. Private puzzles use their observed nearby size (25); the blueprint title uses (27).
+- **Body** (body): wrapped guide text and default labels. Outcome rows use (19).
+- **Control** (control): actions, compact hints and secondary room information.
+- **Final alert** (final-alert): two-line evacuation instruction. Its countdown remains a smaller native number (23).
+- **Actor label** (actor-label): P1–P4 above visible explorers. **Map label** (map-label): short room names inside the unlocked static blueprint.
 
-## Privacy and world feedback
+**The Functional Text Rule.** Keep short action names, room codes, ammunition, oxygen and countdown numbers where they clarify use; authored emblems replace verbose live diagnostics.
 
-Show explorers only within the recipient's light radius and unblocked line of sight. Hide departing rivals without trails. Open connectors allow nearby sight across logical region ids; this user refinement replaces the earlier same-region-only rule. Visible carried lantern/relic art is allowed, while unseen positions, private resources and exact rival inventories remain filtered at the server.
+## Layout
 
-Both vault control users must be observable when nearby and lit. A future closed refuge door blocks sight as well as water; opening it permits LOS subject to range. Door movement and anonymous environmental cues remain readable without leaking unseen positions. No player minimap reveals the ruin or remote explorers.
+The logical canvas is (1440×900), stretched with Godot canvas_items; the native development window is (1280×800) and the supported desktop minimum is (960×600). Preserve the canvas composition at that minimum. There is no phone portrait layout or CSS breakpoint system.
 
-Only final results expose all scores/outcomes. Client-side hiding is not a privacy boundary; player_view.gd must omit forbidden data from packets.
+Each production level—Drowned Lagoon, Brass Foundry and Sunken Catacombs—occupies (3840×2560) world units, with twelve rooms, branching segmented corridors and one single-entry refuge. World coordinates are separate from HUD coordinates. Production camera zoom is (2.6), calibrated to the readable character scale in the user's supplied Among Us / Goose Goose Duck screenshots; the physical waiting room uses (1.18), and Start uses (1.05). A standing explorer's authored (44-world-unit) body is approximately (114 logical pixels), or (12.7% of the 900-unit viewport height), at this zoom. This is a framing estimate, not an exact visual-parity claim. The legacy (1.65) zoom applies only to the internal prototype fixture; the earlier production (0.85) and provisional (1.55) framings are superseded.
 
-## Existing implementation and assets
+Powered sight reaches (1250 world units). A dark room or blackout reduces it to (180); a physically held lantern restores (360) in darkness. Both observer and target-room power affect visibility. Walls and shut gates block line of sight, including across room ids. The playable view does not reveal the complete live map or remote actors. Lighting and authority filtering use shared map geometry and light rules.
 
-The legacy expedition uses assets/city.png, aligned assets/city-flood.png, displaced painted-water detail and explorers drawn at anchors. Its current ART_RECT is Rect2(45, 0, 1350, 900), fitting the full painting with side margins. The opening uses the supplied moonlit image in public/images/background/.
+The Start panel sits left of the quiet Landing floor at (85,220), minimum (515×275). The room browser opens at (70,175), and waiting controls sit at (25,230), beside the walkable staging floor. During play, three hearts occupy upper left; a slim tide gauge sits near top center; six gear slots sit lower left; local treasure stays lower right. Guide and Leave remain upper right. A nearby interact badge stays near its object, clamped clear of the fixed HUD. No persistent planning sidebar appears.
 
-assets/explorers.png is the standing atlas; assets/explorers-walk.png contains six columns by four explorer rows; assets/action-icons.png is a 4 × 4 icon atlas. scripts/sprite_atlas.gd isolates crossing-cell artwork into 24 transparent pose textures. Preserve complete silhouettes, offsets and antialiased edges; do not restore uniform cell cropping without visual verification.
+Controls use repeated inline/block padding from the frontmatter. Native stacks use observed separations suited to their content: (12) in the room browser, (18) in waiting/puzzles, (23) on Start. This is not a mandate to apply one spacing value to every game object.
 
-The legacy corrected walk art contains genuinely different leg poses. Future animation must visibly move feet/knees, not merely cloak/hair. Inspect actual rendered movement; frame-index assertions alone do not establish animation quality.
+**The Rendered Feet Rule.** Camera and local light follow the same reconciled rendered feet. Small corrections blend, fractional previews use shared collision/water/carry rules, and corrections never create a backward gait. No shake, bob, pointer drift or decorative camera motion is added.
 
-The legacy header/footer are transparent and ignore pointer input. Controls have translucent blue-green fills and 12px corners; panels/popups use stronger tint for legibility. These are continuity references, not a mandate to keep the old planner layout.
+Reduced motion (V) freezes decorative idle poses while preserving directional walking, pickups, doors, flood changes and hazards. Guide, puzzles and blueprint stop or redirect the local player's actions; online authority continues its clock. The alarm stays readable longer in reduced motion.
 
-Preserve generation prompts in assets/*.prompt.txt, supplied-art origins in assets/supplied-art.origin.txt and embedded raster provenance.
+## Elevation & Depth
 
-## Visual acceptance
+Depth comes from authored raster wall reveals, foreground boundaries, contact shadows and feet-based ordering. Floor, raster water, walls/props and visible actors have separate native rendering roles. Low furniture blocks feet along its authored contour but does not block eye-level sight or cast a solid rectangular sight wedge. Walls and closed doors remain opaque. A dedicated wall-material light does not illuminate hidden floor or actors. Visible explorers render above floor shadows after recipient visibility filtering.
 
-Inspect a real rendered walk and at least these scenes: dry room, flooding corridor, ordinary closed-door delay, sealed dry refuge beside high water, carried relic, two-person gate use and extraction.
+Native overlays use tonal backing and borders rather than card drop shadows or CSS blur. Shared labels have a dark native text shadow offset downward (2 logical units). The light mask is an invisible radial texture with native wall/door occluders, not visible scenery; painted contact shadows remain part of the asset.
 
-Verify the smallest supported desktop canvas, native keyboard focus, reduced motion, hidden remote rivals and clear door/water warnings. Historical legacy screenshots or tests do not establish acceptance of the new real-time build. Compare the first finished room against the reference before expanding artwork production.
+**The Raster World Rule.** Visible floors, walls, props, explorers, monsters and emblems use supplied or original generated raster pixels. Geometry may supply invisible collision, flood masks and shadow occlusion; the static blueprint and directional HUD arrow may use native diagram geometry.
+
+## Shapes
+
+Shared buttons, fields and panels use rounded.control. Equipment slots use the smaller rounded.gear; gauge tracks/fills use their own narrow corner values. Glass controls carry a thin edge (1 logical unit), with gold on keyboard focus. Equipment slots use a gold focus edge (2).
+
+Raster silhouettes follow authored pixels. Keep complete feet, hands, held props, slabs and frames; do not approximate their contours with geometric masks. Refuge, wave, treasure, air and equipment emblems retain the atlas's distinct silhouettes.
+
+## Components
+
+### Buttons
+
+Quiet native actions sit beside the world. Shared buttons use the frontmatter skin and minimum height, with width chosen for the real label. The shared helper intentionally uses the same glass fill/thin edge for normal, hover and pressed states; it establishes no animated lift or transition. Focus has a gold edge; disabled text is muted. The selected map receives the observed gold modulation.
+
+Equipment icons occupy (50×50), with native tooltips and gold focus. Unavailable gear is dimmed. Passive chart/oxygen/mask slots are disabled; ammunition, health and counts determine active gun/medkit use. States not overridden by the HUD retain Godot's native theme.
+
+### Cards / Containers
+
+Start uses the denser quiet surface and large title. Waiting uses a narrow glass panel beside the physical floor. Guide, room browser and results use shared glass panels; guide text wraps and results expose outcomes only after the expedition ends. These are task overlays, not a repeated card grid.
+
+### Inputs / Fields
+
+A six-character room code field, capacity picker and available-room list use glass skins, thin edges and gold focus. Text entry owns keyboard input. Full rooms stay listed with Full status but reject joining; running rooms leave the list. No player-facing IP/port fields appear.
+
+### Navigation
+
+Start leads to creation/code joining/browsing, then a physical staging room. The creator selects one of three map buttons; everyone can walk and mark Ready, including with Space. A map change clears readiness. Only the creator sees Enter the ruin, enabled when 2–4 connected people are ready. Guide and Leave remain native actions; an active disconnect produces an explicit aborted result.
+
+### Survival HUD and contextual interaction
+
+The sixteen-emblem atlas supplies hearts, air, wave, map/chart, oxygen, mask, medkit, tranquilizer/dart, treasure, gate, hunter and refuge symbols. Health is three individual full/empty hearts (40×40). Tide uses the frontmatter gauge, changing mint → gold → danger as the clock advances. Air appears at local depth (1.2) and shows breath or active oxygen. Gear keeps numeric ammunition, medkit and tank counts. The lower-right treasure number is the local carried amount, including the great relic; it is not a rival score or a guarantee of banking.
+
+The interact badge uses an authored object emblem, E and a short hold-progress strip. It replaces live text diagnostics in production. Warned breaches use a wave/local lead-in strip; gas has the mask cue and a hunt has the monster cue. All reflect recipient-projected state.
+
+### Private chest puzzle
+
+A dark panel at (505,245), minimum (430×325), uses authored seal emblems and short instructions. Runes display briefly before input; circuit controls match lit targets; pressure uses two markers drawn in the gauge's own coordinates, progress and a Hit [Space] action. Close [Esc] cancels the private challenge. Authority validates every attempt; no remote player's challenge is shown.
+
+### Unlocked blueprint
+
+Collected equipment opens a static map panel at (345,110), size (750×665), with geometry scaled by (0.18). It shows short room names and only the owner's marker. No hidden explorer/monster markers, private inventory, live remote outcome or automatic map reveal appear.
+
+**The Private Geography Rule.** Static structure may be revealed by collected equipment; unseen actors and private state remain absent from recipient packets, not merely hidden by the renderer.
+
+### Explorers, mechanisms and water
+
+The original PixelLab/Aseprite crew uses four explorer-holding-p*-v2 bundles: fifteen actions in eight directions, a common (88×88) canvas, authored feet at (44,74) and a standing height of (44 world units). Walk and held-item walk use real leg poses. A confirmed pickup plays a planted bend/reach/lift, including with the other item held. Fingers overlap the prop and the torso hides the rear grip. Retain nearest filtering, complete silhouettes, grounded stride, slower relic carriage and provenance. The original Brine Stalker has its own eight-direction walk/idle/attack/stun bundle.
+
+Gates retain matching stone/brass frames and a retracting slab, including open/opening/closing/shut/obstructed states. Visible opening, collision, sight and water agree with authoritative progress. Wheel controls and the Landing boat use authored prop pixels; the two-person vault shows nearby held controls. Raster water clips to floor regions and shares local lighting; no global flood crossfade covers a dry refuge.
+
+**The Sealed Dry Refuge Rule.** Each production map has one single-entry refuge. Show guaranteed-safe feedback only when it is dry and its gate fully shut. It stays dry for as long as that gate remains closed, including at maximum exterior water and the ending; shelter never implies extracted treasure.
+
+Fully shut production gates block flow through their connector. Existing water remains after closure; another warned breach can enter another room. Prototype ordinary-door seepage is not a production visual or rule.
+
+### Final evacuation alert
+
+The wave emblem and EVACUATE / Return to the Landing instruction use the wine-backed alert at (390,275), minimum (660×190). The announcement appears briefly (3.2 seconds, or 5 with reduced motion). Red tide fill, remaining time and the extraction direction cue persist afterward. The timer has opaque Deep Water Ink backing at (654,57), size (136×34), to stay readable over the level. The alarm changes information, not camera motion or refuge protection.
+
+## Do's and Don'ts
+
+### Do:
+
+- **Do** preserve original raster materials, complete silhouettes, four numbered crew identities and source provenance.
+- **Do** use current map scale, readable camera framing and powered/dark/lantern sight while keeping walls and shut gates opaque.
+- **Do** anchor camera, light and grounded directional poses to the same reconciled rendered feet.
+- **Do** keep authored hearts, gear and object badges compact, with functional labels, numeric counts and keyboard focus.
+- **Do** make gate opening and regional water agree with authority; a dry sealed refuge stays visibly dry indefinitely while closed.
+- **Do** verify real Start, waiting, all map themes, darkness, gates, refuge, puzzle, hunter and finale at supported desktop sizes.
+
+### Don't:
+
+- **Don't** restore decorative Atlantis, city/video backdrops, pointer parallax or moving imagery over the playable map.
+- **Don't** replace scenery, explorer poses or authored emblems with drawn/procedural substitutes or copied reference-game assets.
+- **Don't** restore simultaneous-turn waiting, plan locks, fixed anchor travel or a planning sidebar.
+- **Don't** reveal hidden actors, exact rival inventories, private puzzles or live remote scores through a map or client-only hiding.
+- **Don't** portray late closure as draining water, or invalidate a dry sealed refuge through leaks, pressure, expiry or the ending.
+- **Don't** treat prototype screenshots, old stage counts or a local native render as current browser, WAN or human-balance acceptance.

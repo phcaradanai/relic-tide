@@ -15,6 +15,7 @@ import common
 import depth
 import pixellab
 import sprites
+import character_production
 
 
 class AssetTests(unittest.TestCase):
@@ -63,6 +64,34 @@ class AssetTests(unittest.TestCase):
             with self.assertRaises(common.PipelineError):
                 sprites.sprite_bundle('bad', frames, root=self.root)
         self.assertFalse((self.root / 'assets/generated/sprites/bad').exists())
+
+    def test_large_atlas_wrap_preserves_frames_and_gutters(self):
+        frames = []
+        for i in range(65):
+            frame = Image.new('RGBA', (64, 64))
+            frame.putpixel((30, 50), (i, 100, 200, 255))
+            frames.append(frame)
+        target = sprites.sprite_bundle('wrapped', frames, root=self.root)
+        atlas = Image.open(target / 'atlas.png')
+        self.assertLessEqual(atlas.width, 4096)
+        self.assertEqual(atlas.crop((1, 67, 65, 131)).tobytes(), frames[62].tobytes())
+        self.assertEqual(atlas.getpixel((0, 66)), (0, 0, 0, 0))
+        self.assertIn('region = Rect2(1, 67, 64, 64)', (target / 'frames.tres').read_text())
+
+    def test_character_retries_only_definite_rate_limit_rejection(self):
+        payload = {'frame_count': 8}
+        with patch.object(character_production, 'folder', return_value=self.root), patch.object(character_production, 'request') as request:
+            request.side_effect = common.PipelineError('PixelLab HTTP 429. Retry later.')
+            with self.assertRaises(common.PipelineError): character_production.submit('idle', '/animate-character', payload)
+            self.assertEqual(json.loads((self.root / 'idle.json').read_text())['state'], 'rate_limited')
+            request.side_effect = None
+            request.return_value = {'background_job_ids': ['accepted']}
+            character_production.submit('idle', '/animate-character', payload)
+            with self.assertRaises(common.PipelineError): character_production.submit('idle', '/animate-character', payload)
+            self.assertEqual(request.call_count, 2)
+            (self.root / 'walk.json').write_text(json.dumps({'state': 'submitting', 'payload': payload}))
+            with self.assertRaises(common.PipelineError): character_production.submit('walk', '/animate-character', payload)
+            self.assertEqual(request.call_count, 2)
 
     def test_atomic_bundle_failure_and_symlink_escape(self):
         with self.assertRaises(RuntimeError):

@@ -50,7 +50,7 @@ func run() -> void:
 	scene.session.connection_error.connect(func(message):
 		check(false, message)
 		finish())
-	if role == "host": scene.session.create_room(count)
+	if role == "host": scene.session.create_room(count, "prototype")
 	else: scene.session.refresh_rooms()
 func rooms(list: Array) -> void:
 	if role == "host" or joining or list.is_empty(): return

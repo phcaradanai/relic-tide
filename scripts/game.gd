@@ -1,7 +1,8 @@
 class_name TideGame
 extends RefCounted
 ## Pure fixed-step expedition rules. Transport owns time and event order.
-const Map = preload("res://scripts/level_map.gd")
+const MapType = preload("res://scripts/expedition_map.gd")
+const Survival = preload("res://scripts/expedition_systems.gd")
 const STEP := 0.05
 const INPUT_TIMEOUT_TICKS := 5
 const TIDE_LEAD_IN := 45.0
@@ -18,6 +19,8 @@ const HOLD_TIMEOUT_TICKS := 10
 const BREATH_MAX := 12.0
 const RELIC_VALUE := 100
 var tick := 0
+var Map = MapType.new()
+var expedition = null
 var explorers: Array[Dictionary] = []
 var inputs: Array[Dictionary] = []
 var event_sequences: Array[int] = []
@@ -29,14 +32,18 @@ var valve_holds: Dictionary = {}
 var vault_holds: Dictionary = {}
 var vault_progress := 0.0
 var extraction_holds: Dictionary = {}
-var relic := {"state": "pedestal", "holder": -1, "position": Map.relic_position()}
+var relic := {"state": "pedestal", "holder": -1, "position": Vector2.ZERO}
 var finished := false
 var finish_reason := ""
 var results: Array[Dictionary] = []
 var winners: Array[int] = []
 var tide_level := 0.0
-var lantern := {"holder": -1, "position": Map.from_art(Vector2(205, 741))}
-func _init(_seed: int = 1, count: int = 2) -> void:
+var lantern := {"holder": -1, "position": Vector2.ZERO}
+func _init(seed_value: int = 1, count: int = 2, map_id: String = "prototype") -> void:
+	Map = MapType.new(map_id)
+	relic.position = Map.relic_position()
+	lantern.position = Map.from_art(Vector2(205, 741)) if map_id == "prototype" else Map.spawn(0) + Vector2(-65, 25)
+	if Map.id != "prototype": expedition = Survival.new(seed_value, Map)
 	for region in Map.REGIONS:
 		water_depths[region] = 0.0
 		var area := 0.0
@@ -48,12 +55,14 @@ func _init(_seed: int = 1, count: int = 2) -> void:
 		doors[door_id] = {"progress": progress, "target_open": spec.initially_open, "locked": spec.locked, "obstructed": false, "state": "open" if progress >= 1.0 else "locked" if spec.locked else "closed"}
 	for who in range(clampi(count, 2, 4)):
 		explorers.append({"name": "P%d" % (who + 1), "position": Map.spawn(who), "velocity": Vector2.ZERO, "region": "R0", "state": "exploring", "has_light": false, "has_relic": false, "breath": BREATH_MAX, "score": 0})
+		if expedition != null: expedition.prepare_player(explorers[who])
 		inputs.append({"direction": Vector2.ZERO, "sequence": -1, "applied_sequence": -1, "received_tick": -100})
 		event_sequences.append(-1)
 func _active(who: int) -> bool:
 	return not finished and who >= 0 and who < explorers.size() and explorers[who].state == "exploring"
 func _claim_event(who: int, sequence: int) -> bool:
 	if not _active(who) or sequence < 0 or sequence <= event_sequences[who]: return false
+	if expedition != null and expedition.movement_factor(self, who) <= 0.0: return false
 	event_sequences[who] = sequence
 	return true
 func _closed_doors(except_id: String = "") -> Array[String]:
@@ -62,6 +71,7 @@ func _closed_doors(except_id: String = "") -> Array[String]:
 	return result
 func _can_reach(who: int, point: Vector2, closed_doors: Array = []) -> bool:
 	if not _active(who): return false
+	if expedition != null and expedition.movement_factor(self, who) <= 0.0: return false
 	var position: Vector2 = explorers[who].position
 	return position.distance_to(point) <= Map.USE_RADIUS and Map.line_of_sight(position, point, closed_doors)
 func use_light(who: int, kind: String, sequence: int) -> bool:
@@ -165,6 +175,7 @@ func _door_permeability(door_id: String) -> float:
 	var progress: float = door.progress
 	if Map.DOORS[door_id].refuge:
 		return 0.0 if progress <= 0.0001 else progress
+	if expedition != null: return progress
 	return 0.08 + 0.92 * progress
 func _advance_doors() -> void:
 	for door_id in doors:
@@ -221,11 +232,14 @@ func _advance_water() -> void:
 	var previous: Dictionary = water_depths.duplicate()
 	var next: Dictionary = previous.duplicate()
 	var elapsed := float(tick + 1) * STEP
-	tide_level = 0.0 if elapsed <= TIDE_LEAD_IN else Map.MAX_WATER_DEPTH * clampf((elapsed - TIDE_LEAD_IN) / (EXPEDITION_LENGTH - TIDE_LEAD_IN), 0.0, 1.0)
-	var feed_region := "C1" if valve_mode == "main" else "C2"
-	var feed_volume: float = maxf(0.0, tide_level - previous[feed_region]) * region_areas[feed_region] * SOURCE_RATE * STEP
-	next[feed_region] += feed_volume / region_areas[feed_region]
-	if valve_mode == "service":
+	if expedition != null:
+		expedition.feed_water(self, previous, next)
+	else:
+		tide_level = 0.0 if elapsed <= TIDE_LEAD_IN else Map.MAX_WATER_DEPTH * clampf((elapsed - TIDE_LEAD_IN) / (EXPEDITION_LENGTH - TIDE_LEAD_IN), 0.0, 1.0)
+		var feed_region := "C1" if valve_mode == "main" else "C2"
+		var feed_volume: float = maxf(0.0, tide_level - previous[feed_region]) * region_areas[feed_region] * SOURCE_RATE * STEP
+		next[feed_region] += feed_volume / region_areas[feed_region]
+	if expedition == null and valve_mode == "service":
 		# Explicit passive outlet from the main crossing; this only removes water
 		# that is already there and is disabled while the main feed is selected.
 		var drain_volume: float = previous.C1 * region_areas.C1 * BYPASS_DRAIN_RATE * STEP
@@ -267,8 +281,12 @@ func _advance_survival_and_extraction() -> void:
 		if not _active(who): continue
 		var explorer: Dictionary = explorers[who]
 		var depth: float = water_depths[explorer.region]
-		if depth >= Map.DEEP_DEPTH: explorer.breath = maxf(0.0, explorer.breath - STEP)
-		elif depth < Map.SHALLOW_DEPTH: explorer.breath = minf(BREATH_MAX, explorer.breath + STEP * 2.0)
+		if expedition != null:
+			expedition.breathe(self, who, depth)
+			if not _active(who): continue
+		else:
+			if depth >= Map.DEEP_DEPTH: explorer.breath = maxf(0.0, explorer.breath - STEP)
+			elif depth < Map.SHALLOW_DEPTH: explorer.breath = minf(BREATH_MAX, explorer.breath + STEP * 2.0)
 		if explorer.breath <= 0.000001:
 			_drop_relic(who)
 			_release_light(who)
@@ -287,6 +305,7 @@ func _advance_survival_and_extraction() -> void:
 			relic.state = "extracted"
 			explorer.has_relic = false
 			explorer.score += RELIC_VALUE
+		if expedition != null: expedition.bank(self, who)
 		_release_light(who)
 		_clear_holds(who)
 		explorer.state = "escaped"
@@ -317,6 +336,7 @@ func _finish(reason: String) -> void:
 		for explorer in explorers: explorer.has_relic = false
 func step() -> void:
 	if finished: return
+	if expedition != null: expedition.before_water(self)
 	# Door closure advances before same-tick transfer. A dry, fully sealed R4
 	# therefore has exactly zero incoming flow on the threshold tick.
 	_advance_vault_holds()
@@ -329,13 +349,17 @@ func step() -> void:
 		var explorer: Dictionary = explorers[who]
 		if not _active(who): continue
 		var direction: Vector2 = input.direction if tick - input.received_tick < INPUT_TIMEOUT_TICKS else Vector2.ZERO
+		if expedition != null:
+			if not direction.is_zero_approx(): explorer.facing = direction
+			direction *= expedition.movement_factor(self, who)
 		var before: Vector2 = explorer.position
 		var start_depth: float = water_depths[explorer.region]
-		explorer.position = Map.move(before, direction, STEP, closed, start_depth, water_depths, explorer.has_relic)
+		explorer.position = Map.move(before, direction, STEP, closed, start_depth, water_depths, explorer.has_relic, expedition != null and expedition.has_oxygen(self, who))
 		explorer.velocity = (explorer.position - before) / STEP
 		explorer.region = Map.region_at(explorer.position)
 		input.applied_sequence = input.sequence
 	_advance_survival_and_extraction()
+	if expedition != null: expedition.advance_hunters(self)
 	tick += 1
 	if not explorers.any(func(explorer): return explorer.state == "exploring"): _finish("all_terminal")
-	elif float(tick) * STEP >= EXPEDITION_LENGTH: _finish("deadline")
+	elif float(tick) * STEP >= (EXPEDITION_LENGTH if expedition == null else expedition.duration): _finish("deadline")

@@ -1,0 +1,36 @@
+{
+  "source": "built-in imagegen",
+  "style_reference": "assets/ruin-movement.png",
+  "sha256": "f30e122f57aa3fdedebc25697a5b781774ba275b3f2f628f7fb5412c399d956a",
+  "size": [
+    1536,
+    1024
+  ],
+  "regions": {
+    "frame": [
+      80,
+      25,
+      710,
+      411
+    ],
+    "horizontal_panel": [
+      855,
+      151,
+      590,
+      248
+    ],
+    "side_panel": [
+      370,
+      462,
+      195,
+      510
+    ],
+    "wheel_pedestal": [
+      887,
+      506,
+      483,
+      455
+    ]
+  },
+  "runtime": "scripts/world_mechanisms.gd"
+}

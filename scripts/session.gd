@@ -84,8 +84,14 @@ func _request(kind: String, data: Dictionary = {}) -> Error:
 	var error := connect_directory()
 	if error != OK: _pending.clear()
 	return error
-func create_room(capacity: int = 4) -> Error:
-	return _request("create", {"capacity": capacity})
+func create_room(capacity: int = 4, map_id: String = "lagoon") -> Error:
+	return _request("create", {"capacity": capacity, "map_id": map_id})
+func select_map(map_id: String) -> void:
+	_request("select_map", {"map_id": map_id})
+func set_ready(value: bool) -> void:
+	_request("ready", {"ready": value})
+func lobby_movement(command: Dictionary) -> void:
+	if mode == "client": _request("lobby_input", command)
 func join_room(code: String) -> Error:
 	return _request("join", {"code": code.strip_edges().to_upper()})
 func refresh_rooms() -> Error:

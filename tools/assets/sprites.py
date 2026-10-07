@@ -25,10 +25,14 @@ def sprite_bundle(name: str, frames: list, *, animation: str = 'idle', fps: floa
     animations = animations or [{'name': animation, 'fps': fps, 'loop': True,
                                 'frames': [(i, 1.0) for i in range(len(frames))]}]
     with output_bundle('sprites', name, root) as (stage, target):
-        # One transparent pixel between cells; no crop/resize/recolor or guessed foot anchor.
-        sheet = Image.new('RGBA', ((size[0] + 2) * len(frames), size[1] + 2))
+        # One transparent pixel around cells. Keep large directional sets within
+        # the minimum desktop WebGL texture budget rather than a giant strip.
+        columns = min(len(frames), max(1, 4096 // (size[0] + 2)))
+        rows = (len(frames) + columns - 1) // columns
+        sheet = Image.new('RGBA', ((size[0] + 2) * columns, (size[1] + 2) * rows))
         for index, frame in enumerate(frames):
-            sheet.paste(frame, ((size[0] + 2) * index + 1, 1))
+            sheet.paste(frame, ((size[0] + 2) * (index % columns) + 1,
+                               (size[1] + 2) * (index // columns) + 1))
         sheet.save(stage / 'atlas.png')
         texture_path = resource_path(target / 'atlas.png', root)
         lines = [f'[gd_resource type="SpriteFrames" load_steps={len(frames)+2} format=3]', '',
@@ -36,7 +40,7 @@ def sprite_bundle(name: str, frames: list, *, animation: str = 'idle', fps: floa
         for index in range(len(frames)):
             lines += [f'[sub_resource type="AtlasTexture" id="Frame_{index}"]',
                       'atlas = ExtResource("1")',
-                      f'region = Rect2({(size[0]+2)*index+1}, 1, {size[0]}, {size[1]})', '']
+                      f'region = Rect2({(size[0]+2)*(index % columns)+1}, {(size[1]+2)*(index // columns)+1}, {size[0]}, {size[1]})', '']
         entries = []
         for item in animations:
             validate_name(item['name'])

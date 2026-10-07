@@ -8,6 +8,7 @@ var joining := false
 var failures := 0
 var checks := 0
 var began := 0
+var ready_sent := false
 func _init() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--role="): role = arg.substr(7)
@@ -56,7 +57,12 @@ func lobby(info: Dictionary) -> void:
 	check(scene.start_button.visible == info.is_host, "Only creator sees start control")
 	if info.count == 2:
 		check(not scene.code_field.editable and not scene.room_list.visible, "Lobby contains own room without stale browser")
-		if role == "host": check(not scene.start_button.disabled, "Two players unlock creator start")
+		if not ready_sent:
+			ready_sent = true
+			check(scene.start_button.disabled if role == "host" else true, "Creator waits for player readiness")
+			scene.session.set_ready(true)
+		if not info.can_start: return
+		if role == "host": check(not scene.start_button.disabled, "Two ready players unlock creator start")
 		capture("rooms-lobby-%s-small" % role)
 		finish()
 func error(message: String) -> void:

@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "kind": "depth",
+  "name": "atlantis-background-v1",
+  "size": [
+    1536,
+    1024
+  ],
+  "encoding": "normalized-relative-inverse-depth-u8",
+  "near_is_white": true,
+  "source": "assets/city.png",
+  "source_sha256": "7dc2b1f838885142586286cfd8d4e59f8c57814383ea47682833b7fe7f07368d",
+  "depth_sha256": "86e5fafd1849fec2165a42a6f3e3a174dd6fc82d630ff4e603df2f65f100c0e9",
+  "provenance": {
+    "provider": "depth-anything-v2-local",
+    "encoder": "vits",
+    "input_size": 518,
+    "device_requested": "cpu",
+    "checkpoint_sha256": "715fade13be8f229f8a70cc02066f656f2423a59effd0579197bbf57860e1378"
+  }
+}

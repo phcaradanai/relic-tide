@@ -19,8 +19,8 @@ const CARRY_MULTIPLIER := 0.75
 const CONTROL_RADIUS := 24.0
 const VAULT_CONTROLS := {"A": Vector2(1268, 350), "B": Vector2(1326, 350)}
 const RELIC_ART_POSITION := Vector2(1300, 245)
-const EXTRACTION_ART_RECT := Rect2(330, 710, 75, 65)
-const VALVE_ART_POSITION := Vector2(880, 245)
+const EXTRACTION_ART_RECT := Rect2(233, 746, 82, 36)
+const VALVE_ART_POSITION := Vector2(897, 278)
 const ART_TORCHES := [Vector2(245, 375), Vector2(460, 455), Vector2(790, 355), Vector2(1295, 425), Vector2(1295, 650), Vector2(190, 740), Vector2(365, 245), Vector2(790, 270), Vector2(1300, 205)]
 const REGIONS := ["R0", "R1", "R2", "R3", "R4", "C0", "C1", "C2"]
 const NAMES := {"R0": "Landing", "R1": "Archive", "R2": "Workshop", "R3": "Inner Vault", "R4": "Refuge", "C0": "West Hall", "C1": "Flood Crossing", "C2": "Service Passage"}
@@ -53,7 +53,12 @@ const ART_FLOORS := {
 	"C1": [Rect2(333, 430, 913, 65), Rect2(753, 307, 70, 123), Rect2(1246, 307, 102, 371)],
 	"C2": [Rect2(395, 174, 285, 55)],
 }
-const ART_OBSTACLES := [Rect2(207, 215, 66, 65), Rect2(336, 184, 59, 18)]
+# Ground contours of furniture, not opaque walls. The armillary's round
+# plinth stops feet; its low, open structure does not cast a solid sight wedge.
+const ART_PROP_COLLIDERS := [
+	[Vector2(201, 250), Vector2(205, 239), Vector2(216, 228), Vector2(232, 223), Vector2(249, 224), Vector2(265, 231), Vector2(277, 242), Vector2(279, 254), Vector2(272, 265), Vector2(257, 275), Vector2(238, 279), Vector2(221, 275), Vector2(208, 265)],
+	[Vector2(336, 184), Vector2(395, 184), Vector2(395, 202), Vector2(336, 202)],
+]
 const ART_SPAWNS := [Vector2(175, 741), Vector2(240, 741), Vector2(305, 741), Vector2(370, 741)]
 static func from_art(point: Vector2) -> Vector2:
 	return point * SIZE / ART_SIZE
@@ -88,6 +93,11 @@ static func door_barrier(door_id: String) -> Rect2:
 	var segment := door_segment(door_id)
 	var thickness := 5.0
 	return Rect2(segment[0] - Vector2(thickness, thickness), segment[1] - segment[0] + Vector2(thickness * 2, thickness * 2))
+static func door_shadow_polygon(door_id: String) -> PackedVector2Array:
+	# Rendered wall faces have a 14px reveal band. A shut gate must meet that
+	# boundary; otherwise light leaks around its jambs into a hidden room.
+	var rect := door_barrier(door_id).grow(14.0)
+	return PackedVector2Array([rect.position, Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y)])
 static func door_distance(point: Vector2, door_id: String) -> float:
 	var segment := door_segment(door_id)
 	var a := segment[0]
@@ -136,9 +146,8 @@ static func line_of_sight(a: Vector2, b: Vector2, closed_doors: Array = []) -> b
 		if interval.x > covered + 0.00001: return false
 		covered = maxf(covered, interval.y)
 	if covered < 0.99999: return false
-	for rect: Rect2 in ART_OBSTACLES:
-		var interval := segment_interval(a, b, Rect2(from_art(rect.position), from_art(rect.size)))
-		if interval.x >= 0 and interval.y - interval.x > 0.00001: return false
+	# Room furniture retains its painted contact shadow. Only architecture and
+	# closed doors obstruct eye-level visibility, in both authority and renderer.
 	for door_id: String in closed_doors:
 		if not DOORS.has(door_id): continue
 		var interval := segment_interval(a, b, door_barrier(door_id))
@@ -193,15 +202,25 @@ static func wall_segments() -> Array[PackedVector2Array]:
 			var middle := Vector2((xs[i] + xs[i + 1]) * 0.5, y)
 			if all_floors.any(func(rect): return rect.has_point(middle - Vector2(0, 0.1))) != all_floors.any(func(rect): return rect.has_point(middle + Vector2(0, 0.1))):
 				result.append(PackedVector2Array([Vector2(xs[i], y), Vector2(xs[i + 1], y)]))
-	for obstacle: Rect2 in ART_OBSTACLES:
-		var rect := Rect2(from_art(obstacle.position), from_art(obstacle.size))
-		result.append(PackedVector2Array([rect.position, Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y), rect.position]))
 	return result
+static func prop_polygons() -> Array[PackedVector2Array]:
+	var result: Array[PackedVector2Array] = []
+	for authored: Array in ART_PROP_COLLIDERS:
+		var polygon := PackedVector2Array()
+		for point: Vector2 in authored: polygon.append(from_art(point))
+		result.append(polygon)
+	return result
+static func prop_blocks_feet(point: Vector2) -> bool:
+	for polygon: PackedVector2Array in prop_polygons():
+		if Geometry2D.is_point_in_polygon(point, polygon): return true
+		for i in polygon.size():
+			var closest := Geometry2D.get_closest_point_to_segment(point, polygon[i], polygon[(i + 1) % polygon.size()])
+			if point.distance_to(closest) < FOOT_RADIUS: return true
+	return false
 static func walkable(point: Vector2, closed_doors: Array = []) -> bool:
 	if not point.is_finite(): return false
+	if prop_blocks_feet(point): return false
 	var footprint := Rect2(point - Vector2.ONE * FOOT_RADIUS, Vector2.ONE * FOOT_RADIUS * 2)
-	for obstacle: Rect2 in ART_OBSTACLES:
-		if footprint.intersects(Rect2(from_art(obstacle.position), from_art(obstacle.size))): return false
 	for door_id: String in closed_doors:
 		if footprint.intersects(door_barrier(door_id)): return false
 	# Partition the footprint at every floor edge: every resulting cell must be

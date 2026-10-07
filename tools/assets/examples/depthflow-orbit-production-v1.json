@@ -1,0 +1,26 @@
+{
+  "motion": {
+    "style": "orbit",
+    "amplitude": 1.2,
+    "speed": 1,
+    "focus": 0,
+    "phase": 0,
+    "reverse": false,
+    "smooth": true,
+    "loop": true
+  },
+  "render": {
+    "duration": 8,
+    "fps": 30,
+    "quality": 100,
+    "ssaa": 1,
+    "edge_fix": 5,
+    "invert_depth": 0,
+    "tiling_mode": "mirror"
+  },
+  "effects": {
+    "dof_enable": false,
+    "vignette_enable": false,
+    "color_enable": false
+  }
+}

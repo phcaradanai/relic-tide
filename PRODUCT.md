@@ -10,32 +10,32 @@ The four pillars are Explore, Cooperate, Betray and Escape. This is social tensi
 
 ## Authoritative documents and implementation status
 
-This document defines the approved target. REALTIME_SPEC.md defines the first level and precise prototype rules; DESIGN.md defines presentation; REALTIME_PLAN.md records delivery stages and acceptance.
+This document defines the approved target. GAMEPLAY_EXPANSION.md records the user's 7 October 2026 expansion; REALTIME_SPEC.md defines production rules and the preserved prototype fixture; DESIGN.md defines presentation; REALTIME_PLAN.md records delivery and acceptance.
 
-Stages 1–4 are implemented and automatically checked. The current web build includes physical doors, regional water flow, a route-changing valve, and exactly one refuge at R4. Independent online movement, shared authored collision, client prediction and recipient-filtered local vision continue through the existing room service. Two distinct explorers hold the vault controls, compete for one carryable relic and return to the Landing boat to extract it. Breath, drowning and final outcomes are authoritative. The painted shrine remains scenery; only the separate physical relic awards treasure after extraction. Human balance and WAN playtests remain pending.
+The production game now has three large authored levels, a Start screen, a physical waiting room, host map selection and readiness. Seeded local breaches, blackouts, toxic rooms, intermittent hunters, private chest puzzles and survival equipment run in the same fixed-step authority as movement, gates, the two-person vault and extraction. Human balance and WAN playtests remain pending. Current proof is recorded in EXPANSION_VERIFICATION.md; historical first-slice evidence remains in REALTIME_VERIFICATION.md.
 
-## First playable slice
+## Production expeditions
 
-One authored ruin with five rooms and three corridor regions:
+Choose the Drowned Lagoon, Brass Foundry or Sunken Catacombs. Each authored 3840×2560 layout has twelve rooms, branching segmented corridors, physical gates, eight puzzle chests, one cooperative vault, a Landing boat and exactly one single-entry refuge. Stable roles include:
 - Landing / extraction.
 - Archive, an ordinary room on the alternate route.
 - Workshop, an ordinary room with the flood-routing valve.
 - Inner Vault, containing one valuable carryable relic.
 - One watertight refuge.
 
-Players move continuously, use nearby objects, open and close doors, cooperate to unlock one vault gate, carry/drop/pick up the relic, and extract. Carrying slows movement. A main corridor and a longer alternate path create choices when the valve redirects incoming water.
+Players move continuously, solve rune, circuit and pressure puzzles, collect exploration tools and bankable treasure, close routes against warned flooding, cooperate to unlock the vault, and physically return to extract. A collected map reveals static structure; a chart points toward treasure. Oxygen enables submerged traversal, a gas mask protects against toxic exposure, medkits restore a heart and limited tranquilizer ammunition can delay monsters or other explorers. Hunters arrive in short waves with rest intervals. Explorers have three hearts and a separate air reserve. Carrying the great relic still slows movement.
 
-Do not scale the refuge count with player count. A level has only **1–2 refuge rooms**; this first level has **one**.
+Do not scale refuge count with player count. Each shipped level has **one**. The old five-room Sluice Vault is an internal regression fixture, never a fourth public map.
 
 ## Flooding and guaranteed refuge
 
-Corridor water rises; room water is simulated locally and admitted through connecting openings. Water changes traversal and movement, not just the clock or artwork.
+Seeded breaches announce their room or passage 24 seconds before admitting water. Water spreads through connected openings using simultaneous area-weighted transfers. Its actual depth changes traversal, speed and air consumption.
 
-Closing an ordinary room door reduces water inflow and delays flooding. Closing a refuge door completely while the room is still dry guarantees **100% protection for as long as the door stays closed**, even at maximum exterior water. No pressure leak, automatic door breakage, protection expiry or round-end flooding may invalidate this guarantee.
+Fully shutting a production gate blocks flow through that connector. Existing water stays after closure, and another warned breach may independently enter a different room. Closing a refuge door completely while the room is still dry guarantees **100% protection for as long as the door stays closed**, even at maximum exterior water. No pressure leak, automatic door breakage, protection expiry or round-end flooding may invalidate this guarantee.
 
 Opening a refuge into a flooded corridor admits water again. Closing after water entered stops new inflow but does not erase existing water. A refuge has one doorway and no hidden water source. Shelter is not extraction.
 
-The exact prototype timing, flood thresholds and event ordering are in REALTIME_SPEC.md. Numeric tuning values may change after playtesting; the refuge guarantee and 1–2-room limit may not.
+Each seeded expedition lasts 10–30 minutes. A global evacuation announcement begins 60–120 seconds before its deadline, with a red gauge, countdown and direction toward the Landing. A refuge preserves life and dryness, but only reaching the boat banks treasure. Numeric tuning may change after playtesting; the refuge guarantee may not.
 
 ## Physical cooperation and betrayal
 
@@ -52,7 +52,7 @@ No abstract Steal, Push or Sabotage menu command belongs in the first slice. Any
 
 The central room service owns movement validation, world objects, flood state, relic ownership, extraction and outcomes. Clients send intentions, not trusted positions, water levels, inventories or scores. Keep domain rules independent of scenes, timers, input and rendering; the service supplies time and validated world events.
 
-Retain recipient-specific projections. Following the user's 2026-10-06 refinement, players see only their surroundings according to light and wall line of sight. The camera centers on the explorer; there is no whole-map view or global player minimap. Nearby torches widen vision and a physically held lantern widens it away from torches. Unseen positions, exact inventories, private scores and remote outcomes remain hidden. A visible carried relic/light is observable artwork, not permission to send complete inventory. Final scores/outcomes become public at the ending.
+Retain recipient-specific projections. The user's latest 7 October FOV refinement uses supplied Among Us / Goose Goose Duck screenshots: actors should occupy about 12–14% of viewport height. A steady 2.6 gameplay camera provides that scale while preserving the large level and normal sight range. Darkness, power loss, walls and shut gates narrow sight; a physically held lantern helps in darkness. A collected map reveals static geography and the owner's marker, never hidden explorers. Unseen positions, exact inventories, private scores, puzzle challenges and remote outcomes remain hidden. A visible carried relic/light is observable artwork, not permission to send complete inventory. Final scores/outcomes become public at the ending.
 
 Open doorways may permit sight across logical region ids within light range. Walls and future closed doors block sight. This supersedes the earlier strict same-region visibility rule; seeing a door move still does not authorize disclosure of an unseen player's coordinates.
 
@@ -60,7 +60,7 @@ Open doorways may permit sight across logical region ids within light range. Wal
 
 Godot 4, GDScript, browser export with single-threaded Compatibility/WebGL 2. Support desktop/laptop mouse and keyboard with a canvas of at least 960 × 600; phone portrait remains outside this slice.
 
-Reuse the central WebSocket service, six-character room codes and live room list. Full lobbies remain visible but reject joins; started rooms leave the list. The creator starts with 2–4 connected people. Players never enter an IP address or port.
+Reuse the central WebSocket service, six-character room codes and live room list. Full lobbies remain visible but reject joins; started rooms leave the list. Players can walk while waiting. Only the creator chooses the map and starts; changing maps clears readiness. Starting requires 2–4 connected, ready people. Players never enter an IP address or port.
 
 An active disconnect aborts the expedition explicitly. Reconnect, host migration and continuation after disconnect remain separate work. The server must continue its real-time clock when a client opens the guide or its browser tab is inactive.
 
@@ -68,7 +68,7 @@ An active disconnect aborts the expedition explicitly. Reconnect, host migration
 
 Use supplied/generated raster scenery and explorer artwork, animated in code. Build rooms from separate floor, wall, foreground, door, object, character and water assets; invisible collision and shadow geometry are allowed. Do not draw scenery or substitute explorers from polygons, meshes or procedural shapes.
 
-Preserve painted limestone, blue/turquoise water, warm torch/relic light, recognizable explorers, compact native controls, system fonts and asset provenance. Keep the background independent of mouse motion. Reduced motion suppresses decorative loops while retaining actual gameplay updates.
+Preserve painted limestone, blue/turquoise water, warm brass, recognizable explorers, compact native controls, system fonts and asset provenance. The entire environment belongs to the playable floor/wall/prop map; no city or video backdrop is used. The HUD uses authored emblems, three hearts and air/tide gauges. Reduced motion suppresses decorative loops while retaining actual gameplay updates.
 
 The older four-layer city image is a useful legacy asset/reference; its anchor layout, fixed layer count and six-second travel are not the new playable-world contract.
 
@@ -86,4 +86,4 @@ Run rules, privacy, authority, scene, network, renderer and browser verification
 
 ## Non-goals
 
-Additional maps, random generation, combat, progression, fixed traitor roles, elaborate menus, automatic matchmaking, reconnect, mobile redesign, full fluid simulation and speculative transport/provider abstractions.
+Progression, fixed traitor roles, automatic matchmaking, reconnect, mobile redesign, full fluid simulation and speculative transport/provider abstractions. Additional authored maps, seeded events and limited tranquilizer combat are explicitly in scope under the user's 7 October expansion.

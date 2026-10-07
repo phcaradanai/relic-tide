@@ -47,7 +47,7 @@ func run() -> void:
 	scene.session.connection_error.connect(func(message):
 		check(false, message)
 		finish())
-	if role == "host": scene.session.create_room(count)
+	if role == "host": scene.session.create_room(count, "prototype")
 	else: scene.session.refresh_rooms()
 func follow_path() -> Vector2:
 	while not path.is_empty() and scene.prediction.position.distance_to(path[0]) < 3 and scene.game.explorers[scene.active_player].position.distance_to(path[0]) < 3:

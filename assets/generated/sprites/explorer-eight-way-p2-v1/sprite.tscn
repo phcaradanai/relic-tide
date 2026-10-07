@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="SpriteFrames" path="res://assets/generated/sprites/explorer-eight-way-p2-v1/frames.tres" id="1"]
+
+[node name="explorer-eight-way-p2-v1" type="AnimatedSprite2D"]
+texture_filter = 1
+sprite_frames = ExtResource("1")
+animation = &"walk_south"

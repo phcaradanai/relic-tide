@@ -7,9 +7,11 @@ func _init() -> void:
 func run() -> void:
 	var port := 24567
 	var address := "127.0.0.1"
+	var qa_prototype := false
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--port="): port = int(arg.substr(7))
 		elif arg.begins_with("--bind="): address = arg.substr(7)
+		elif arg == "--qa-prototype": qa_prototype = true
 	var parent := Node.new()
 	parent.name = "RelicTide"
 	root.add_child(parent)
@@ -17,6 +19,7 @@ func run() -> void:
 	session.name = "Session"
 	parent.add_child(session)
 	var error: Error = session.serve(port, address)
+	if error == OK: session.directory.allow_prototype = qa_prototype
 	if error != OK:
 		printerr("Room server could not start: ", error_string(error))
 		quit(1)
