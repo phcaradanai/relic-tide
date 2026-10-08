@@ -25,7 +25,7 @@ Open [localhost:8080](http://127.0.0.1:8080) and keep the service terminal runni
 | WASD / arrows | Walk in any direction |
 | E | Use the nearest chest, gate, mechanism, lantern or relic; hold for valve, paired vault controls or extraction |
 | Q | Drop the relic first, otherwise the lantern |
-| M | Open the static layout after collecting a map |
+| 2 | Open the static layout after collecting a map |
 | F | Fire a tranquilizer toward the mouse, when equipped |
 | 1 | Use a medkit |
 | Space | Ready in the waiting room; hit the pressure puzzle gauge |
@@ -36,7 +36,7 @@ Open [localhost:8080](http://127.0.0.1:8080) and keep the service terminal runni
 
 Rune chests ask you to remember four seals; circuit chests ask you to match three switches; pressure chests require three timed hits. Rewards include maps, treasure charts, oxygen tanks, gas masks, medkits or tranquilizers with limited ammunition. A solved chest grants treasure once and permits each other player one provision claim. The chart points toward a static unopened goal and never tracks a hidden holder.
 
-Three hearts show health; a medkit heals one. Deep water drains tank oxygen first, then the 20-second air supply. Empty air causes drowning. A mask protects against toxic rooms. Tranquilizers briefly stun visible monsters or other players. Wounds and carried relics slow walking. Occupied gateways cannot close around an explorer. Local flood warnings precede water entry by 24 seconds. Closing a gate stops transfer across that connection; existing water and breaches on either side remain.
+Three hearts show health; a medkit heals one. Deep water drains tank oxygen first, then the 20-second air supply. Empty air causes drowning. A mask protects against toxic rooms. Tranquilizers briefly stun visible monsters or other players. Each monster wave sends one hunter after each active explorer. Hunters search the last seen position briefly and only leave after losing the trail or pursuit range; their visible departure is animated. Wounds and carried relics slow walking. Occupied gateways cannot close around an explorer. Local flood warnings precede water entry by 24 seconds. Closing a gate stops transfer across that connection; existing water and breaches on either side remain.
 
 Hold the two separate vault controls with a partner for 1.5 seconds to unlock its single physical idol. Hold E at the Landing boat for two seconds to escape and bank treasure plus 100 points for the idol. Death drops held physical items. Unextracted treasure is not banked.
 

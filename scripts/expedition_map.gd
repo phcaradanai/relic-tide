@@ -17,6 +17,102 @@ const POWERED_VISION := 1250.0
 const CELL_SIZE := 256.0
 const HALL_WIDTH := 144.0
 const ROOM_SIZE := Vector2(520, 380)
+# Painted furniture uses small ground contacts; it never adds eye-level occlusion.
+const FURNITURE := {
+	"shelf": {"height": 85.0, "half": Vector2(40, 9)},
+	"urns": {"height": 45.0, "half": Vector2(20, 9), "round": true},
+	"sarcophagus": {"height": 90.0, "half": Vector2(22.5, 32.5)},
+	"engine": {"height": 85.0, "half": Vector2(27.5, 8)},
+	"writing_desk": {"height": 42.0, "half": Vector2(27, 8)},
+	"chair": {"height": 34.0, "half": Vector2(8, 4)},
+	"bookcase": {"height": 80.0, "half": Vector2(44, 8)},
+	"cot": {"height": 36.0, "half": Vector2(27, 10)},
+	"crates": {"height": 46.0, "half": Vector2(27, 10)},
+	"barrels": {"height": 44.0, "half": Vector2(21, 8), "round": true},
+	"rope": {"height": 22.0, "half": Vector2(14, 6), "round": true},
+	"sacks": {"height": 33.0, "half": Vector2(17, 7), "round": true},
+	"workbench": {"height": 64.0, "half": Vector2(33, 9)},
+	"anvil": {"height": 43.0, "half": Vector2(17, 7)},
+	"pump": {"height": 72.0, "half": Vector2(22, 8), "round": true},
+	"chart_table": {"height": 42.0, "half": Vector2(26, 7)},
+	"planter": {"height": 47.0, "half": Vector2(14, 8), "round": true},
+	"armillary": {"height": 76.0, "half": Vector2(23, 7), "round": true},
+	"altar": {"height": 70.0, "half": Vector2(29, 10)},
+	"ossuary": {"height": 62.0, "half": Vector2(36, 10)},
+}
+# Offsets are authored ensembles, not random clutter. Centre axes stay clear for portals.
+const COMMON_FURNISHINGS := {
+	"R0": [["crates", -158, -91], ["barrels", -218, -88], ["rope", -135, -145], ["chart_table", 137, -105], ["chair", 145, -55], ["sacks", 214, -108]],
+	"R1": [["shelf", -152, -91], ["writing_desk", 132, -103], ["chair", 140, -57], ["bookcase", -133, 134], ["planter", 209, -117], ["sacks", -215, 139]],
+	"R2": [["workbench", -139, -87], ["chair", -144, -38], ["anvil", 132, 131], ["crates", 205, 142], ["sacks", -214, -108]],
+	"R3": [["altar", -155, -88], ["armillary", 155, -89], ["urns", -185, 129], ["urns", 185, 137]],
+	"R4": [["cot", -149, -90], ["planter", -218, -86], ["writing_desk", 147, -99], ["chair", 150, -52], ["sacks", -183, 135], ["barrels", 180, 135]],
+}
+const THEMED_FURNISHINGS := {
+	"lagoon": {
+		"R5": [["pump", -155, -87], ["urns", -218, -93], ["rope", 133, -138], ["barrels", 176, -88], ["crates", -161, 140], ["sacks", -220, 144]],
+		"R6": [["planter", -151, -91], ["planter", -217, -82], ["writing_desk", 145, -98], ["chair", 148, -52], ["planter", 192, 139], ["sacks", 120, 137]],
+		"R7": [["armillary", -153, -85], ["urns", -222, -86], ["chart_table", 145, -100], ["chair", 140, -53], ["planter", -168, 141], ["urns", 181, 133]],
+		"R8": [["chart_table", -140, -102], ["chair", -147, -55], ["armillary", 160, -87], ["bookcase", -162, 142], ["barrels", -220, -93]],
+		"R9": [["crates", -139, -89], ["barrels", -217, -85], ["sacks", -148, -143], ["crates", 149, -92], ["sacks", 217, -101], ["barrels", -176, 133], ["rope", 145, 143], ["sacks", 205, 138]],
+		"R10": [["pump", -157, -85], ["pump", 153, -91], ["rope", -214, -119], ["urns", 214, -82], ["barrels", -168, 136], ["crates", 172, 141]],
+		"R11": [["armillary", -153, -84], ["chart_table", 143, -100], ["chair", 145, -54], ["planter", 213, -116], ["bookcase", 173, 143]],
+	},
+	"foundry": {
+		"R5": [["engine", -159, -91], ["anvil", 149, -93], ["sacks", 216, -101], ["workbench", -154, 140], ["barrels", -220, -84]],
+		"R6": [["workbench", -145, -89], ["chair", -146, -38], ["anvil", 149, -93], ["crates", 216, -89], ["pump", 165, 140]],
+		"R7": [["engine", -156, -89], ["pump", 159, -85], ["barrels", -221, -87], ["engine", -166, 141], ["crates", 149, 139], ["sacks", 213, 140]],
+		"R8": [["crates", -145, -92], ["barrels", -219, -88], ["crates", 142, -93], ["sacks", 216, -102], ["bookcase", -155, 139], ["rope", -219, 142]],
+		"R9": [["pump", -154, -86], ["pump", 157, -89], ["barrels", -219, -84], ["rope", 214, -125], ["barrels", -174, 137], ["sacks", 174, 139]],
+		"R10": [["armillary", -151, -87], ["urns", -217, -87], ["writing_desk", 148, -100], ["chair", 151, -53], ["altar", -163, 141], ["crates", 171, 138]],
+		"R11": [["engine", -153, -90], ["pump", 152, -87], ["barrels", -219, -87], ["rope", 213, -116], ["crates", 167, 140], ["sacks", 220, 141]],
+	},
+	"catacombs": {
+		"R5": [["ossuary", -147, -86], ["ossuary", 147, -92], ["urns", -218, -90], ["urns", 220, -94], ["sarcophagus", -153, 134]],
+		"R6": [["sarcophagus", -148, -78], ["altar", 153, -89], ["urns", -217, -91], ["urns", 214, -91], ["ossuary", 174, 141]],
+		"R7": [["altar", -151, -87], ["armillary", 154, -89], ["urns", -219, -85], ["urns", 215, -89], ["ossuary", -161, 142], ["bookcase", 161, 142]],
+		"R8": [["sarcophagus", -143, -79], ["sarcophagus", 145, -76], ["urns", -217, -92], ["urns", 217, -92], ["ossuary", -165, 140]],
+		"R9": [["altar", -153, -88], ["shelf", 145, -89], ["chair", 148, -37], ["urns", -218, -90], ["urns", -180, 133], ["urns", 174, 139]],
+		"R10": [["crates", -145, -91], ["ossuary", 147, -85], ["sacks", -216, -105], ["urns", 221, -91], ["crates", -166, 139], ["urns", 173, 139]],
+		"R11": [["altar", -151, -88], ["sarcophagus", 151, -76], ["urns", -217, -91], ["urns", 215, -92], ["ossuary", 171, 142]],
+	},
+}
+const COMMON_DETAILS := {
+	"R0": [["netting", -166, -98, 80], ["mineral", -204, 111, 35]],
+	"R1": [["rug", 138, -78, 110], ["papers", 206, 85, 28], ["stone_chips", -135, 125, 55]],
+	"R2": [["grate", -141, -50, 110], ["tools", 170, 118, 35], ["mineral", 183, -108, 65]],
+	"R3": [["rug", 0, -35, 140], ["pottery", -175, 115, 38], ["stone_chips", 186, 125, 50]],
+	"R4": [["rug", 0, 28, 140], ["papers", 203, -74, 25]],
+}
+const THEMED_DETAILS := {
+	"lagoon": {
+		"R5": [["grate", 0, 20, 110], ["mineral", -157, -73, 85]],
+		"R6": [["rug", 141, -78, 100], ["mineral", -157, -72, 95], ["stone_chips", 175, 127, 40]],
+		"R7": [["mineral", 0, 28, 115], ["stone_chips", -160, -74, 65]],
+		"R8": [["rug", -140, -79, 110], ["papers", -204, 116, 30]],
+		"R9": [["netting", -146, -78, 80], ["pottery", 177, 127, 42]],
+		"R10": [["grate", 0, 25, 125], ["mineral", 153, -75, 90]],
+		"R11": [["rug", 141, -77, 110], ["papers", -110, 30, 30]],
+	},
+	"foundry": {
+		"R5": [["grate", -140, 20, 125], ["tools", 157, -81, 40], ["stone_chips", 195, 61, 40]],
+		"R6": [["grate", 0, 28, 140], ["tools", -144, -73, 42], ["stone_chips", 159, 130, 45]],
+		"R7": [["grate", 0, 20, 140], ["tools", -161, 127, 40], ["mineral", 160, -76, 90]],
+		"R8": [["netting", -138, -80, 90], ["mineral", 149, -75, 80], ["papers", -196, 128, 28]],
+		"R9": [["grate", 0, 25, 140], ["mineral", 155, -77, 90], ["tools", -165, 128, 30]],
+		"R10": [["rug", 0, 20, 140], ["papers", 171, -76, 28]],
+		"R11": [["grate", 0, 25, 125], ["tools", -160, -76, 40], ["mineral", 156, -77, 90]],
+	},
+	"catacombs": {
+		"R5": [["stone_chips", 0, 30, 95], ["pottery", -154, -73, 44]],
+		"R6": [["rug", 0, 25, 140], ["pottery", 154, -74, 44]],
+		"R7": [["rug", 0, 20, 140], ["pottery", -171, 127, 42]],
+		"R8": [["stone_chips", 0, 45, 85], ["pottery", 161, -68, 42], ["mineral", -139, -72, 70]],
+		"R9": [["rug", 0, 20, 145], ["pottery", -171, 123, 45], ["papers", 140, -75, 30]],
+		"R10": [["stone_chips", 0, 25, 85], ["mineral", -157, 125, 70], ["pottery", 170, 122, 40]],
+		"R11": [["rug", 0, 25, 145], ["pottery", 174, -67, 40], ["stone_chips", -156, -75, 50]],
+	},
+}
 const LAYOUTS := {
 	"lagoon": {"order": ["R0", "R1", "R2", "R3", "R5", "R6", "R7", "R8", "R4", "R9", "R10", "R11"], "edges": [["R0", "R1"], ["R2", "R3"], ["R1", "R2"], ["R5", "R4"], ["R0", "R5"], ["R1", "R6"], ["R2", "R7"], ["R5", "R6"], ["R6", "R7"], ["R7", "R8"], ["R8", "R11"], ["R7", "R10"], ["R6", "R9"], ["R9", "R10"], ["R10", "R11"]]},
 	"foundry": {"order": ["R4", "R5", "R6", "R7", "R3", "R2", "R1", "R0", "R8", "R9", "R10", "R11"], "edges": [["R0", "R1"], ["R2", "R3"], ["R1", "R2"], ["R5", "R4"], ["R5", "R2"], ["R5", "R6"], ["R6", "R1"], ["R6", "R7"], ["R7", "R0"], ["R0", "R11"], ["R1", "R10"], ["R2", "R9"], ["R9", "R8"], ["R9", "R10"], ["R10", "R11"]]},
@@ -157,32 +253,30 @@ func _load_props() -> void:
 		_add_prop("torch", center + Vector2(-205, -143), 36, region)
 		match region:
 			"R0": _add_prop("boat", extraction_position(), 82, region)
-			"R1":
-				var anchor := center + Vector2(-135, -130)
-				_add_prop("shelf", anchor, 85, region, _box_contour(anchor, Vector2(40, 9)))
 			"R2": _add_prop("valve", valve_position(), 60, region)
 			"R3": _add_prop("pedestal", relic_position(), 48, region, _oval_contour(relic_position() + Vector2(0, -25), Vector2(18, 7)))
-			"R4": pass
-			_:
-				var number := int(region.trim_prefix("R"))
-				if id == "foundry" and number % 2 == 1:
-					var anchor := center + Vector2(-155, -95)
-					_add_prop("engine", anchor, 85, region, _box_contour(anchor, Vector2(27.5, 8)))
-				elif id == "catacombs" and number % 2 == 1:
-					var anchor := center + Vector2(-145, -75)
-					var half := Vector2(22.5, 32.5)
-					var bevel := 7.0
-					_add_prop("sarcophagus", anchor, 90, region, [anchor + Vector2(-half.x + bevel, -half.y), anchor + Vector2(half.x - bevel, -half.y), anchor + Vector2(half.x, -half.y + bevel), anchor + Vector2(half.x, half.y - bevel), anchor + Vector2(half.x - bevel, half.y), anchor + Vector2(-half.x + bevel, half.y), anchor + Vector2(-half.x, half.y - bevel), anchor + Vector2(-half.x, -half.y + bevel)])
-				else:
-					var anchor := center + Vector2(-155, -95)
-					_add_prop("urns", anchor, 45, region, _oval_contour(anchor, Vector2(20, 9)))
+		var furnishings: Array = COMMON_FURNISHINGS.get(region, THEMED_FURNISHINGS[id].get(region, []))
+		for furnishing: Array in furnishings:
+			var kind: String = furnishing[0]
+			var anchor := center + Vector2(furnishing[1], furnishing[2])
+			var spec: Dictionary = FURNITURE[kind]
+			var half: Vector2 = spec.half
+			var contour: Array = _oval_contour(anchor, half) if spec.get("round", false) else _bevel_contour(anchor, half)
+			_add_prop(kind, anchor, spec.height, region, contour)
+		var details: Array = COMMON_DETAILS.get(region, THEMED_DETAILS[id].get(region, []))
+		for detail: Array in details:
+			_add_prop(detail[0], center + Vector2(detail[1], detail[2]), detail[3], region, [], true)
 
-func _add_prop(kind: String, point: Vector2, height: float, region: String, contour: Array = []) -> void:
-	prop_specs.append({"kind": kind, "position": point, "height": height, "region": region})
+func _add_prop(kind: String, point: Vector2, height: float, region: String, contour: Array = [], floor_detail: bool = false) -> void:
+	prop_specs.append({"kind": kind, "position": point, "height": height, "region": region, "contour": contour, "floor_detail": floor_detail})
 	if not contour.is_empty(): ART_PROP_COLLIDERS.append(contour)
 
 func _box_contour(center: Vector2, half: Vector2) -> Array[Vector2]:
 	return [center - half, center + Vector2(half.x, -half.y), center + half, center + Vector2(-half.x, half.y)]
+
+func _bevel_contour(center: Vector2, half: Vector2) -> Array[Vector2]:
+	var bevel := minf(7.0, minf(half.x, half.y) * 0.5)
+	return [center + Vector2(-half.x + bevel, -half.y), center + Vector2(half.x - bevel, -half.y), center + Vector2(half.x, -half.y + bevel), center + Vector2(half.x, half.y - bevel), center + Vector2(half.x - bevel, half.y), center + Vector2(-half.x + bevel, half.y), center + Vector2(-half.x, half.y - bevel), center + Vector2(-half.x, -half.y + bevel)]
 
 func _oval_contour(center: Vector2, radius: Vector2) -> Array[Vector2]:
 	var points: Array[Vector2] = []
@@ -294,7 +388,9 @@ func door_barrier(door_id: String) -> Rect2:
 	return Legacy.door_barrier(door_id) if id == "prototype" else _door_barriers[door_id]
 func door_shadow_polygon(door_id: String) -> PackedVector2Array:
 	if id == "prototype": return Legacy.door_shadow_polygon(door_id)
-	var rect := door_barrier(door_id).grow(14)
+	# The local light follows legal feet. Expanding the barrier into walkable
+	# space can put that source inside a closed shadow and black out its room.
+	var rect := door_barrier(door_id)
 	return PackedVector2Array([rect.position, Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y)])
 func door_distance(point: Vector2, door_id: String) -> float:
 	if id == "prototype": return Legacy.door_distance(point, door_id)

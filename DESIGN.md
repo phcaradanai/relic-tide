@@ -220,7 +220,11 @@ Reduced motion (V) freezes decorative idle poses while preserving directional wa
 
 ## Elevation & Depth
 
+The 8 October door repair matches native gate shadow geometry to the physical barrier, leaving every legal explorer light source outside it. Production north–south gates use an overhead bulkhead with limestone end jambs and short raster strips sorted along their own ground edges. Horizontal frames are 36 units high and moving slabs 29, matching the 29-unit wall reveal. Foreground wall and gate paint fades only in a small window around the local body; structural sight and light occlusion stay opaque. Chests, dropped relics and lanterns use recipient-visible cached sprites ordered by their ground bases, with stale visibility cleared immediately.
+
 Depth comes from authored raster wall reveals, foreground boundaries, contact shadows and feet-based ordering. Floor, raster water, walls/props and visible actors have separate native rendering roles. Low furniture blocks feet along its authored contour but does not block eye-level sight or cast a solid rectangular sight wedge. Walls and closed doors remain opaque. A dedicated wall-material light does not illuminate hidden floor or actors. Visible explorers render above floor shadows after recipient visibility filtering.
+
+The 8 October furnishing pass gives all 36 production rooms an authored purpose. Landing has cargo and navigation supplies; Archive has reading desks and bookcases; Workshop has tools; Refuge has a cot and supplies. Lagoon chambers use plants, navigation equipment and cisterns, Foundry chambers use engines and work areas, and Catacombs use ossuaries and memorial objects. Furniture sits in coherent groups around clear central walking lanes and existing chest/door anchors. Sixteen new raster furniture motifs and eight painted floor details share the incumbent materials and perspective. Worn rugs, grates, papers and material fragments stay below actors and water with floor lighting; they add no collision. Shared ground contours use round or bevelled contacts and never obstruct sight. Textures are cropped once per kind when binding a world, rather than copied per instance.
 
 Native overlays use tonal backing and borders rather than card drop shadows or CSS blur. Shared labels have a dark native text shadow offset downward (2 logical units). The light mask is an invisible radial texture with native wall/door occluders, not visible scenery; painted contact shadows remain part of the asset.
 
@@ -238,7 +242,7 @@ Raster silhouettes follow authored pixels. Keep complete feet, hands, held props
 
 Quiet native actions sit beside the world. Shared buttons use the frontmatter skin and minimum height, with width chosen for the real label. The shared helper intentionally uses the same glass fill/thin edge for normal, hover and pressed states; it establishes no animated lift or transition. Focus has a gold edge; disabled text is muted. The selected map receives the observed gold modulation.
 
-Equipment icons occupy (50×50), with native tooltips and gold focus. Unavailable gear is dimmed. Passive chart/oxygen/mask slots are disabled; ammunition, health and counts determine active gun/medkit use. States not overridden by the HUD retain Godot's native theme.
+Equipment icons occupy (50×50), with native tooltips and gold focus. Unavailable gear is dimmed. Owned usable gear shows a compact keycap: 1 for a medkit, 2 for the map and F for the tranquilizer. Passive chart/oxygen/mask slots are disabled; ammunition, health and counts determine active gun/medkit use. States not overridden by the HUD retain Godot's native theme.
 
 ### Cards / Containers
 
@@ -256,7 +260,7 @@ Start leads to creation/code joining/browsing, then a physical staging room. The
 
 The sixteen-emblem atlas supplies hearts, air, wave, map/chart, oxygen, mask, medkit, tranquilizer/dart, treasure, gate, hunter and refuge symbols. Health is three individual full/empty hearts (40×40). Tide uses the frontmatter gauge, changing mint → gold → danger as the clock advances. Air appears at local depth (1.2) and shows breath or active oxygen. Gear keeps numeric ammunition, medkit and tank counts. The lower-right treasure number is the local carried amount, including the great relic; it is not a rival score or a guarantee of banking.
 
-The interact badge uses an authored object emblem, E and a short hold-progress strip. It replaces live text diagnostics in production. Warned breaches use a wave/local lead-in strip; gas has the mask cue and a hunt has the monster cue. All reflect recipient-projected state.
+The contextual interaction badge shows only the E keycap, with a short hold-progress strip when an action requires holding. This avoids repeating the chest/valve emblem beside the object and on the prompt. Warned breaches use a wave/local lead-in strip; gas has the mask cue and a hunt has the monster cue. All reflect recipient-projected state.
 
 ### Private chest puzzle
 

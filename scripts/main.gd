@@ -15,6 +15,7 @@ const HUD = preload("res://scripts/survival_hud.gd")
 const Puzzle = preload("res://scripts/expedition_puzzle.gd")
 const Blueprint = preload("res://scripts/expedition_blueprint.gd")
 const TIDE_LEAD_IN := 45.0
+const MONSTER_LEAP_SECONDS := 0.48
 const INK := Color("f1ead6")
 const MUTED := Color("b9d3d3")
 const GOLD := Color("edc47b")
@@ -332,7 +333,7 @@ func _build_ui() -> void:
 	guide.add_theme_constant_override("separation", 10)
 	help_panel.add_child(guide)
 	guide.add_child(_label("Explore together", 24, GOLD))
-	guide.add_child(_label("WASD / arrows: walk. E: use objects and solve treasure chests.\nQ: drop carried relic or lantern. M: open a collected map.\nF: fire a tranquilizer toward the pointer. 1: use a medkit.\nOxygen lets you cross flooded routes; a mask protects from gas.\nClose gates when the wave warning appears to stop the spread.\nHold separate vault controls together to release the great relic.\nReturn to the Landing boat and hold E to bank treasure and escape.\nA sealed dry refuge stays safe, but does not bank your treasure.", 18))
+	guide.add_child(_label("WASD / arrows: walk. E: use objects and solve treasure chests.\nQ: drop carried relic or lantern. 2: open a collected map.\nF: fire a tranquilizer toward the pointer. 1: use a medkit.\nOxygen lets you cross flooded routes; a mask protects from gas.\nClose gates when the wave warning appears to stop the spread.\nHold separate vault controls together to release the great relic.\nReturn to the Landing boat and hold E to bank treasure and escape.\nA sealed dry refuge stays safe, but does not bank your treasure.", 18))
 	guide.add_child(_button("Return to exploration [H]", _toggle_help, 270))
 	help_panel.hide()
 func _host() -> void:
@@ -496,7 +497,9 @@ func _update_vision() -> void:
 	art.material.set_shader_parameter("view_radius", radius)
 	water_layer.update_view(point, radius, game.explorers[active_player].has_light)
 	mechanisms.update_view(game, point, game.explorers[active_player].has_light)
-	if world: world.update_view(game, point, radius, game.explorers[active_player].has_light, phase == "waiting")
+	if world:
+		world.update_view(game, point, radius, game.explorers[active_player].has_light, phase == "waiting")
+		world.update_objects(game, relic_texture, lantern_texture)
 	blueprint.own_position = point
 	blueprint.queue_redraw()
 	for i: int in token_positions:
@@ -514,7 +517,7 @@ func _update_vision() -> void:
 	survival_label.text = "Breath %.1fs / 12 · %s · Banked %d · %ds left" % [self_view.breath, "Relic carried · slower" if self_view.has_relic else "No relic", self_view.score, maxi(0, ceili(Rules.EXPEDITION_LENGTH - game.tide_seconds))]
 	survival_label.modulate = COLORS[1] if self_view.breath < 4.0 else Color.WHITE
 	prompt_label.text = ""
-	hud.set_prompt("", Vector2.ZERO)
+	hud.clear_prompt()
 	if show_help or phase != "running": return
 	if self_view.state != "exploring":
 		prompt_label.text = "Escaped · waiting for expedition results" if self_view.state == "escaped" else "Drowned · waiting for expedition results"
@@ -524,9 +527,8 @@ func _update_vision() -> void:
 	if nearby.is_empty(): return
 	if Map.id != "prototype":
 		if not puzzle_panel.visible and not blueprint.visible:
-			var name: String = {"take_relic": "treasure", "take_light": "oxygen", "begin_extraction": "open_door", "begin_vault": "refuge", "begin_valve": "wave", "toggle_door": "closed_door", "chest": "treasure"}.get(nearby.kind, "treasure")
 			var screen_point: Vector2 = get_global_transform_with_canvas() * nearby.position
-			hud.set_prompt(name, screen_point + Vector2(0, 42), game.interaction.get("progress", 0.0), nearby.kind.begins_with("begin_"))
+			hud.set_prompt(screen_point + Vector2(0, 42), game.interaction.get("progress", 0.0), nearby.kind.begins_with("begin_"))
 		return
 	prompt_label.text = nearby.text
 	if not game.interaction.is_empty(): prompt_label.text += " · %d%%" % roundi(game.interaction.progress * 100)
@@ -715,7 +717,7 @@ func _draw() -> void:
 	if intro or game == null: return
 	_draw_objects()
 	var closed := Map.closed_door_ids(game.doors)
-	if lantern_texture and game.lantern.has("position") and Map.can_see(prediction.position, game.lantern.position, game.explorers[active_player].has_light, closed):
+	if Map.id == "prototype" and lantern_texture and game.lantern.has("position") and Map.can_see(prediction.position, game.lantern.position, game.explorers[active_player].has_light, closed):
 		var size: Vector2 = lantern_texture.get_size() * (44.0 / 60.0)
 		draw_texture_rect(lantern_texture, Rect2(game.lantern.position - Vector2(size.x / 2, size.y), size), false)
 func _draw_objects() -> void:
@@ -798,7 +800,7 @@ func _input(event: InputEvent) -> void:
 		KEY_H: _toggle_help()
 		KEY_V: reduced_motion = not reduced_motion
 		KEY_R: _restart()
-		KEY_M: _toggle_map()
+		KEY_2: _toggle_map()
 		KEY_1: _hud_action("heal", "")
 		KEY_F: _fire()
 		KEY_SPACE:
@@ -891,10 +893,6 @@ func _bind_map(map_id: String) -> void:
 		world = World.new()
 		world.Map = Map
 		add_child(world)
-		var sheet: Texture2D = load("res://assets/generated/environment/expedition-props-v1.png")
-		var regions := {"boat": Rect2(9, 120, 420, 360), "valve": Rect2(465, 105, 332, 355), "shelf": Rect2(820, 117, 403, 335), "pedestal": Rect2(1235, 202, 300, 257), "urns": Rect2(135, 615, 259, 320), "sarcophagus": Rect2(528, 530, 246, 409), "torch": Rect2(894, 575, 137, 342), "engine": Rect2(1162, 529, 353, 403)}
-		for prop in Map.prop_specs:
-			world.add_prop(world.crop(regions[prop.kind], sheet), prop.position, prop.height, prop.region)
 	water_layer = Water.new()
 	water_layer.Map = Map
 	water_layer.z_index = -1
@@ -968,11 +966,6 @@ func _fire() -> void:
 
 func _draw_expansion_objects() -> void:
 	if world == null: return
-	for chest_id in game.chests:
-		var chest: Dictionary = game.chests[chest_id]
-		var dimensions := Vector2(43, 38)
-		draw_texture_rect(world.chest_texture, Rect2(chest.position - Vector2(21.5, 30), dimensions), false, Color(0.7, 0.8, 0.76) if chest.claimed else Color.WHITE)
-		if not chest.opened: draw_texture_rect(hud.icon("treasure"), Rect2(chest.position + Vector2(-9, -50), Vector2(18, 18)), false)
 	for breach in game.breaches:
 		var location: Vector2 = Map.region_center(breach.region)
 		var warning: bool = game.tide_seconds < breach.start
@@ -992,9 +985,6 @@ func _draw_expansion_objects() -> void:
 		draw_texture_rect(hud.icon("open_door"), Rect2(game.extraction.position + Vector2(-18, 12), Vector2(36, 36)), false)
 	for id in game.doors:
 		if game.doors[id].get("sealed_safe", false): draw_texture_rect(hud.icon("refuge"), Rect2(Map.door_position(id) + Vector2(-17, -68), Vector2(34, 34)), false)
-	if game.relic.has("position"):
-		var dimensions: Vector2 = relic_texture.get_size() * (44.0 / 60.0)
-		draw_texture_rect(relic_texture, Rect2(game.relic.position - Vector2(dimensions.x / 2, dimensions.y), dimensions), false)
 	for shot in game.shots:
 		var direction: Vector2 = shot.position.direction_to(shot.end)
 		draw_set_transform(shot.position.lerp(shot.end, 0.7), direction.angle(), Vector2.ONE)
@@ -1021,9 +1011,13 @@ func _update_monsters(delta: float) -> void:
 			unlit.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 			sprite.material = unlit
 			add_child(sprite)
-			monster_sprites[monster.id] = {"sprite": sprite, "tick": -1, "from": monster.position, "to": monster.position, "clock": 0.0, "facing": "south"}
+			monster_sprites[monster.id] = {"sprite": sprite, "tick": -1, "from": monster.position, "to": monster.position, "clock": 0.0, "facing": "south", "base_scale": sprite.scale, "last_velocity": Vector2.ZERO, "leaping": false, "leap_clock": 0.0, "leap_origin": monster.position, "leap_direction": Vector2.UP}
 		var state: Dictionary = monster_sprites[monster.id]
 		var sprite: AnimatedSprite2D = state.sprite
+		state.leaping = false
+		state.leap_clock = 0.0
+		sprite.scale = state.base_scale
+		sprite.modulate = Color.WHITE
 		if state.tick != game.tick:
 			state.from = sprite.position if state.tick >= 0 else monster.position
 			state.to = monster.position
@@ -1033,12 +1027,30 @@ func _update_monsters(delta: float) -> void:
 		sprite.position = state.from.lerp(state.to, state.clock / 0.1)
 		sprite.z_index = roundi(sprite.position.y) + 1
 		if monster.velocity.length() > 1.0:
+			state.last_velocity = monster.velocity
 			var direction: Vector2 = monster.velocity.normalized()
 			state.facing = ["south", "south-west", "west", "north-west", "north", "north-east", "east", "south-east"][posmod(roundi((direction.angle() - PI * 0.5) / (TAU / 8.0)), 8)]
 		var action: String = "stun" if monster.stunned else "attack" if monster.attacking else "walk" if monster.velocity.length() > 1.0 else "idle"
 		var animation: String = action + "_" + state.facing.replace("-", "_")
 		if sprite.animation != animation: sprite.play(animation)
 	for id in monster_sprites.keys():
-		if id not in observed:
-			monster_sprites[id].sprite.queue_free()
+		if id in observed: continue
+		var state: Dictionary = monster_sprites[id]
+		var sprite: AnimatedSprite2D = state.sprite
+		if not state.leaping:
+			state.leaping = true
+			state.leap_clock = 0.0
+			state.leap_origin = sprite.position
+			var escape_direction: Vector2 = -state.last_velocity
+			state.leap_direction = escape_direction.normalized() if escape_direction.length_squared() >= 0.001 else Vector2.UP
+		state.leap_clock += minf(delta, 0.1)
+		var leap_progress: float = clampf(state.leap_clock / MONSTER_LEAP_SECONDS, 0.0, 1.0)
+		var leap_arc: float = sin(leap_progress * PI) if not reduced_motion else 0.0
+		var leap_offset: Vector2 = state.leap_direction * (32.0 * leap_progress) + Vector2(0, -44.0 * leap_arc) if not reduced_motion else Vector2.ZERO
+		sprite.position = state.leap_origin + leap_offset
+		sprite.scale = state.base_scale * (1.0 + 0.16 * leap_arc)
+		sprite.modulate = Color(1.0, 1.0, 1.0, 1.0 - leap_progress)
+		sprite.z_index = roundi(sprite.position.y) + 1
+		if leap_progress >= 1.0:
+			sprite.queue_free()
 			monster_sprites.erase(id)

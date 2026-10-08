@@ -123,6 +123,19 @@ func run() -> void:
 		place(scene, scene.Map.region_center("R4"))
 		await capture(scene, "expansion-%s-refuge" % map_id)
 		check(scene.game.doors.D5.sealed_safe and scene.game.water_depths.R4 == 0.0, "Sealed refuge stays dry: " + map_id)
+		check(scene.world.props.size() == scene.Map.prop_specs.size(), "Every shared furnishing has a raster sprite: " + map_id)
+		for region: String in scene.fixture.water_depths: scene.fixture.water_depths[region] = 0.0
+		scene.fixture.explorers[0].gear.oxygen = false
+		scene.fixture.explorers[0].tank = 0.0
+		scene.fixture.explorers[0].breath = 20.0
+		for region: String in scene.Map.room_specs:
+			place(scene, scene.Map.region_center(region))
+			await capture(scene, "furnished-%s-%s" % [map_id, region])
+			var visible_props := 0
+			for prop: Dictionary in scene.world.props:
+				if prop.region == region and prop.sprite.visible: visible_props += 1
+				if prop.floor_detail: check(prop.sprite.z_index == -2 and prop.sprite.light_mask == 1, "Floor wear stays beneath water and uses real floor shadows: " + prop.kind)
+			check(visible_props >= 6, "Room furnishing is visible under its actual lighting: " + map_id + " " + region)
 	var chest: Vector2 = scene.Map.chest_anchors.T2.position
 	place(scene, chest + Vector2(0, 20))
 	scene._send_interaction("chest", "T2")

@@ -519,7 +519,8 @@
       "refuge": "Exactly one single-entry refuge per production map. Dry fully shut refuge remains dry indefinitely including the ending; safe emblem only from sealed_safe state.",
       "puzzle": "Private runes/circuit/pressure challenge. Pressure markers draw inside the gauge; explicit wave + Hit [Space] action, target range and three-hit progress.",
       "finale": "Wine-backed evacuation announcement, persistent red clock and Landing direction; countdown has dark backing.",
-      "localOverlays": "Local movement/interaction stops or changes with guide/puzzle/blueprint; online authority clock continues."
+      "localOverlays": "Local movement/interaction stops or changes with guide/puzzle/blueprint; online authority clock continues.",
+      "roomFurnishing": "All 36 production rooms have authored use-specific furniture ensembles, open central portal lanes, painted ground details and shared immutable contacts. Low furniture has no sight wedges; flat wear uses floor lighting below water/actors."
     },
     "artwork": {
       "environment": [
@@ -527,7 +528,10 @@
         "assets/generated/environment/expedition-props-v1.png",
         "assets/generated/environment/sluice-set-v2.png",
         "assets/generated/environment/survival-icons-v1.png",
-        "assets/flood-water.png"
+        "assets/flood-water.png",
+        "assets/generated/environment/expedition-furniture-v1.png",
+        "assets/generated/environment/expedition-floor-details-v1.png",
+        "assets/generated/environment/sluice-side-v3.png"
       ],
       "explorers": [
         "assets/generated/sprites/explorer-holding-p1-v2/frames.tres",
@@ -595,7 +599,15 @@
       ],
       "palette": "Blue limestone, sea-green oxidized metal, warm ochre brass, original native explorer pixels and restrained red danger.",
       "provenance": "Adjacent prompt/origin/manifest files and editable Aseprite sources; preserve originals.",
-      "backgroundAssetsActive": false
+      "backgroundAssetsActive": false,
+      "gateRendering": {
+        "side": "Overhead low bulkhead; limestone end jambs; ground depth sorted along10raster strips.",
+        "horizontalFrameHeight": 36,
+        "horizontalPanelHeight": 29,
+        "shadowSource": "Exact collision barrier; legal feet never inside it.",
+        "foregroundCutaway": "Localized alpha window around local rendered body; native shadow and authoritative LOS unchanged.",
+        "interactiveObjects": "Recipient-only cached chest, groundrelic and lantern sprites sorted at ground bases; hide omitted entries."
+      }
     },
     "browserDelivery": {
       "source": [

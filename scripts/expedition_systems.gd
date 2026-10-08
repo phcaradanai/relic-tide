@@ -8,6 +8,9 @@ const WARNING_SECONDS := 24.0
 const SHOT_RANGE := 330.0
 const SHOT_WIDTH := 20.0
 const STUN_SECONDS := 7.0
+const HUNTER_SPAWN_CLEARANCE := 620.0
+const HUNTER_PURSUIT_RANGE := 900.0
+const HUNTER_SEARCH_TICKS := 50
 const ITEM_NAMES := ["map", "chart", "oxygen", "mask", "medkit", "gun"]
 var rng := RandomNumberGenerator.new()
 var duration := 900.0
@@ -20,7 +23,6 @@ var gas: Dictionary = {}
 var blackout: Dictionary = {}
 var next_breach := 0.0
 var next_hunt := 0.0
-var hunt_end := 0.0
 var next_atmosphere := 0.0
 var final_announced := false
 var alarm_serial := 0
@@ -302,55 +304,93 @@ func _region_center(game, region: String) -> Vector2:
 	return floors[0].get_center()
 
 func _spawn_hunt(game) -> void:
-	var candidates: Array = []
-	for region in game.Map.REGIONS:
-		if region == "R4" or region == "R0": continue
-		var position := _region_center(game, region)
+	var active_players: Array[int] = []
+	var player_positions: Array[Vector2] = []
+	for who in range(game.explorers.size()):
+		if not game._active(who): continue
+		active_players.append(who)
+		player_positions.append(game.explorers[who].position)
+	if active_players.is_empty(): return
+	var regions: Array[String] = []
+	var safe_regions: Array[String] = []
+	for region: String in game.Map.REGIONS:
+		if region in ["R0", "R4"]: continue
+		regions.append(region)
+		var spawn_position := _region_center(game, region)
 		var clear := true
-		for explorer in game.explorers:
-			if explorer.state == "exploring" and explorer.position.distance_to(position) < 620.0: clear = false
-		if clear: candidates.append(position)
-	if candidates.is_empty(): return
-	monster_serial += 1
-	var position: Vector2 = candidates[rng.randi_range(0, candidates.size() - 1)]
-	monsters.append({"id": monster_serial, "position": position, "velocity": Vector2.ZERO, "stun_until": -1, "route": [], "target": -1, "path_tick": -100, "attack_until": -1})
-	hunt_end = game.tick * STEP + rng.randf_range(38.0, 58.0)
+		for player_position in player_positions:
+			if player_position.distance_to(spawn_position) < HUNTER_SPAWN_CLEARANCE:
+				clear = false
+				break
+		if clear: safe_regions.append(region)
+	var used_regions: Array[String] = []
+	var closed: Array[String] = game._closed_doors()
+	for who in active_players:
+		var target_position: Vector2 = game.explorers[who].position
+		var options: Array[String] = []
+		for region in safe_regions:
+			if region in used_regions: continue
+			var candidate_position := _region_center(game, region)
+			var distance := candidate_position.distance_to(target_position)
+			if distance >= HUNTER_SPAWN_CLEARANCE and distance <= HUNTER_PURSUIT_RANGE and game.Map.line_of_sight(candidate_position, target_position, closed):
+				options.append(region)
+		if options.is_empty():
+			for region in safe_regions:
+				if region not in used_regions: options.append(region)
+		if options.is_empty():
+			for region in regions:
+				if region not in used_regions: options.append(region)
+		if options.is_empty(): break
+		var chosen_region: String = options[rng.randi_range(0, options.size() - 1)]
+		used_regions.append(chosen_region)
+		monster_serial += 1
+		monsters.append({"id": monster_serial, "position": _region_center(game, chosen_region), "velocity": Vector2.ZERO, "stun_until": -1, "route": [], "target": who, "spawned_tick": game.tick, "last_seen_tick": -1, "last_seen_position": Vector2.ZERO, "path_tick": -100, "attack_until": -1})
 
 func advance_hunters(game) -> void:
 	var seconds: float = game.tick * STEP
 	if seconds >= next_hunt and monsters.is_empty():
 		_spawn_hunt(game)
-		next_hunt = maxf(seconds, hunt_end) + rng.randf_range(125.0, 200.0)
-	if not monsters.is_empty() and seconds >= hunt_end:
-		monsters.clear()
-		return
+	var had_hunters := not monsters.is_empty()
+	if not had_hunters: return
 	var closed: Array[String] = game._closed_doors()
-	for monster in monsters:
+	for index in range(monsters.size() - 1, -1, -1):
+		var monster: Dictionary = monsters[index]
 		monster.velocity = Vector2.ZERO
+		var target: int = int(monster.target)
+		if target < 0 or not game._active(target):
+			monsters.remove_at(index)
+			continue
+		var target_position: Vector2 = game.explorers[target].position
+		if monster.position.distance_to(target_position) > HUNTER_PURSUIT_RANGE:
+			monsters.remove_at(index)
+			continue
 		if monster.stun_until > game.tick: continue
-		var target := -1
-		var nearest := INF
-		for who in range(game.explorers.size()):
-			if not game._active(who): continue
-			var distance: float = monster.position.distance_to(game.explorers[who].position)
-			if distance < nearest:
-				nearest = distance
-				target = who
-		if target < 0: continue
-		var destination: Vector2 = game.explorers[target].position
+		var sees_target: bool = game.Map.line_of_sight(monster.position, target_position, closed)
+		var destination: Vector2
+		if sees_target:
+			monster.last_seen_position = target_position
+			monster.last_seen_tick = game.tick
+			destination = target_position
+		elif int(monster.last_seen_tick) >= 0 and game.tick - int(monster.last_seen_tick) <= HUNTER_SEARCH_TICKS:
+			destination = monster.last_seen_position
+		elif int(monster.last_seen_tick) < 0 and game.tick - int(monster.spawned_tick) <= HUNTER_SEARCH_TICKS:
+			continue
+		else:
+			monsters.remove_at(index)
+			continue
 		if game.Map.line_of_sight(monster.position, destination, closed): monster.route = [destination]
-		elif monster.target != target or game.tick - monster.path_tick >= 12:
+		elif game.tick - monster.path_tick >= 12:
 			monster.route = game.Map.find_route(monster.position, destination, closed)
 			monster.path_tick = game.tick
-		monster.target = target
 		while not monster.route.is_empty() and monster.position.distance_to(monster.route[0]) < 14.0: monster.route.pop_front()
 		if not monster.route.is_empty():
 			var direction: Vector2 = monster.position.direction_to(monster.route[0])
 			var before: Vector2 = monster.position
 			monster.position = game.Map.move(before, direction * 0.76, STEP, closed, 0.0, {}, false, true)
 			monster.velocity = (monster.position - before) / STEP
-		if monster.position.distance_to(destination) < 32.0 and game.Map.line_of_sight(monster.position, destination, closed):
+		if sees_target and monster.position.distance_to(target_position) < 32.0:
 			if damage(game, target): monster.attack_until = game.tick + 10
+	if monsters.is_empty(): next_hunt = seconds + rng.randf_range(125.0, 200.0)
 
 func chest_projection(game, who: int) -> Dictionary:
 	var result := {}

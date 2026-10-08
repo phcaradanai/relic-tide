@@ -8,7 +8,7 @@ The approved target is real-time co-op/competitive multiplayer with physical int
 
 - `scripts/game.gd`: pure 2–4-human fixed-step movement, physical doors, water, co-op vault, relic ownership and extraction. Keep it independent of scenes, timers, input and rendering; authority supplies fixed ticks and validated intentions.
 - `scripts/expedition_map.gd`: per-match shared large-level geometry, regions, gates, chest/prop anchors, power, refuge and route/LOS rules. No duplicate client/server coordinates. `level_map.gd` remains the internal prototype fixture.
-- `scripts/expedition_systems.gd`: seeded round duration and warnings, local breaches, blackout/gas, chest puzzles and rewards, hearts, breath/tanks, healing, tranquilizers, hunter waves and banked treasure. All rules use supplied fixed ticks.
+- `scripts/expedition_systems.gd`: seeded round duration and warnings, local breaches, blackout/gas, chest puzzles and rewards, hearts, breath/tanks, healing, tranquilizers, player-scaled hunter waves and banked treasure. Each hunter keeps its assigned explorer until sight/search or pursuit range is lost; fixed-duration wave cleanup is not used. All rules use supplied fixed ticks.
 - `scripts/movement_client.gd`: bounded local prediction and acknowledgement reconciliation; sends direction/sequence/match token, never position.
 - `scripts/movement_view.gd`: local feet presentation with collision-checked fractional preview and bounded correction blending. Camera/light follow these feet; authority and fixed-step prediction remain separate.
 - `scripts/expedition_world.gd`: raster floors, walls and props covering the actual playable map. Production levels have no separate decorative background or DepthFlow video.

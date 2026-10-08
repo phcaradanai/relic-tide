@@ -185,17 +185,19 @@ func test_shots_hunts_and_extraction() -> void:
 	place(game, 1, game.Map.region_center("R1"))
 	game.tick += 30
 	check(event(game, 0, "fire", "6") and other.stun_until <= game.tick, "Shot cannot cross wall or exceed range")
-	var monster := {"id": 99, "position": own.position + Vector2(0, 100), "velocity": Vector2.ZERO, "stun_until": -1, "route": [], "target": -1, "path_tick": -100, "attack_until": -1}
+	var monster := {"id": 99, "position": own.position + Vector2(0, 100), "velocity": Vector2.ZERO, "stun_until": -1, "route": [], "target": 0, "path_tick": -100, "attack_until": -1, "spawned_tick": game.tick, "last_seen_tick": game.tick, "last_seen_position": own.position}
 	game.expedition.monsters.append(monster)
-	game.expedition.hunt_end = 1000
 	game.tick += 30
 	check(event(game, 0, "fire", "0") and monster.stun_until > game.tick, "Dart also stuns a monster")
 	game.tick += 140
 	game.expedition.advance_hunters(game)
 	check(monster.velocity.length() > 0, "Hunter moves toward a survivor")
-	game.expedition.hunt_end = game.tick * Rules.STEP
+	game.tick += 1200
 	game.expedition.advance_hunters(game)
-	check(game.expedition.monsters.is_empty(), "Hunter leaves and permits a rest phase")
+	check(game.expedition.monsters.size() == 1 and monster.target == 0, "Visible assigned hunter stays beyond the old wave duration")
+	place(game, 0, game.Map.region_center("R11"))
+	game.expedition.advance_hunters(game)
+	check(game.expedition.monsters.is_empty(), "Escaping pursuit range permits a rest phase")
 	own.health = 1
 	check(game.expedition.movement_factor(game, 0) < 1.0, "Serious injury changes movement")
 	own.health = 3

@@ -5,6 +5,7 @@ uniform sampler2D floor_mask : filter_nearest, repeat_disable;
 uniform bool is_floor_pass = false;
 uniform vec2 view_center = vec2(720.0, 450.0);
 uniform float view_radius = 105.0;
+uniform bool foreground_cutaway = false;
 varying vec4 tint;
 varying vec2 world_point;
 void vertex() { tint = COLOR; world_point = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy; }
@@ -17,4 +18,12 @@ void fragment() {
 	float material_coverage = smoothstep(0.045, 0.10, max(painted.r, max(painted.g, painted.b)));
 	COLOR = painted * tint;
 	COLOR.a *= local_window * max(floor_coverage, material_coverage);
+	// A small window in foreground paint keeps the local body readable.
+	// Native occluders and server sight are independent of this alpha treatment.
+	if (foreground_cutaway) {
+		vec2 relative = world_point - view_center;
+		float body_x = 1.0 - smoothstep(14.0, 26.0, abs(relative.x));
+		float body_y = smoothstep(-48.0, -40.0, relative.y) * (1.0 - smoothstep(0.0, 8.0, relative.y));
+		COLOR.a *= 1.0 - 0.65 * body_x * body_y;
+	}
 }

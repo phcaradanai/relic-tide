@@ -152,7 +152,7 @@ func view(snapshot: Dictionary) -> void:
 	if stage == "waiting" and snapshot.phase == "running":
 		stage = "map"
 		check(snapshot.map_id == map_id and snapshot.duration >= 600 and snapshot.duration <= 1800, "Authority starts selected 10–30 minute level")
-		check(scene.camera.zoom == Vector2.ONE * 0.85 and scene.hud.visible, "Production camera and icon HUD are active")
+		check(scene.camera.zoom == Vector2.ONE * 2.6 and scene.hud.visible, "Production camera uses the approved reference scale and icon HUD")
 		check(snapshot.match_id != scene.lobby_info.staging_view.match_id, "Round uses a fresh match token")
 		set_goal("T0")
 	for i in range(snapshot.explorers.size()):
@@ -179,4 +179,3 @@ func finish() -> void:
 	scene.session.close()
 	print("Online large-expedition %s %d %s: %d checks, %d failures" % [map_id, count, role, checks, failures])
 	quit(1 if failures else 0)
-

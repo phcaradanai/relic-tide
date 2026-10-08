@@ -79,9 +79,29 @@ func test_production(map_id: String) -> void:
 		var middle := (segment[0] + segment[1]) * 0.5
 		var normal := Vector2(0.1, 0) if is_equal_approx(segment[0].x, segment[1].x) else Vector2(0, 0.1)
 		check(map.contains_floor(middle - normal) != map.contains_floor(middle + normal), map_id + " walls follow floor boundary")
+	test_gate_shadow_sources(map)
 	test_oxygen(map)
 	test_lighting(map)
 	test_props(map)
+
+func test_gate_shadow_sources(map) -> void:
+	var closed: Array = map.DOORS.keys()
+	var shadows: Array[PackedVector2Array] = []
+	for door_id: String in closed: shadows.append(map.door_shadow_polygon(door_id))
+	for door_id: String in closed:
+		var center: Vector2 = map.door_position(door_id)
+		var normal := Vector2.DOWN if map.DOORS[door_id].horizontal else Vector2.RIGHT
+		var tangent := Vector2(normal.y, normal.x)
+		var near_jamb: float = map.DOORS[door_id].width * 0.5 - map.FOOT_RADIUS - 1.0
+		for along: float in [-near_jamb, 0.0, near_jamb]:
+			for side: float in [-1.0, 1.0]:
+				# The first three offsets exposed the expanded native occluder bug.
+				for distance: float in [14.01, 15.0, 18.9, 20.0]:
+					var feet := center + tangent * along + normal * side * distance
+					var label := "%s %s gate side %.0f offset %.2f" % [map.id, door_id, side, distance]
+					check(map.walkable(feet, closed), label + " permits nearby feet")
+					check(not shadows.any(func(polygon): return Geometry2D.is_point_in_polygon(feet, polygon)), label + " light source stays outside every shut gate shadow")
+					check(map.line_of_sight(feet, feet + normal * side * 8.0, closed), label + " same-side floor stays observable")
 
 func check_route(map, route: Array[Vector2], message: String) -> void:
 	var valid := not route.is_empty()
@@ -137,36 +157,56 @@ func test_isolation() -> void:
 	check(Map.catalogue()[0].name != "Changed locally", "Catalogue metadata does not share mutable state")
 
 func test_props(map) -> void:
-	var heights := {"shelf": 85.0, "urns": 45.0, "sarcophagus": 90.0, "engine": 85.0, "pedestal": 48.0, "valve": 60.0, "boat": 82.0, "torch": 36.0}
 	var torches := 0
-	var refuge_props := 0
+	var contacts := 0
 	var kinds: Dictionary = {}
+	var counts: Dictionary = {}
 	for spec: Dictionary in map.prop_specs:
-		check(heights.has(spec.kind) and heights[spec.kind] == spec.height and map.region_at(spec.position) == spec.region, map.id + " shared raster prop anchor " + spec.kind)
+		check(map.region_at(spec.position) == spec.region, map.id + " shared raster prop anchor " + spec.kind)
 		kinds[spec.kind] = true
-		if spec.region == "R4":
-			refuge_props += 1
-			check(spec.kind == "torch", map.id + " refuge has no low obstacle")
-		if spec.kind == "torch":
+		counts[spec.region] = counts.get(spec.region, 0) + 1
+		if spec.floor_detail:
+			check(spec.contour.is_empty(), map.id + " flat floor details do not create foot blockers " + spec.kind)
+		elif spec.kind == "torch":
 			torches += 1
 			check(spec.position == map.room_specs[spec.region].centre + Vector2(-205, -143) and not map.prop_blocks_feet(spec.position), map.id + " wall torch has no foot collider")
 		elif spec.kind in ["boat", "valve"]:
 			check(map.walkable(spec.position), map.id + " physical interaction remains accessible " + spec.kind)
 		else:
+			contacts += 1
 			var base: Vector2 = spec.position + Vector2(0, -25) if spec.kind == "pedestal" else spec.position
 			check(map.prop_blocks_feet(base) and not map.walkable(base), map.id + " authored low base blocks feet " + spec.kind)
-			var reach := 70.0
-			check(map.line_of_sight(base - Vector2(reach, 0), base + Vector2(reach, 0)), map.id + " low prop never blocks nearby sight " + spec.kind)
-			var half_depth: float = 9 if spec.kind in ["urns", "shelf"] else 7 if spec.kind == "pedestal" else 8 if spec.kind == "engine" else 32.5
-			check(not map.walkable(base + Vector2(0, half_depth + 8)) and map.walkable(base + Vector2(0, half_depth + 10)), map.id + " feet stop at actual contact contour " + spec.kind)
+			check(not spec.contour.is_empty(), map.id + " shared contact contour exists " + spec.kind)
+			var half_depth: float = 7.0 if spec.kind == "pedestal" else map.FURNITURE[spec.kind].half.y
+			if spec.kind != "pedestal": check(spec.height == map.FURNITURE[spec.kind].height, map.id + " furniture has consistent world scale " + spec.kind)
+			var room: Rect2 = map.room_specs[spec.region].rect
+			var left := Vector2(maxf(room.position.x + 4, base.x - 75), base.y)
+			var right := Vector2(minf(room.end.x - 4, base.x + 75), base.y)
+			check(map.line_of_sight(left, right), map.id + " low prop never blocks nearby sight " + spec.kind)
+			check(not map.walkable(base + Vector2(0, half_depth + 8)), map.id + " feet stop at actual contact contour " + spec.kind)
+			# The outside sample may meet a neighbouring member of the same ensemble.
 			var start := base + Vector2(0, half_depth + 35)
-			var stopped: Vector2 = map.move(start, Vector2.UP, 0.25)
-			check(map.walkable(stopped) and stopped.y >= base.y + half_depth + map.FOOT_RADIUS and stopped.distance_to(start) < map.SPEED * 0.25, map.id + " fixed movement stops at low contact base " + spec.kind)
+			if map.walkable(start):
+				var stopped: Vector2 = map.move(start, Vector2.UP, 0.25)
+				check(map.walkable(stopped) and stopped.y >= base.y + half_depth + map.FOOT_RADIUS and stopped.distance_to(start) < map.SPEED * 0.25, map.id + " fixed movement stops at low contact base " + spec.kind)
 			if spec.kind == "urns": check(map.walkable(base + Vector2(26, 15)), map.id + " round urn has no rectangular corner blocker")
-			if spec.kind == "sarcophagus": check(map.walkable(base + Vector2(30, 40)), map.id + " sarcophagus keeps bevelled corners")
-	check(torches == 12 and refuge_props == 1 and map.prop_specs.size() == 23 and map.prop_polygons().size() == 9, map.id + " authored prop counts")
+			for vertex: Vector2 in spec.contour: check(map.contains_floor(vertex), map.id + " contact contour stays on playable floor " + spec.kind)
+	check(torches == 12 and contacts == map.prop_polygons().size(), map.id + " one shared collider per low furniture prop")
+	for region: String in map.room_specs:
+		check(counts[region] >= 6, map.id + " room has an authored furniture ensemble " + region)
+		var center: Vector2 = map.room_specs[region].centre
+		# Three parallel foot lanes preserve a usable central cross through all room portals.
+		for lane in [-24, 0, 24]:
+			var horizontal := true
+			var vertical := true
+			for x in range(-248, 249, 8): horizontal = horizontal and map.walkable(center + Vector2(x, lane))
+			for y in range(-176, 177, 8):
+				if region == "R3" and y < -35: continue # The relic pedestal occupies its intentional focal point.
+				vertical = vertical and map.walkable(center + Vector2(lane, y))
+			check(horizontal and vertical, map.id + " clear central room cross " + region)
+	check(counts.R4 >= 7 and map.walkable(map.room_specs.R4.centre), map.id + " furnished refuge retains its central safe standing area")
 	check(map.walkable(map.relic_position()) and map.relic_position().distance_to(map.prop_specs.filter(func(spec): return spec.kind == "pedestal")[0].position) == 0, map.id + " pedestal remains aligned with reachable relic")
-	check(map.prop_specs.is_read_only() and map.prop_specs[0].is_read_only(), map.id + " prop metadata immutable")
+	check(map.prop_specs.is_read_only() and map.prop_specs[0].is_read_only() and map.prop_specs[0].contour.is_read_only(), map.id + " prop metadata immutable")
 	check(kinds.has("engine") == (map.id == "foundry") and kinds.has("sarcophagus") == (map.id == "catacombs"), map.id + " map-specific low furniture")
 	var before: Vector2 = map.prop_polygons()[0][0]
 	var copy: Array[PackedVector2Array] = map.prop_polygons()

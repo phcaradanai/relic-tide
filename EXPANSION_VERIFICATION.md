@@ -22,7 +22,7 @@ Before: `test-output/expansion-fov-before.png`. Current captures: `test-output/e
 
 ## Automated evidence
 
-All listed suites completed with zero failures. Counts describe assertions in those suites, not coverage percentages or human playtest quality.
+All listed suites completed with zero failures for the snapshot verified below. Counts describe assertions in those suites, not coverage percentages or human playtest quality.
 
 | Suite | Passed checks |
 |---|---:|
@@ -67,3 +67,31 @@ The original PixelLab brine stalker is complete: walk 12 frames, idle 8, attack 
 ## Remaining playtests
 
 Human multi-person balance still needs to tune round pacing, flood frequency, hunter pressure, gear value, room density and extraction fairness. Sustained user-device performance, real WAN latency, public TLS deployment and other browsers require their own evidence. The delivered mechanics and current reference framing are runnable locally; these limits are not hidden by the test counts.
+
+## Hunter pursuit follow-up — 2026-10-07
+
+The later hunter update removed the fixed 38–58-second wave cutoff. Each active explorer now gets one assigned hunter; it follows visible players, searches the last-seen position for up to 2.5 seconds, and leaves when its target becomes inactive or exceeds 900 units. The rest interval begins when the last hunter leaves. Clients animate the last visible hunter leaping away over 0.48 seconds, with the arc suppressed under reduced motion. The Web export rebuilt successfully. The suites above and browser play were not rerun for this follow-up.
+
+## Natural room furnishing — 2026-10-08
+
+The newest room-density request adds sixteen original standing furniture motifs and eight flat ground motifs. Built-in image_gen produced two unchanged RGBA sheets with exact prompts, hashes and source provenance in `assets/generated/environment/expedition-furnishing-v1.manifest.json`. No PixelLab or DepthFlow calls were used. Shared map metadata authors room-purpose ensembles in all 36 rooms, including the refuge; stable centre lanes, interaction anchors, gates and floor/LOS coordinates are preserved. Lagoon now has 84 standing props and 28 floor details, Foundry 82 and 33, Catacombs 80 and 31 (previously 23 standing props each). Standing contacts total 70/68/66. Flat details remain walkable, below water and actors, and use floor lighting.
+
+Fresh Godot 4.7.2 checks pass: rules 643, privacy 77, authority 53, scene 573, movement presentation 66, production maps 5,136, production survival rules 356, production privacy 93, waiting lifecycle 31, actual OpenGL production renderer 1,236, and local Web smoke 8. The map checks sample clear central walking lanes, all shared contacts, non-occluding low furniture, reachable doors/chests/spawns/relic and immutable metadata. Native captures `test-output/furnished-{lagoon,foundry,catacombs}-R0..R11.png` cover every furnished room at the approved 2.6 zoom, plus existing wet/blackout/lantern/gate/refuge captures. The Web export rebuilt successfully.
+
+This run also repaired two missing explicit types in the previous hunter update (`closed` and `leap_offset`) and replaced its old fixed-wave test with assigned pursuit/range escape checks. The production network fixture had retained a superseded 0.85 camera assertion; it now verifies the approved 2.6 framing. This evidence supersedes the previous hunter follow-up's compile/verification gap. It does not establish human balance, WAN performance or complete hunter spawn/pathfinding quality.
+
+Network evidence for this furnishing pass: the twelve movement/lobby/prototype expedition cases passed, including 200ms RTT with stalls. The three production cases were rerun after correcting the stale camera-only assertion; Lagoon with two players, Foundry with three and Catacombs with four all pass full puzzle/vault/extraction rounds through the real central WebSocket service. This totals all fifteen scenarios successfully verified. Logs remain in `test-output/network-*.log` and `.err`.
+
+Actual local browser proof: two separate clients joined by code, readied and entered the furnished Foundry. P1 walked the physical Landing–Archive corridor with real WASD input at the approved zoom; `test-output/furnished-web-archive.png` shows its desks, rug, bookshelves and open routes. A fresh two-client round approached a starter chest and opened its server-backed circuit puzzle with E (`furnished-web-chest-access.png`). The challenge closed during screenshot review without a reward; browser reward completion is not claimed in this pass (the three full production socket rounds verify rewards/extraction). Test rooms were closed for handoff. Long screenshot-review idling can trigger the live survival hazards; this browser check is not a balance playtest.
+
+## Door, proximity shadow and object depth repair — 8 October 2026
+
+Reproduced the supplied screenshots in actual native rendering: a legal light source 14 units from a shut gate entered the former barrier enlarged by 14, blacking out the entire floor while separately lit props stayed visible. The production shadow now uses the exact physical barrier; server collision, LOS, water and refuge rules are unchanged. Geometry regression covers all 88 production gates, both sides, center and jamb approach, at 14.01/15/18.9/20 units.
+
+New overhead side bulkheads and limestone jambs replace elongated upright portrait panels. Short raster strips sort along the side gate's ground edge. Horizontal frame/slab heights now match the wall. Foreground paint fades locally around the player's body without changing native shadow casters or revealing hidden actors. Recipient-only chest, dropped relic and lantern sprites sort at their ground bases and hide immediately when omitted from a view.
+
+Fresh verification: nine headless suites total 13,364 checks / 0 failures; full network runner 15/15 scenarios, including 2–4 people, latency/stalls and complete rounds on all three levels; production environment GPU 1,236/0; focused door/object GPU 171/0; legacy GPU 23/0 serial; web rebuild and smoke 8/0. No script/parse/compile errors. The first parallel legacy renderer lost native focus and skipped gated interactions, reproducing five downstream failures; independent serial run and a paired forced-focus-out probe confirmed the cause. Production focus protection remains intact.
+
+Close-threshold captures: `test-output/door-{map}-D0-{side}-{offset}.png` and the dynamically selected horizontal gate (Lagoon D7); object front/back and foreground-wall captures use `object-{map}-*.png`. `tests/door_render_test.gd` selects both orientations from each map definition.
+
+Final local browser check: two actual Ego Lite clients joined private room QNLKYY, readied and entered Lagoon with the rebuilt export (`test-output/door-web-match.png`). Real WASD input moved P1 independently. The live round ended during extended browser screenshot/input review before a closed-gate approach was reached; `door-web-close-threshold.png` is an early movement capture and is not threshold evidence. Closed-gate proximity and object front/back acceptance comes from the focused actual-GPU suite above. Both agent-created browser tabs were closed; the user's existing tabs and the local service at port 8080 remain available. No browser frame-rate or balance claim is made.

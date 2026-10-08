@@ -4,6 +4,7 @@ signal action(kind: String, target: String)
 const SHEET = preload("res://assets/generated/environment/survival-icons-v1.png")
 const ICON_NAMES := ["heart", "empty_heart", "air", "wave", "map", "chart", "oxygen", "mask", "medkit", "gun", "dart", "treasure", "closed_door", "open_door", "monster", "refuge"]
 const ITEMS := ["map", "chart", "oxygen", "mask", "medkit", "gun"]
+const ITEM_HOTKEYS := {"medkit": "1", "map": "2", "gun": "F"}
 var icons: Dictionary = {}
 var view = null
 var Map
@@ -11,11 +12,13 @@ var font: Font
 var tide: ProgressBar
 var air: ProgressBar
 var item_buttons: Dictionary = {}
+var item_badges: Dictionary = {}
+var key_hint_style: StyleBoxFlat
 var final_panel: PanelContainer
 var alarm_number := -1
 var alarm_clock := 0.0
 var flash_clock := 0.0
-var prompt_icon := ""
+var prompt_active := false
 var prompt_point := Vector2.ZERO
 var prompt_progress := 0.0
 var prompt_hold := false
@@ -58,6 +61,11 @@ func _ready() -> void:
 	tide.tooltip_text = "Tide deadline · evacuate before this fills"
 	air = _bar(Vector2(72, 93), Vector2(142, 12), Color("b9e8f0"))
 	air.hide()
+	key_hint_style = StyleBoxFlat.new()
+	key_hint_style.bg_color = Color("102630")
+	key_hint_style.border_color = Color("edc47b")
+	key_hint_style.set_border_width_all(1)
+	key_hint_style.set_corner_radius_all(4)
 	for index in range(ITEMS.size()):
 		var item: String = ITEMS[index]
 		var button := Button.new()
@@ -65,7 +73,7 @@ func _ready() -> void:
 		button.size = Vector2(50, 50)
 		button.icon = icon(item)
 		button.expand_icon = true
-		button.tooltip_text = {"map": "Map [M] · reveal structure", "chart": "Treasure bearing", "oxygen": "Oxygen · cross submerged routes", "mask": "Gas mask · toxic air protection", "medkit": "Heal one heart [1]", "gun": "Tranquilizer [F] · aim toward mouse"}[item]
+		button.tooltip_text = {"map": "Map [2] · reveal structure", "chart": "Treasure bearing", "oxygen": "Oxygen · cross submerged routes", "mask": "Gas mask · toxic air protection", "medkit": "Heal one heart [1]", "gun": "Tranquilizer [F] · aim toward mouse"}[item]
 		var style := StyleBoxFlat.new()
 		style.bg_color = Color(0.025, 0.07, 0.10, 0.86)
 		style.set_corner_radius_all(6)
@@ -80,6 +88,25 @@ func _ready() -> void:
 		focus.set_border_width_all(2)
 		button.add_theme_stylebox_override("focus", focus)
 		button.pressed.connect(func(): action.emit("heal" if item == "medkit" else "show_map" if item == "map" else "fire" if item == "gun" else "", ""))
+		if ITEM_HOTKEYS.has(item):
+			var badge := Panel.new()
+			badge.position = Vector2(29, 1)
+			badge.size = Vector2(19, 18)
+			badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			badge.add_theme_stylebox_override("panel", key_hint_style)
+			badge.visible = false
+			var key_label := Label.new()
+			key_label.text = ITEM_HOTKEYS[item]
+			key_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			key_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			key_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			key_label.add_theme_font_override("font", font)
+			key_label.add_theme_font_size_override("font_size", 13)
+			key_label.add_theme_color_override("font_color", Color("f1ead6"))
+			key_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			badge.add_child(key_label)
+			button.add_child(badge)
+			item_badges[item] = badge
 		add_child(button)
 		item_buttons[item] = button
 	final_panel = PanelContainer.new()
@@ -123,9 +150,11 @@ func update_state(snapshot) -> void:
 	if own.get("oxygen_enabled", false): air.value = own.tank / 55.0
 	for item in ITEMS:
 		var owned: bool = bool(own.gear.get(item, false))
+		if item == "medkit": owned = int(own.gear.get(item, 0)) > 0
 		var button: Button = item_buttons[item]
 		button.modulate = Color.WHITE if owned else Color(0.6, 0.72, 0.74, 0.38)
 		button.disabled = not owned or item in ["chart", "oxygen", "mask"] or (item == "gun" and own.ammo <= 0) or (item == "medkit" and own.health >= 3)
+		if item_badges.has(item): item_badges[item].visible = owned
 	if view.alarm_serial != alarm_number:
 		alarm_number = view.alarm_serial
 		if view.final_alarm:
@@ -140,11 +169,17 @@ func advance(delta: float, reduced: bool) -> void:
 		if alarm_clock > (5.0 if reduced else 3.2): final_panel.hide()
 	queue_redraw()
 
-func set_prompt(name: String, location: Vector2, progress: float = 0.0, hold: bool = false) -> void:
-	prompt_icon = name
+func set_prompt(location: Vector2, progress: float = 0.0, hold: bool = false) -> void:
+	prompt_active = true
 	prompt_point = Vector2(clampf(location.x, 50, 1390), clampf(location.y, 140, 760))
 	prompt_progress = progress
 	prompt_hold = hold
+	queue_redraw()
+
+func clear_prompt() -> void:
+	prompt_active = false
+	prompt_progress = 0.0
+	prompt_hold = false
 	queue_redraw()
 
 func _icon_draw(name: String, location: Vector2, dimensions: Vector2, tint: Color = Color.WHITE) -> void:
@@ -178,9 +213,8 @@ func _draw() -> void:
 		var remaining := maxi(0, ceili(view.duration - view.tide_seconds))
 		draw_rect(Rect2(654, 57, 136, 34), Color("0a202b"))
 		draw_string(font, Vector2(673, 78), "%d:%02d" % [remaining / 60, remaining % 60], HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color("ef9990"))
-	if not prompt_icon.is_empty():
-		var box := Rect2(prompt_point - Vector2(38, 28), Vector2(76, 59))
-		draw_style_box(item_buttons.map.get_theme_stylebox("normal"), box)
-		_icon_draw(prompt_icon, box.position + Vector2(4, 5), Vector2(42, 42))
-		draw_string(font, box.position + Vector2(52, 31), "E", HORIZONTAL_ALIGNMENT_LEFT, -1, 19, Color("f1ead6"))
-		if prompt_hold: draw_rect(Rect2(box.position + Vector2(4, 53), Vector2(68 * clampf(prompt_progress, 0, 1), 3)), Color("edc47b"))
+	if prompt_active:
+		var box := Rect2(prompt_point - Vector2(17, 16), Vector2(34, 32))
+		draw_style_box(key_hint_style, box)
+		draw_string(font, Vector2(box.position.x, box.position.y + 22), "E", HORIZONTAL_ALIGNMENT_CENTER, box.size.x, 19, Color("f1ead6"))
+		if prompt_hold: draw_rect(Rect2(box.position + Vector2(0, 35), Vector2(34 * clampf(prompt_progress, 0, 1), 3)), Color("edc47b"))
