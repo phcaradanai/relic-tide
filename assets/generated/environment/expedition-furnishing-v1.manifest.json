@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-08",
+  "purpose": "Authored room furnishing for all 36 production rooms. Sixteen standing furniture motifs and eight flat floor details.",
+  "generator": "Built-in image_gen; no PixelLab or DepthFlow calls for this task.",
+  "placement": "Shared ExpeditionMap room-purpose ensembles, central walk lanes and interaction anchors.",
+  "rendering": "Standing raster sprites use feet order and small ground contours, no LOS wedges. Flat details use z=-2 and floor light mask 1, under water/actors, with no collision. Crops are cached per kind within each bound world.",
+  "assets": [
+    {
+      "asset": "assets/generated/environment/expedition-furniture-v1.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "7df868153bce1637fbb60eee70ccb5b372534bad5f99447f33dfe9f967bf4687",
+      "prompt": "assets/generated/environment/expedition-furniture-v1.prompt.txt",
+      "source": "Built-in image_gen tool",
+      "reference": "assets/generated/environment/expedition-props-v1.png",
+      "processing": "Unmodified RGBA source; silhouette crops in scripts/expedition_world.gd preserve alpha.",
+      "prompt_text": "Use case: stylized-concept\nAsset type: one original transparent raster prop atlas for the elevated top-down 2D game Relic Tide.\nPrimary request: a coherent 4 by 4 sheet of SIXTEEN separate furniture/room props to furnish inhabited ancient flooded-ruin rooms. Use the inspected existing game prop sheet as a visual style reference only: warm ochre brass, oxidized sea-green metal, blue limestone, dark walnut, worn beige fabric, painterly pixel detail and crisp dark outlines. Keep the same camera: front-facing elevated top-down, see the top and front face, parallel horizontal room axes, NOT diamond isometric. Soft warm light from upper left, subtle painted contact shadow directly under every object.\nComposition: square 1536 by 1536 atlas, four equal columns and four equal rows. Exactly one complete isolated object or small coherent ensemble centered per cell, separated by generous TRUE transparent gutters, no touching between cells. All corners/legs/shadows fit entirely in the cell. No floor tiles, no labels, no grid lines, no background/glow gradients, no decorative border. Objects should remain recognizable at 45 to 85 game units tall. Real transparent alpha everywhere outside props and small contact shadows.\nROW 1 left to right: (1) scholar's low wooden writing desk with open ledger, ink pot and a few rolled charts; (2) one sturdy worn wooden chair with muted teal seat, no tall throne; (3) wide limestone-backed walnut bookcase filled with irregular books and scrolls; (4) low emergency cot with rolled blanket and brass feet.\nROW 2 left to right: (5) two unequal closed cargo crates tied with rope, absolutely NO chest symbol or gold treasure emblem; (6) two wooden barrels with brass hoops of unequal sizes; (7) coiled ship rope beside small cleat and folded fishing net, a low flat ensemble; (8) three canvas supply sacks with one open bag of grain, low ensemble.\nROW 3 left to right: (9) broad brass-and-wood workbench with attached tool rack, small hammer and vice; (10) compact dark anvil on a worn limestone plinth; (11) antique oxidized brass cistern pump with vertical reservoir and curved pipes, unlit; (12) low navigation chart table with spread parchment sea map and small brass compass, NO readable text.\nROW 4 left to right: (13) ceramic planter with fern and small trailing leaves; (14) brass armillary sphere on round low limestone pedestal; (15) worn limestone votive altar with three small candles and empty brass offering bowl, restrained warm points of flame; (16) low open limestone ossuary niche with neatly arranged old bone fragments and two small ceramic vessels.\nConstraints: original authored game props, match the reference's material rendering and scale of detail; natural wear and asymmetry, consistent perspective and lighting, no characters, no modern objects, no interface icons, no symbols repeated on crates, no copied assets, no text/watermark."
+    },
+    {
+      "asset": "assets/generated/environment/expedition-floor-details-v1.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "40302b82aeae3b1b65a4f63d51af7f7bfa3b2e58cf46db5d2cb8de018d68e83f",
+      "prompt": "assets/generated/environment/expedition-floor-details-v1.prompt.txt",
+      "source": "Built-in image_gen tool",
+      "reference": "assets/generated/environment/expedition-props-v1.png",
+      "processing": "Unmodified RGBA source; silhouette crops in scripts/expedition_world.gd preserve alpha.",
+      "prompt_text": "Use case: stylized-concept\nAsset type: single transparent raster floor-detail atlas for Relic Tide's existing elevated top-down ruin game.\nInput images: existing prop atlas is a STYLE reference only; use the same blue limestone, worn walnut, oxidized brass, muted sea green, parchment and dark crisp edges. This output has NO standing furniture.\nPrimary request: EIGHT separate subtle low flat floor overlays, arranged in 4 columns and 2 rows, approximately 1536 by 1024 landscape. One entire isolated motif per cell with large completely transparent gutters. Elevated top-down view with horizontal room axes, not diamond isometric. All details lie on the ground. Painted game pixels, compatible material light from upper left. Conservative colors and contrast, original artwork.\nRow 1 left to right: (1) faded muted sea-green woven rectangular rug with worn ochre edges, holes and frayed corners, no central emblem, broad horizontal rectangle whose projected height is about two thirds of its width; (2) worn rectangular dark brass maintenance grate set in a narrow chipped limestone rim, broad horizontal rectangle, no sign or icon; (3) an irregular sparse patch of cracked blue limestone fragments and small pebbles with a little moss, no rectangular background; (4) delicate irregular damp mineral staining with a few seaweed strands, small leaves and grit, dry surface detail rather than standing water, no opaque floor patch.\nRow 2 left to right: (5) a small untidy scatter of three pale parchment sheets, one closed muted blue book and two rolled scrolls lying flat; (6) a compact flat scatter of a hammer, tongs, spare bolts and small metal filings on a dirty rag; (7) a few broken terracotta vessel fragments with grit and tiny moss, low sparse ensemble; (8) a flattened torn fishing net, two short weathered planks and loose rope ends lying on the ground, no cleat or other raised objects.\nConstraints: genuinely transparent alpha outside motifs; keep complete irregular edges, no glow or backdrop gradients, no grid lines, no labels, no text or watermark, no magical sigils, no gold treasure emblems, no interaction symbols, no characters, no standing props. Subtle wear/detail that integrates furniture with the existing playable floor without competing with explorers, chests and doors."
+    }
+  ],
+  "level_instances": {
+    "lagoon": {
+      "standing_props": 84,
+      "floor_details": 28,
+      "contacts": 70,
+      "rooms": 12
+    },
+    "foundry": {
+      "standing_props": 82,
+      "floor_details": 33,
+      "contacts": 68,
+      "rooms": 12
+    },
+    "catacombs": {
+      "standing_props": 80,
+      "floor_details": 31,
+      "contacts": 66,
+      "rooms": 12
+    }
+  }
+}
